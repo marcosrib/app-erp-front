@@ -1,4 +1,14 @@
+'use client';
+import { useContext } from 'react';
+import { authContext } from '../contexts/AuthContext';
+
 export default function signin() {
+  const { signIn } = useContext(authContext);
+
+  async function handleSignIn() {
+    await signIn({ email: 'marcos@gmail.com', password: '123456' });
+  }
+
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -12,7 +22,7 @@ export default function signin() {
         </h2>
       </div>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
+        <form className="space-y-6" onSubmit={handleSignIn}>
           <div>
             <label
               htmlFor="email"

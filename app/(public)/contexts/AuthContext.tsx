@@ -1,10 +1,6 @@
 import React, { createContext } from 'react';
-import axios from '../services/axios';
+import axios from '../../services/axios';
 import { setCookie } from 'nookies';
-
-type AuthContextType = {
-  isAuthenticated: boolean;
-};
 
 type Props = {
   children: React.ReactNode;
@@ -13,6 +9,11 @@ type Props = {
 type signInData = {
   email: string;
   password: string;
+};
+
+type AuthContextType = {
+  isAuthenticated: boolean;
+  signIn: (data: signInData) => Promise<void>;
 };
 
 export const authContext = createContext({} as AuthContextType);
@@ -25,10 +26,18 @@ export function authProvider({ children }: Props) {
       email,
       password,
     });
+
+    setCookie(undefined, 'erp.token', response.data.token, {
+      maxAge: 60 * 60 * 1, // 1 hora
+    });
+
+    setCookie(undefined, 'erp.refreshtoken', response.data.refreshtoken, {
+      maxAge: 60 * 60 * 1, // 1 hora
+    });
   }
 
   return (
-    <authContext.Provider value={{ isAuthenticated }}>
+    <authContext.Provider value={{ isAuthenticated, signIn }}>
       {children}
     </authContext.Provider>
   );
