@@ -1,20 +1,38 @@
-# Use a imagem Node.js como base
-FROM node:18
+# Use uma imagem base Node.js leve, como o Alpine Linux
+FROM node:18-alpine AS builder
 
 # Defina o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Copie os arquivos do projeto para o contêiner
+# Copie o arquivo package.json e package-lock.json para o contêiner
+COPY package*.json ./
+
+# Instale as dependências de produção
+RUN npm ci --production
+
+# Copie todo o código-fonte para o contêiner (exceto os arquivos na .dockerignore)
 COPY . .
 
-# Instale o Next.js
-RUN npm install -g next@13.4.19
+# Execute o comando 'npm run build' para criar uma versão otimizada da aplicação Next.js
+RUN npm run build
 
-# Instale as dependências do projeto
-RUN npm install
+# Etapa de construção concluída, agora começamos com uma imagem mais leve
+FROM node:18-alpine
+
+# Defina o diretório de trabalho novamente
+WORKDIR /app
+
+# Copie apenas os arquivos necessários da etapa anterior (builder)
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/public ./public
 
 # Exponha a porta em que o servidor Next.js será executado
 EXPOSE 3000
 
-# Inicie o servidor Next.js no modo de desenvolvimento
-CMD ["npm", "run", "dev"]
+# Configure a variável de ambiente NODE_ENV para 'production'
+ENV NODE_ENV=production
+
+# Execute o comando 'npm start' para iniciar a aplicação em produção
+CMD ["npm", "start"]

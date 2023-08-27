@@ -1,6 +1,6 @@
 'use client';
-import { useContext } from 'react';
-import { authContext } from '../contexts/AuthContext';
+//import { useContext } from 'react';
+///import { authContext } from '../contexts/AuthContext';
 
 export default function signin() {
   //const { signIn } = useContext(authContext);
@@ -18,7 +18,7 @@ export default function signin() {
           alt="Your Company"
         />
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Sign in to your account
+          Efetue o login
         </h2>
       </div>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">

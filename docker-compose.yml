@@ -1,9 +1,12 @@
 version: '3'
 services:
-  nextjs:
-    build: .
-    container_name: nextjs-app
+  app:
+    build:
+      context: . 
+      dockerfile: ./Dockerfile.dev
+    container_name: erp-web
     ports:
       - "3000:3000"
     volumes:
       - .:/app
+  

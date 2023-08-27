@@ -5,7 +5,7 @@ export default function Dashboard() {
         Good afternoom, Charlie
       </h1>
       <h2 className="text-gray-400 text-md">
-        Here's what's happening with your ambassador account today.
+        Heres whats happening with your ambassador account today.
       </h2>
       <div className="flex flex-col items-center w-full my-6 space-y-4 md:space-x-4 md:space-y-0 md:flex-row">
         <div className="w-full md:w-6/12">
