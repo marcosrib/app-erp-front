@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Instale o Next.js
-RUN npm install next@13.4.19
+RUN npm install -g next@13.4.19
 
 # Instale as dependências do projeto
 RUN npm install
