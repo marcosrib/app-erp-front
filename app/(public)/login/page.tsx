@@ -3,10 +3,10 @@ import { useContext } from 'react';
 import { authContext } from '../contexts/AuthContext';
 
 export default function signin() {
-  const { signIn } = useContext(authContext);
+  //const { signIn } = useContext(authContext);
 
   async function handleSignIn() {
-    await signIn({ email: 'marcos@gmail.com', password: '123456' });
+    // await signIn({ email: 'marcos@gmail.com', password: '123456' });
   }
 
   return (
