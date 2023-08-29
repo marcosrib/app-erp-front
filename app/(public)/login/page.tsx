@@ -1,12 +1,19 @@
 'use client';
-//import { useContext } from 'react';
-///import { authContext } from '../contexts/AuthContext';
+import { useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
 
-export default function signin() {
-  //const { signIn } = useContext(authContext);
+export default function Signin() {
+  const { signIn } = useContext(AuthContext);
 
-  async function handleSignIn() {
-    // await signIn({ email: 'marcos@gmail.com', password: '123456' });
+  async function handleSignIn(event: any) {
+    event.preventDefault();
+
+
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    console.log(email);
+    
+    await signIn({ email, password });
   }
 
   return (
