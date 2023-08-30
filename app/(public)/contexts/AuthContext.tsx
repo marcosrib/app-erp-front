@@ -1,8 +1,8 @@
 "use client"
 import React, { createContext, useState } from 'react';
-import axios from '../../services/axios';
+import api from '../../services/api';
 import { setCookie } from 'nookies';
-import Router from 'next/router';
+import { useRouter } from 'next/navigation'
 
 type Props = {
   children: React.ReactNode;
@@ -31,21 +31,28 @@ export function AuthProvider({ children }: Props) {
   const [user, setUser] = useState<User | null>(null);
   const isAuthenticated = false;
 
+  const router = useRouter()
+
   async function signIn({ email, password }: SignInData) {
-    const response = await axios.post('/auth/login/', {
+    const response = await api.post('/auth/login/', {
       email,
       password,
     });
-
-    setCookie(undefined, 'erp.token', response.data.token, {
+   console.log(response );
+  
+ 
+    setCookie(undefined, 'erp.token', response.data.accessToken, {
       maxAge: 60 * 60 * 1, // 1 hora
     });
 
-    setCookie(undefined, 'erp.refreshtoken', response.data.refreshtoken, {
+    setCookie(undefined, 'erp.refreshtoken', response.data.refreshToken, {
       maxAge: 60 * 60 * 1, // 1 hora
     });
-    setUser(null);
-    Router.push('/dashboard');
+    api.defaults.headers['Authorization'] = `Bearer ${response.data.accessToken}`
+    
+    const claimData = JSON.parse(atob(response.data.accessToken .split('.')[1]));
+    setUser(claimData);
+    router.push('/dashboard');
   }
 
   return (

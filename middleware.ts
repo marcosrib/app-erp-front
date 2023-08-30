@@ -1,10 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
 export default async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl
-   
-    // GET /_next/data/build-id/hello.json
-    
-    console.log(pathname)
-    // with the flag this now /_next/data/build-id/hello.json
-    // without the flag this would be normalized to /hello
+    console.log(  pathname  );
+    const token = req.cookies.get("erp.token")?.value
+    console.log(  token );
+
+    if (pathname === '/' && token === undefined) {
+      return NextResponse.redirect(new URL('/login', req.url));
+    }
+  
+    if (pathname === '/login') {
+      return NextResponse.redirect(new URL('/dashboard', req.url));
+    }
+    if (pathname === '/') {
+      return NextResponse.redirect(new URL('/dashboard', req.url));
+    }
+  
+  }
+
+  export const config = {
+    matcher: ['/', '/login', '/dashboard']
   }
