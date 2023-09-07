@@ -12,6 +12,7 @@ type SignInData = {
   email: string;
   password: string;
 };
+
 type User = {
   name: string,
   id: Number
@@ -22,8 +23,6 @@ type AuthContextType = {
   signIn: (data: SignInData) => Promise<void>;
   user: User | null;
 };
-
-
 
 export const AuthContext = createContext({} as AuthContextType);
 
@@ -38,9 +37,7 @@ export function AuthProvider({ children }: Props) {
       email,
       password,
     });
-   console.log(response );
-  
- 
+
     setCookie(undefined, 'erp.token', response.data.accessToken, {
       maxAge: 60 * 60 * 1, // 1 hora
     });
@@ -48,6 +45,7 @@ export function AuthProvider({ children }: Props) {
     setCookie(undefined, 'erp.refreshtoken', response.data.refreshToken, {
       maxAge: 60 * 60 * 1, // 1 hora
     });
+    
     api.defaults.headers['Authorization'] = `Bearer ${response.data.accessToken}`
     
     const claimData = JSON.parse(atob(response.data.accessToken .split('.')[1]));
