@@ -1,18 +1,40 @@
 'use client';
 import { useContext } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
 import { AuthContext } from '../contexts/AuthContext';
 import { Input } from '@/app/components/input/';
 
+const createUserFormSchema = z.object({
+  email: z.string()
+    .nonempty('O e-mail é obrigatório')
+    .email('Formato do e-mail inválido'),
+  password: z.string()
+    .min(6, 'A senha precisa de no minimo 6 caracteres')
+})
+
+type CreateUserFormData = z.infer<typeof createUserFormSchema>
+
 export default function Signin() {
+   const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<CreateUserFormData>({
+    resolver: zodResolver(createUserFormSchema),
+
+  })
   const { signIn } = useContext(AuthContext);
 
-  async function handleSignIn(event: any) {
-    event.preventDefault();
+ 
 
-    const email = event.target.email.value;
-    const password = event.target.password.value;
+  async function handleSignIn(data: any) {
+  console.log(data);
+  
     
-    await signIn({ email, password });
+   // await signIn({ data., dada.password });
   }
 
   return (
@@ -23,14 +45,26 @@ export default function Signin() {
         </h2>
       </div>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" onSubmit={handleSignIn}>
+        <form className="space-y-6" onSubmit={handleSubmit(handleSignIn)}>
          <Input.Root>
           <Input.Laibel label='E-mail'/>
-          <Input.Input/>
+          <Input.Input 
+          type='email'
+            {...register('email')}
+          />
+          <Input.LabelError 
+              helperText={errors.email?.message}
+            />
          </Input.Root>
          <Input.Root>
           <Input.Laibel label='Senha'/>
-          <Input.Input type='password'/>
+          <Input.Input
+            type='password'
+            {...register('password')}
+            />
+            <Input.LabelError 
+               helperText={errors.password?.message}
+            />
          </Input.Root>
           <div>
             <button
