@@ -30,11 +30,8 @@ export default function Signin() {
 
  
 
-  async function handleSignIn(data: any) {
-  console.log(data);
-  
-    
-   // await signIn({ data., dada.password });
+  async function handleSignIn({ email, password }: CreateUserFormData) {
+   await signIn({ email, password });
   }
 
   return (

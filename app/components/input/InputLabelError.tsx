@@ -1,8 +1,8 @@
-type props =  {
+type Props =  {
     helperText?: string
 }
 
-export function InputLabelError({ helperText }: props) {    
+export function InputLabelError({ helperText }: Props) {    
     return (
         <> 
         { helperText && 
