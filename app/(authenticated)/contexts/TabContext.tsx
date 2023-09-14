@@ -8,6 +8,7 @@ type Props = {
 
 type TabContextType = {
     activeTab: number;
+    setActiveTab: (index: number) => void; 
 };
    
 const TabsContext = createContext({} as TabContextType);
