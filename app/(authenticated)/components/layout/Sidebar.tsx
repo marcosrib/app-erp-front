@@ -11,8 +11,8 @@ export default function Sidbar() {
   const path = usePathname();
   
   return (
-    <div className="relative hidden h-screen shadow-lg lg:block w-80">
-      <div className="h-full bg-white dark:bg-gray-700">
+    <div className="relative hidden h-screen lg:block w-80">
+      <div className="h-full bg-gray-100 px-5 dark:bg-gray-700">
         <div className="flex items-center justify-start pt-6 ml-8">
           <p className="text-xl font-bold dark:text-white">ERP</p>
         </div>
@@ -26,11 +26,27 @@ export default function Sidbar() {
           </Nav.Link>
           <Nav.Link 
             route='/registre'
-            active={path ==='/registre'}
+            active={path ==='/register'}
             >
             <Nav.Icon icon={<MdLibraryBooks size={20}/>}/>
             <Nav.IconLabel label='Cadastro'/>
           </Nav.Link>
+          <Nav.AccordionMenu label='cadastro 1'  active={path.includes('/register')}>
+            <Nav.Link 
+            route='/register'
+            active={path ==='/register'}
+            >
+            <Nav.Icon icon={<MdLibraryBooks size={20}/>}/>
+            <Nav.IconLabel label='Cadastro'/>
+          </Nav.Link>
+      
+          </Nav.AccordionMenu>
+
+          <Nav.LinkMenu
+            route='/dashboard'
+            active={path === '/register'}>
+            <Nav.IconLabel label='Dashboard'/>
+          </Nav.LinkMenu>
         </Nav.Root>
       </div>
     </div>

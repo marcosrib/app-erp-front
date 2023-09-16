@@ -3,7 +3,7 @@ export default async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl
     console.log(  pathname  );
     const token = req.cookies.get("erp.token")?.value
-    console.log(  token );
+  
 
    
     if (pathname === '/' && token === undefined ) {
@@ -20,9 +20,9 @@ export default async function middleware(req: NextRequest) {
     if (pathname === '/' && token) {
       return NextResponse.redirect(new URL('/dashboard', req.url));
     }
-  
+    return NextResponse.next();
   }
 
   export const config = {
-    matcher: ['/', '/login', '/dashboard','/registre']
+    matcher: ['/', '/login', '/dashboard','/register/:path*']
   }

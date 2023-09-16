@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type Props = {
     label: string,
     onClick?: () => void
@@ -5,12 +7,15 @@ type Props = {
 
 export function TabHeaderContent({label, onClick}:Props) {
     return (
+      <Link href='users'>
       <div
+       
         className={`py-2 px-6 cursor-pointer rounded-t-lg text-blue-500 border-t-2 border-r-2 border-l-2 bg-white
                 `}
         onClick={onClick}
         >
         {label}
       </div>
+      </Link>
     );
   }
