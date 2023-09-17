@@ -6,7 +6,7 @@ import { InputTag } from './InputTag'
 
 export const Input = {
     Root: InputRoot,
-    Laibel: InputLabel,
+    Label: InputLabel,
     Input: InputTag,
     LabelError: InputLabelError,
     Actions: InputActions

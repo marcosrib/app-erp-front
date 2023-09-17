@@ -44,7 +44,7 @@ export default function Signin() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" onSubmit={handleSubmit(handleSignIn)}>
          <Input.Root>
-          <Input.Laibel label='E-mail'/>
+          <Input.Label label='E-mail'/>
           <Input.Input 
           type='email'
             {...register('email')}
@@ -54,7 +54,7 @@ export default function Signin() {
             />
          </Input.Root>
          <Input.Root>
-          <Input.Laibel label='Senha'/>
+          <Input.Label label='Senha'/>
           <Input.Input
             type='password'
             {...register('password')}

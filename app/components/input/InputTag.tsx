@@ -10,7 +10,15 @@ export const InputTag = forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         name={name}
         {...props}
-        className="w-full py-2 px-3 border border-gray-300 rounded shadow focus:outline-none focus:border-indigo-500 focus:ring focus:ring-indigo-200"
+             className="border
+         border-gray-300 
+         text-gray-900
+         sm:text-sm 
+         rounded-lg 
+         focus:ring-indigo-200
+         focus:ring-indigo-200
+         focus:border-indigo-200 
+         block w-full p-2.5"
       />
     );
   }

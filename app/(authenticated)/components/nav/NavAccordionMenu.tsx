@@ -10,7 +10,7 @@ type Props = {
 }
 export function NavAccordionMenu ({children, label, active, icon}: Props) {
    
-    const [expanded, setExpanded] = useState(false);    
+    const [expanded, setExpanded] = useState(active);    
     const toggleMenu = () => {
       setExpanded((prevExpanded) => !prevExpanded);
     };
@@ -19,7 +19,6 @@ export function NavAccordionMenu ({children, label, active, icon}: Props) {
       if(!active) {
         setExpanded(active);
       }
-     
     }, [active]);
     
     console.log(expanded);
@@ -27,11 +26,12 @@ export function NavAccordionMenu ({children, label, active, icon}: Props) {
     
     return (
        <>
-         <div
+         <button
            data-active={active}
            onClick={toggleMenu}
            className='w-full flex items-center py-2.5 
            px-4 text-base 
+        
            font-normal 
            rounded-lg
            text-dark-500 
@@ -44,7 +44,7 @@ export function NavAccordionMenu ({children, label, active, icon}: Props) {
            {icon}
           </span>
           <p>{label}</p>
-         </div>
+         </button>
          <div className={` ${expanded ? "block" : "hidden"}`}>
            {children}
          </div>
