@@ -17,36 +17,28 @@ export default function Sidbar() {
           <p className="text-xl font-bold dark:text-white">ERP</p>
         </div>
         <Nav.Root>
-          <Nav.Link 
-            route='/dashboard'
-            active={path ==='/dashboard'}
-            >
+          <Nav.LinkMenu route='/dashboard' active={path === '/dashboard'}>
             <Nav.Icon icon={<BiSolidDashboard size={20}/>}/>
             <Nav.IconLabel label='Dashboard'/>
-          </Nav.Link>
-          <Nav.Link 
-            route='/registre'
-            active={path ==='/register'}
-            >
-            <Nav.Icon icon={<MdLibraryBooks size={20}/>}/>
-            <Nav.IconLabel label='Cadastro'/>
-          </Nav.Link>
-          <Nav.AccordionMenu label='cadastro 1'  active={path.includes('/register')}>
-            <Nav.Link 
-            route='/register'
-            active={path ==='/register'}
-            >
-            <Nav.Icon icon={<MdLibraryBooks size={20}/>}/>
-            <Nav.IconLabel label='Cadastro'/>
-          </Nav.Link>
-      
-          </Nav.AccordionMenu>
-
-          <Nav.LinkMenu
-            route='/dashboard'
-            active={path === '/register'}>
-            <Nav.IconLabel label='Dashboard'/>
           </Nav.LinkMenu>
+          <Nav.AccordionMenu
+            label='Cadastro'  
+            active={path.includes('/register')}
+            icon={<MdLibraryBooks size={20}/>}
+          >
+            <Nav.Link 
+            route='/register/user'
+            active={path ==='/register/user'}
+            >
+              <Nav.IconLabel label='Usuario'/>
+            </Nav.Link>
+            <Nav.Link 
+              route='/register/profile'
+              active={path ==='/register/profile'}
+              >
+              <Nav.IconLabel label='Pefil'/>
+            </Nav.Link>
+          </Nav.AccordionMenu>
         </Nav.Root>
       </div>
     </div>

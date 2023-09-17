@@ -5,7 +5,7 @@ type Props = {
 }
 export function NavRoot({children}: Props) {
     return (
-        <nav className="mt-6">
+        <nav className="mt-10">
           {children}
         </nav>
     )

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Tabs } from "../components/Tabs";
 import TabContent from "../components/Tabs/TabContentex";
 import TabsCadastro from "../components/Tabs/TabsCadastro";
-import Users from "./users/page";
+import Users from "./user/page";
 
 
 export default function Register() {

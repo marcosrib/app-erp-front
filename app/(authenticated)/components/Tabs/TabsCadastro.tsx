@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation';
-import Users from '../../register/users/page';
+import Users from '../../register/user/page';
 
 export default function TabsCadastro() {
   const router = useRouter();
