@@ -6,7 +6,7 @@ type Props = {
 
 export function TableActions({ children}: Props) {
     return (
-        <td className="p-4 space-x-2 whitespace-nowrap lg:p-5">
+        <td className="px-4 space-x-2 whitespace-nowrap">
             {children}
         </td>
     )

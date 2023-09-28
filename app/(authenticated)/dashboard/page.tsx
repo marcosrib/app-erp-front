@@ -4,20 +4,6 @@ import api from "@/app/services/api";
 
 export default  function Dashboard() {
 
-  useEffect(() => {
-    get();
-  },[])
-  async function get() {
-    try {
-     const data = await api.get('/api/user/');
-     console.log(data);
-     
-    } catch (error) {
-      console.log(error);
-      
-    }
-  }
-
   return (
     <div className="h-screen pb-24">
       <h1 className="text-4xl font-semibold text-gray-800 dark:text-white">
