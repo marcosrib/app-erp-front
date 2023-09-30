@@ -4,6 +4,8 @@ import { TableBodyColumn } from "./TableBodyColumn";
 import { TableHeader } from "./TableHeader";
 import { TableHeaderContent } from "./TableHeaderContent";
 import { TableRoot } from "./TableRoot";
+import { TableButton } from "./TableButton";
+import { TableButtonIcon } from "./TableButtonIcon";
 
 
 export const TableCustom = {
@@ -12,5 +14,7 @@ export const TableCustom = {
     HeaderContent: TableHeaderContent,
     Body: TableBody,
     Actions: TableActions,
-    Column: TableBodyColumn
+    Column: TableBodyColumn,
+    Button: TableButton,
+    Icon: TableButtonIcon,
 }

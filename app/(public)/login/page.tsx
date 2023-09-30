@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthContext } from '../contexts/AuthContext';
 import { Input } from '@/app/components/input/';
 
-const createUserFormSchema = z.object({
+const loginFormSchema = z.object({
   email: z.string()
     .nonempty('O e-mail é obrigatório')
     .email('Formato do e-mail inválido'),
@@ -15,7 +15,7 @@ const createUserFormSchema = z.object({
     .min(6, 'A senha precisa de no minimo 6 caracteres')
 })
 
-type CreateUserFormData = z.infer<typeof createUserFormSchema>
+type CreateUserFormData = z.infer<typeof loginFormSchema>
 
 export default function Signin() {
    const {
@@ -23,7 +23,7 @@ export default function Signin() {
     handleSubmit,
     formState: { errors }
   } = useForm<CreateUserFormData>({
-    resolver: zodResolver(createUserFormSchema),
+    resolver: zodResolver(loginFormSchema),
 
   })
   const { signIn } = useContext(AuthContext);
