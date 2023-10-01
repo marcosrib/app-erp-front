@@ -1,9 +1,12 @@
-import { ModalFooter } from "./ModalFooter";
-import { ModaForm } from "./ModalForm";
+import { ModalFormFooter } from "./ModalFormFooter";
+import { ModalForm } from "./ModalForm";
 import { ModalRoot } from "./ModalRoot";
+import { ModalFormInputs } from "./ModalFormInputs";
 
 export const Modal = { 
     Root: ModalRoot,
-    Form: ModaForm,
-    Footer: ModalFooter
+    Form: ModalForm,
+    FormFooter: ModalFormFooter,
+    FormInputs: ModalFormInputs
+
 }

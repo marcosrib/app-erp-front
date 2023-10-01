@@ -1,17 +1,13 @@
-import { ReactNode } from "react"
+import { ComponentProps, ReactNode } from "react"
 
-type Props = {
-    children: ReactNode
+type Props =  ComponentProps<'form'> & {
+    children: ReactNode,
 }
 
-export function ModaForm ({ children }: Props) {
+export function ModalForm({ children, ...props }: Props) {
  return (
-    <div className="p-6 space-y-6">
-     <form action="#">
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {children}
-        </div>
+     <form {...props}>
+        {children}
      </form>
-    </div>
  )
 }

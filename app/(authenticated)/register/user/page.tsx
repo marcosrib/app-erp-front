@@ -7,41 +7,57 @@ import { MdAdd } from "react-icons/md"
 import { FaLock, FaUnlock } from "react-icons/fa"
 import Button from "../../components/button/Button";
 import { Modal } from "../../components/modal";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ModalRef } from "../../components/modal/ModalRoot";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+type editUserFormData = {
+  id: string,
+  name: string,
+  email: string,
+  password: string
+}
 
-const createUserFormSchema = z.object({
+const userFormSchema = z.object({
+  name: z.string(),
   email: z.string()
     .nonempty('O e-mail é obrigatório')
     .email('Formato do e-mail inválido'),
   password: z.string()
-    .min(6, 'A senha precisa de no minimo 6 caracteres')
 })
-type CreateUserFormData = z.infer<typeof createUserFormSchema>
-export default function Users() {
 
+type userFormData = z.infer<typeof userFormSchema>
+
+export default function Users() {
+  const [editFormData, setEditFormData] = useState<editUserFormData | null>(null)
   const modalRef = useRef<ModalRef | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<CreateUserFormData>({
-    resolver: zodResolver(createUserFormSchema),
+  } = useForm<userFormData>({
+    resolver: zodResolver(userFormSchema),
 
   })
 
-  function handleToggleModal() {
+  function handleToggleModal() {  
     if(modalRef.current) {
       modalRef.current.toggleModal();
     }
   }
 
+  function openModalEditUser(user: editUserFormData) { 
+    setEditFormData(user);
+    handleToggleModal(); 
+  }
+  function handleEditUser(user: userFormData) {
+    console.log(editFormData?.id);
+  }
    
+ 
     return (
       <>
       <FormSearch.Root>
@@ -90,15 +106,15 @@ export default function Users() {
         </TableCustom.Column>
         <TableCustom.Column field="actions">
         {(row) => {
-          let status = JSON.parse(row).status;
+          let user = JSON.parse(row);
         return (<TableCustom.Actions>
 
-        <TableCustom.Button label="Editar">
+        <TableCustom.Button 
+          onClick={() => openModalEditUser(user)}
+          label="Editar">
          <TableCustom.Icon  icon={ <FiEdit size={16}/> }/>
         </TableCustom.Button>
-        <TableCustom.Button 
-        onClick={handleToggleModal}
-        label={status ? 'Ativo' : 'Inativo'}>
+        <TableCustom.Button label={user.status ? 'Ativo' : 'Inativo'}>
          <TableCustom.Icon icon={status ? <FaUnlock color={'white'} size={16}/> : <FaLock color={'white'} size={16}/>}/>
         </TableCustom.Button>     
           </TableCustom.Actions>) 
@@ -110,27 +126,41 @@ export default function Users() {
       <Modal.Root 
        ref={modalRef}
        title="Cadastrar usuário">
-        <Modal.Form>
+        <Modal.Form onSubmit={handleSubmit(handleEditUser)}>
+          <Modal.FormInputs>
          <Input.Root>
-         <Input.Label label="nome" />
-         <Input.Input defaultValue={''} />
+         <Input.Label label="Nome" />
+         <Input.Input 
+          {...register('name')}
+         defaultValue={editFormData?.name} />
+          <Input.LabelError 
+              helperText={errors.name?.message}
+            />
          </Input.Root>
          <Input.Root>
-         <Input.Label label="nome" />
-         <Input.Input />
+         <Input.Label label="E-mail"/>
+         <Input.Input  
+             {...register('email')}
+            defaultValue={editFormData?.email}/>
+             <Input.LabelError 
+              helperText={errors.email?.message}
+            />
          </Input.Root>
          <Input.Root>
-         <Input.Label label="nome" />
-         <Input.Input />
+         <Input.Label 
+          label="Password" />
+         <Input.Input  
+         {...register('password')}
+         />
+          <Input.LabelError 
+              helperText={errors.password?.message}
+            />
          </Input.Root>
-         <Input.Root>
-         <Input.Label label="nome" />
-         <Input.Input />
-         </Input.Root>
+         </Modal.FormInputs>
+         <Modal.FormFooter>
+          <Button label="Atualizar" color="search" type="submit"/>
+         </Modal.FormFooter>
         </Modal.Form>
-        <Modal.Footer>
-          <Button color="search" label="Salvar" />
-        </Modal.Footer>
       </Modal.Root>
       </>
     );
