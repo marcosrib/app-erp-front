@@ -1,4 +1,9 @@
 'use client'
+import { useRef, useState } from "react";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from 'react-toastify';
 import { FormSearch } from "../../components/formSearch";
 import { Input } from "@/app/components/input";
 import { TableCustom } from "../../components/table";
@@ -7,11 +12,9 @@ import { MdAdd } from "react-icons/md"
 import { FaLock, FaUnlock } from "react-icons/fa"
 import Button from "../../components/button/Button";
 import { Modal } from "../../components/modal";
-import { useEffect, useRef, useState } from "react";
 import { ModalRef } from "../../components/modal/ModalRoot";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
+
 
 type editUserFormData = {
   id: string,
@@ -31,7 +34,7 @@ const userFormSchema = z.object({
 type userFormData = z.infer<typeof userFormSchema>
 
 export default function Users() {
-  const [editFormData, setEditFormData] = useState<editUserFormData | null>(null)
+  const [ editFormData, setEditFormData] = useState<editUserFormData | null>(null)
   const modalRef = useRef<ModalRef | null>(null);
 
   const {
@@ -40,7 +43,6 @@ export default function Users() {
     formState: { errors }
   } = useForm<userFormData>({
     resolver: zodResolver(userFormSchema),
-
   })
 
   function handleToggleModal() {  
@@ -49,10 +51,29 @@ export default function Users() {
     }
   }
 
+  function handleSubmitUser(user: userFormData) {
+      if(editFormData?.id) {
+        return handleEditUser(user);
+        
+      }
+      handleCreateUser(user);
+  }
+
   function openModalEditUser(user: editUserFormData) { 
+    toast.error('Erro ao autualizar usuário')
     setEditFormData(user);
     handleToggleModal(); 
   }
+
+  function openModalCreateUser() { 
+    setEditFormData(null);
+    handleToggleModal(); 
+  }
+
+  function handleCreateUser(user: userFormData) {
+  
+  }
+  
   function handleEditUser(user: userFormData) {
     console.log(editFormData?.id);
   }
@@ -68,7 +89,12 @@ export default function Users() {
             </Input.Root>
         </FormSearch.InputContainer>
         <FormSearch.Buttons>
-         <Button icon={<MdAdd size={16} />} color="search" label="Adicionar"/>
+         <Button 
+           icon={<MdAdd size={16} />}
+           color="search" 
+           label="Adicionar"
+           onClick={openModalCreateUser}
+          />
          <Button color="cancel" label="Limpar"/>
         </FormSearch.Buttons>
       </FormSearch.Root>
@@ -125,7 +151,7 @@ export default function Users() {
       </TableCustom.Root>
       <Modal.Root 
        ref={modalRef}
-       title="Cadastrar usuário">
+       title={editFormData?.id ? 'Atualizar usuário' : 'Cadastrar usuário'}>
         <Modal.Form onSubmit={handleSubmit(handleEditUser)}>
           <Modal.FormInputs>
          <Input.Root>
