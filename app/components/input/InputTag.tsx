@@ -15,9 +15,9 @@ export const InputTag = forwardRef<HTMLInputElement, InputProps>(
          text-gray-900
          sm:text-sm 
          rounded-lg 
-         focus:ring-indigo-200
-         focus:ring-indigo-200
-         focus:border-indigo-200 
+         focus:outline-none
+         focus:ring-indigo-600
+         focus:border-indigo-600
          block w-full p-2.5"
       />
     );

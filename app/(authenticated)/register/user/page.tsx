@@ -13,7 +13,8 @@ import { FaLock, FaUnlock } from "react-icons/fa"
 import Button from "../../components/button/Button";
 import { Modal } from "../../components/modal";
 import { ModalRef } from "../../components/modal/ModalRoot";
-
+import DropdownFilter from "../../components/dropdownFilter";
+ 
 
 
 type editUserFormData = {
@@ -182,7 +183,10 @@ export default function Users() {
               helperText={errors.password?.message}
             />
          </Input.Root>
+         
+        <DropdownFilter options={['dldmldmfl']} onSelect={() => {}} /> 
          </Modal.FormInputs>
+       
          <Modal.FormFooter>
           <Button label="Atualizar" color="search" type="submit"/>
          </Modal.FormFooter>
