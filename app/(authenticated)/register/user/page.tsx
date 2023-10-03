@@ -1,6 +1,7 @@
 'use client'
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from 'react-toastify';
@@ -13,8 +14,12 @@ import { FaLock, FaUnlock } from "react-icons/fa"
 import Button from "../../components/button/Button";
 import { Modal } from "../../components/modal";
 import { ModalRef } from "../../components/modal/ModalRoot";
-import DropdownFilter from "../../components/dropdownFilter";
+import Select from 'react-select';
+import clsx from 'clsx'
+import api from "@/app/services/api";
+
  
+
 
 
 type editUserFormData = {
@@ -22,6 +27,11 @@ type editUserFormData = {
   name: string,
   email: string,
   password: string
+}
+
+type selectOptions = {
+  value: number,
+  label: string,
 }
 
 const userFormSchema = z.object({
@@ -35,7 +45,8 @@ const userFormSchema = z.object({
 type userFormData = z.infer<typeof userFormSchema>
 
 export default function Users() {
-  const [ editFormData, setEditFormData] = useState<editUserFormData | null>(null)
+  const [ editFormData, setEditFormData] = useState<editUserFormData | null>(null);
+  const [ selectOptions, setSelectOptions] = useState<selectOptions[]>([]);
   const modalRef = useRef<ModalRef | null>(null);
 
   const {
@@ -79,7 +90,12 @@ export default function Users() {
     console.log(editFormData?.id);
   }
    
- 
+  useEffect(() => {
+    api.get('/api/profile/').then(response => {
+      setSelectOptions(response.data.map(profile => ({ value: profile.id, label: profile.name })))
+    });
+  }, []);
+
     return (
       <>
       <FormSearch.Root>
@@ -183,8 +199,22 @@ export default function Users() {
               helperText={errors.password?.message}
             />
          </Input.Root>
-         
-        <DropdownFilter options={['dldmldmfl']} onSelect={() => {}} /> 
+         <Input.Root>
+         <Input.Label 
+          label="Password" />
+         <Select 
+          options={selectOptions}
+          isSearchable={false}
+          classNames={{
+            control: (state) =>
+            clsx(
+              state.isFocused ? '!border-indigo-600 !outline-none !shadow-none' : '!border-gray-300',
+              'p-0.5 !rounded-lg'
+            )
+          }} 
+      />
+
+        </Input.Root>
          </Modal.FormInputs>
        
          <Modal.FormFooter>
