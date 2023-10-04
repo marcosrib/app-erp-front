@@ -1,61 +1,23 @@
 'use client'
 import { useEffect, useRef, useState } from "react";
-import { z } from "zod";
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from 'react-toastify';
-import { FormSearch } from "../../components/formSearch";
-import { Input } from "@/app/components/input";
 import { TableCustom } from "../../components/table";
 import { FiEdit } from "react-icons/fi"
-import { MdAdd } from "react-icons/md"
 import { FaLock, FaUnlock } from "react-icons/fa"
-import Button from "../../components/button/Button";
-import { Modal } from "../../components/modal";
 import { ModalRef } from "../../components/modal/ModalRoot";
-import Select from 'react-select';
-import clsx from 'clsx'
+
 import api from "@/app/services/api";
+import UserForm from "../../components/pages/users/UserForm";
 
- 
+import { SelectProfileOptions, ProfileProps, EditUserFormData } from "../../components/pages/users/UserTypes";
 
 
 
-type editUserFormData = {
-  id: string,
-  name: string,
-  email: string,
-  password: string
-}
-
-type selectOptions = {
-  value: number,
-  label: string,
-}
-
-const userFormSchema = z.object({
-  name: z.string(),
-  email: z.string()
-    .nonempty('O e-mail é obrigatório')
-    .email('Formato do e-mail inválido'),
-  password: z.string()
-})
-
-type userFormData = z.infer<typeof userFormSchema>
 
 export default function Users() {
-  const [ editFormData, setEditFormData] = useState<editUserFormData | null>(null);
-  const [ selectOptions, setSelectOptions] = useState<selectOptions[]>([]);
+  const [ editFormData, setEditFormData] = useState<EditUserFormData | null>(null);
+  const [ selectProfileOptions, setSelectOptions] = useState<SelectProfileOptions[]>([]);
+  const [ profileSelectDefaultValue, setProfileSelectDefaultValue] = useState<SelectProfileOptions[]>([]);
   const modalRef = useRef<ModalRef | null>(null);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<userFormData>({
-    resolver: zodResolver(userFormSchema),
-  })
 
   function handleToggleModal() {  
     if(modalRef.current) {
@@ -63,17 +25,9 @@ export default function Users() {
     }
   }
 
-  function handleSubmitUser(user: userFormData) {
-      if(editFormData?.id) {
-        return handleEditUser(user);
-        
-      }
-      handleCreateUser(user);
-  }
-
-  function openModalEditUser(user: editUserFormData) { 
-    toast.error('Erro ao autualizar usuário')
+  function openModalEditUser(user: EditUserFormData) { 
     setEditFormData(user);
+    setProfileSelectDefaultValue(user.profiles.map(profile => ({value: profile.id, label: profile.name})));
     handleToggleModal(); 
   }
 
@@ -82,39 +36,21 @@ export default function Users() {
     handleToggleModal(); 
   }
 
-  function handleCreateUser(user: userFormData) {
-  
-  }
-  
-  function handleEditUser(user: userFormData) {
-    console.log(editFormData?.id);
-  }
-   
   useEffect(() => {
     api.get('/api/profile/').then(response => {
-      setSelectOptions(response.data.map(profile => ({ value: profile.id, label: profile.name })))
+      setSelectOptions(response.data.map((profile: ProfileProps ) => ({ value: profile.id, label: profile.name })))
     });
   }, []);
 
     return (
       <>
-      <FormSearch.Root>
-        <FormSearch.InputContainer>
-            <Input.Root>
-              <Input.Label label="E-mail"/>
-              <Input.Input />
-            </Input.Root>
-        </FormSearch.InputContainer>
-        <FormSearch.Buttons>
-         <Button 
-           icon={<MdAdd size={16} />}
-           color="search" 
-           label="Adicionar"
-           onClick={openModalCreateUser}
-          />
-         <Button color="cancel" label="Limpar"/>
-        </FormSearch.Buttons>
-      </FormSearch.Root>
+        <UserForm 
+          selectProfileOptions={selectProfileOptions}
+          selectProfileDefaultValue={profileSelectDefaultValue}
+          modalRef={modalRef}
+          openModalCreateUser={openModalCreateUser}
+          editFormData={editFormData}
+        />
       <TableCustom.Root>
         <TableCustom.Body url="/api/user/">
         <TableCustom.Header>
@@ -158,70 +94,14 @@ export default function Users() {
          <TableCustom.Icon  icon={ <FiEdit size={16}/> }/>
         </TableCustom.Button>
         <TableCustom.Button label={user.status ? 'Ativo' : 'Inativo'}>
-         <TableCustom.Icon icon={status ? <FaUnlock color={'white'} size={16}/> : <FaLock color={'white'} size={16}/>}/>
+         <TableCustom.Icon icon={user.status ? <FaUnlock color={'white'} size={16}/> : <FaLock color={'white'} size={16}/>}/>
         </TableCustom.Button>     
           </TableCustom.Actions>) 
         }}
         </TableCustom.Column>
-      
         </TableCustom.Body>
       </TableCustom.Root>
-      <Modal.Root 
-       ref={modalRef}
-       title={editFormData?.id ? 'Atualizar usuário' : 'Cadastrar usuário'}>
-        <Modal.Form onSubmit={handleSubmit(handleEditUser)}>
-          <Modal.FormInputs>
-         <Input.Root>
-         <Input.Label label="Nome" />
-         <Input.Input 
-          {...register('name')}
-         defaultValue={editFormData?.name} />
-          <Input.LabelError 
-              helperText={errors.name?.message}
-            />
-         </Input.Root>
-         <Input.Root>
-         <Input.Label label="E-mail"/>
-         <Input.Input  
-             {...register('email')}
-            defaultValue={editFormData?.email}/>
-             <Input.LabelError 
-              helperText={errors.email?.message}
-            />
-         </Input.Root>
-         <Input.Root>
-         <Input.Label 
-          label="Password" />
-         <Input.Input  
-         {...register('password')}
-         />
-          <Input.LabelError 
-              helperText={errors.password?.message}
-            />
-         </Input.Root>
-         <Input.Root>
-         <Input.Label 
-          label="Password" />
-         <Select 
-          options={selectOptions}
-          isSearchable={false}
-          classNames={{
-            control: (state) =>
-            clsx(
-              state.isFocused ? '!border-indigo-600 !outline-none !shadow-none' : '!border-gray-300',
-              'p-0.5 !rounded-lg'
-            )
-          }} 
-      />
-
-        </Input.Root>
-         </Modal.FormInputs>
-       
-         <Modal.FormFooter>
-          <Button label="Atualizar" color="search" type="submit"/>
-         </Modal.FormFooter>
-        </Modal.Form>
-      </Modal.Root>
+   
       </>
     );
   }

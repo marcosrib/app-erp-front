@@ -2,14 +2,16 @@
 
 import { ReactNode, forwardRef, useImperativeHandle, useState } from 'react'
 import { MdClose } from 'react-icons/md'
+
 export type ModalRef = {
-    toggleModal: () => void;
-  };
+  toggleModal: () => void;
+};
   
 type Props = {
-    title: string,
-    children: ReactNode,
+  title: string,
+  children: ReactNode,
 }
+
 export const ModalRoot = forwardRef<ModalRef, Props>(function ModalRoot(
     { title, children }: Props, 
     ref: React.Ref<ModalRef>) {
