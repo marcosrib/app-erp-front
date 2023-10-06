@@ -1,86 +1,22 @@
 import Select from 'react-select';
 import clsx from 'clsx'
-import { z } from "zod";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller } from "react-hook-form";
 import { MdAdd } from "react-icons/md";
 import { Input } from "@/app/components/input";
-import { FormSearch } from "../../formSearch";
-import Button from "../../button/Button";
-import { Modal } from "../../modal";
-import { UserFormProps, submitUserFormDataProps } from './UserTypes';
-import api from '@/app/services/api';
-import { toast } from 'react-toastify';
-
-const profileSchema = z.object({
-    value: z.number(),
-    label: z.string(),
-  });
-  
-const userFormSchema = z.object({
-    name: z.string(),
-    email: z.string()
-      .nonempty('O e-mail é obrigatório')
-      .email('Formato do e-mail inválido'),
-    password: z.string(),
-    profile: profileSchema
-})
-  
-type userFormData = z.infer<typeof userFormSchema>
+import { FormSearch } from "../../../components/formSearch";
+import Button from "../../../components/button/Button";
+import { Modal } from "../../../components/modal";
+import { UserFormProps } from './UserTypes';
+import { useFormUser } from '../hooks/useForm';
+import { useModal } from '@/app/(authenticated)/components/modal/hooks/useModal';
 
 export default function UserForm({
-    openModalCreateUser, 
-    modalRef, 
     editFormData, 
-    selectProfileOptions,
     selectProfileDefaultValue 
 }: UserFormProps) {
-    
-    const {
-        control, 
-        register,
-        handleSubmit,
-        formState: { errors }
-      } = useForm<userFormData>({
-        resolver: zodResolver(userFormSchema),
-      })
-    
-    function handleCreateUser(user: submitUserFormDataProps) {
-        api.post('/api/user/', user)
-        .then(response => {
-            modalRef.current?.toggleModal()
-        })
-        .catch(error => {
-            console.log(error);
-            
-            toast.error(error.response.data.message);
-        });
-    }
-      
-    function handleEditUser(user: submitUserFormDataProps) {
-        console.log(editFormData?.id);
-    }
-    
-    function submitUser(user: userFormData) {
 
-        const { profile, ...userWithoutProfile } = user;
-        const renamedProfile = {
-            id: profile.value,
-            name: profile.label,
-          };
-        
-        const userWithProfilesArray = {
-          ...userWithoutProfile,
-          profiles: [renamedProfile],
-        };
-
-      if(editFormData?.id) {
-            return handleEditUser(userWithProfilesArray);
-        }
-        handleCreateUser(userWithProfilesArray);
-    }  
-
-
+  const {register, control, errors, handleSubmit, submitUserForm, profileOptions } = useFormUser()
+  const { toggleModal } = useModal() 
     return (
         <>
         <FormSearch.Root>
@@ -95,15 +31,14 @@ export default function UserForm({
            icon={<MdAdd size={16} />}
            color="search" 
            label="Adicionar"
-           onClick={openModalCreateUser}
+           onClick={toggleModal}
           />
          <Button color="cancel" label="Limpar"/>
         </FormSearch.Buttons>
       </FormSearch.Root>
       <Modal.Root 
-       ref={modalRef}
        title={editFormData?.id ? 'Atualizar usuário' : 'Cadastrar usuário'}>
-        <Modal.Form onSubmit={handleSubmit(submitUser)}>
+        <Modal.Form onSubmit={handleSubmit(submitUserForm)}>
           <Modal.FormInputs>
          <Input.Root>
          <Input.Label label="Nome" />
@@ -142,7 +77,7 @@ export default function UserForm({
         render={({ field }) => (
          <Select 
          {...field}
-          options={selectProfileOptions}
+          options={profileOptions}
           isSearchable={false}
           defaultValue={selectProfileDefaultValue}
           classNames={{

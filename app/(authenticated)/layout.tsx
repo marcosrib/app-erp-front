@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
+import { ModalProvider } from './components/modal/hooks/useModal';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <ModalProvider>
       <body className={inter.className}>
         <ToastContainer />
         <main className="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
@@ -36,6 +38,7 @@ export default function RootLayout({
           </div>
         </main>
       </body>
+      </ModalProvider>
     </html>  
   );
 }

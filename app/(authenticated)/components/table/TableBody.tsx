@@ -1,44 +1,20 @@
-'use client'
-import api from '@/app/services/api'
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode } from 'react'
 import ReactPaginate from 'react-paginate'
+import { useTable } from './hooks/useTable'
 type Props = {
     url: string;
     children: ReactNode 
 }
 
 export function TableBody({ children , url}: Props) {
- const [ data , setData] = useState([]);
- const [currentPage, setCurrentPage] = useState(0);
- const [totalPages, setTotalPages] = useState(0);
+
+ const {data, handlePageChange, totalPages} = useTable(url);
  
   const header = React.Children.toArray(children)[0];
-  
-  useEffect(() => {
-    get();
-  },[currentPage])
-  async function get() {
-    try {
-     const response = await api.get(url, {
-      params: {
-        page: currentPage + 1, 
-        size: 5,
-      },
-    });
 
-     setData(response.data.data)
-     setTotalPages(response.data.totalPages);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-
-  if (!data || !Array.isArray(data) || data.length === 0) {
+  if (!Array.isArray(data) || data.length === 0) {
     return null;
   }
-
-
     return (
       <>
       <div className="flex flex-col my-6 mx-4 rounded-2xl shadow-xl shadow-gray-200">
@@ -96,7 +72,7 @@ export function TableBody({ children , url}: Props) {
             activeClassName="bg-slate-500  text-white"
             pageClassName="px-2 py-1.5 rounded-lg"
             containerClassName={'flex justify-center items-center'}
-            onPageChange={({ selected }) => setCurrentPage(selected)}
+            onPageChange={({ selected }) => handlePageChange(selected)}
            />
            </div>
     </>   

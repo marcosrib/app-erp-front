@@ -1,54 +1,40 @@
 'use client'
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { TableCustom } from "../../components/table";
 import { FiEdit } from "react-icons/fi"
 import { FaLock, FaUnlock } from "react-icons/fa"
-import { ModalRef } from "../../components/modal/ModalRoot";
 
 import api from "@/app/services/api";
-import UserForm from "../../components/pages/users/UserForm";
+import UserForm from "./components/UserForm";
 
-import { SelectProfileOptions, ProfileProps, EditUserFormData } from "../../components/pages/users/UserTypes";
-
-
+import { SelectProfileOptions, ProfileProps, EditUserFormData } from "./components/UserTypes";
+import { useModal } from "../../components/modal/hooks/useModal";
 
 
 export default function Users() {
   const [ editFormData, setEditFormData] = useState<EditUserFormData | null>(null);
   const [ selectProfileOptions, setSelectOptions] = useState<SelectProfileOptions[]>([]);
   const [ profileSelectDefaultValue, setProfileSelectDefaultValue] = useState<SelectProfileOptions[]>([]);
-  const modalRef = useRef<ModalRef | null>(null);
+  const { toggleModal } = useModal();
 
-  function handleToggleModal() {  
-    if(modalRef.current) {
-      modalRef.current.toggleModal();
-    }
-  }
 
   function openModalEditUser(user: EditUserFormData) { 
     setEditFormData(user);
     setProfileSelectDefaultValue(user.profiles.map(profile => ({value: profile.id, label: profile.name})));
-    handleToggleModal(); 
+    toggleModal(); 
   }
 
   function openModalCreateUser() { 
     setEditFormData(null);
-    handleToggleModal(); 
+    toggleModal(); 
   }
 
-  useEffect(() => {
-    api.get('/api/profile/').then(response => {
-      setSelectOptions(response.data.map((profile: ProfileProps ) => ({ value: profile.id, label: profile.name })))
-    });
-  }, []);
+ 
 
     return (
       <>
         <UserForm 
-          selectProfileOptions={selectProfileOptions}
-          selectProfileDefaultValue={profileSelectDefaultValue}
-          modalRef={modalRef}
-          openModalCreateUser={openModalCreateUser}
+        selectProfileDefaultValue={profileSelectDefaultValue}
           editFormData={editFormData}
         />
       <TableCustom.Root>
