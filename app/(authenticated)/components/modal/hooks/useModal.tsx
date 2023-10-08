@@ -17,7 +17,7 @@ export const ModalProvider = ({ children }: Props) => {
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
-
+  
   return (
     <ModalContext.Provider value={{ isOpen, toggleModal }}>
       {children}

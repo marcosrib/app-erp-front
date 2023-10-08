@@ -1,25 +1,30 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { SelectProfileOptions, submitUserFormDataProps, ProfileProps } from "./types";
-import { userFormData } from "./types";
+import { submitUserFormDataProps, ProfileProps, SelectProfileOptionsProps, UserFormData } from "./types";
 import api from "@/app/services/api";
 
-import { userFormSchema } from "./schema";
 import { useModal } from "@/app/(authenticated)/components/modal/hooks/useModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useUserStore } from "../store/useUserStore";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { userFormSchema } from "./schema";
 
 
 export function useFormUser() {
-    const [profileOptions, setProfileOprions] = useState<SelectProfileOptions[]>([])
+    const [profileOptions, setProfileOprions] = useState<SelectProfileOptionsProps[]>([])
+    const { userEdit, addUserEdit } = useUserStore();
     const { toggleModal } = useModal()
+
     const {
         control, 
         register,
         handleSubmit,
+        reset,
+        setValue,
         formState: { errors }
-      } = useForm<userFormData>({
-        resolver: zodResolver(userFormSchema),
+      } = useForm<UserFormData>({
+        mode: 'onBlur',
+        resolver: zodResolver(userFormSchema)
       })
     
     function handleCreateUser(user: submitUserFormDataProps) {
@@ -32,7 +37,7 @@ export function useFormUser() {
             toast.error(error.response.data.message);
         });
     }
-
+  
     const fetchProfiles = () => {
       api.get('/api/profile/')
         .then((profilesResponse) => {
@@ -47,14 +52,28 @@ export function useFormUser() {
         });
     };
    
-    fetchProfiles();
+    useEffect(() => {
+      fetchProfiles();
+     },[])
+
+     useEffect(() => {  
+        setValue('name', userEdit.name)
+        setValue('email', userEdit.email)
+        setValue('profile', {
+           value: userEdit?.profiles[0]?.id,
+           label: userEdit?.profiles[0]?.name
+        } )
+     },[userEdit])
+      
       
     function handleEditUser(user: submitUserFormDataProps) {
        // console.log(editFormData?.id);
     }
     
     function submitUserForm(user: userFormData) {
-        toggleModal()
+      console.log('submit');
+      
+       // toggleModal()
         const { profile, ...userWithoutProfile } = user;
         const renamedProfile = {
             id: profile.value,
@@ -66,11 +85,24 @@ export function useFormUser() {
           profiles: [renamedProfile],
         };
 
+       
+
     /*  if(editFormData?.id) {
           return handleEditUser(userWithProfilesArray);
         }
         handleCreateUser(userWithProfilesArray);*/
     }  
+
+    function openModal() {
+      addUserEdit({
+        id: '',
+        email: '',
+        name: '',
+        password: '',
+        profiles: []      
+      });
+      toggleModal();
+    }
 
     return {
         control, 
@@ -78,6 +110,7 @@ export function useFormUser() {
         errors,
         handleSubmit,
         submitUserForm,
-        profileOptions
+        profileOptions,
+        openModal
     }
 }

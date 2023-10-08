@@ -5,7 +5,7 @@ const profileSchema = z.object({
     label: z.string(),
   });
   
-const userFormSchema = z.object({
+export const userFormSchema = z.object({
     name: z.string(),
     email: z.string()
       .nonempty('O e-mail é obrigatório')
@@ -13,5 +13,3 @@ const userFormSchema = z.object({
     password: z.string(),
     profile: profileSchema
 })
-
-export type userFormData = z.infer<typeof userFormSchema>

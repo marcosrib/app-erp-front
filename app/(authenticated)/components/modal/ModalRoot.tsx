@@ -1,4 +1,4 @@
-'use client'
+
 import { ReactNode } from 'react'
 import { MdClose } from 'react-icons/md'
 import { useModal } from './hooks/useModal';

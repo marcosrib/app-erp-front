@@ -1,9 +1,11 @@
+
 import { InputHTMLAttributes, forwardRef } from "react";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
 export const InputTag = forwardRef<HTMLInputElement, InputProps>(
   ({ type = 'text', name = '', ...props }, ref) => {
+  
     return (
       <input
         type={type}

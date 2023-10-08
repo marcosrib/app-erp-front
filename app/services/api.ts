@@ -1,7 +1,9 @@
 import axios from 'axios';
+import { GetServerSidePropsContext } from 'next';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
 
-const { 'erp.token': token } = parseCookies();
+const { 'erp.token': token } = parseCookies(undefined);
+console.log(token);
 
 const apiConfig = {
   baseURL: 'http://localhost:8082',
@@ -44,7 +46,7 @@ api.interceptors.response.use(
       };
       const response = await api.post('/auth/refresh/', body, parameters);
 
-      setCookie(undefined, 'erp.token', response.data.accessToken, {
+      setCookie(undefined , 'erp.token', response.data.accessToken, {
         maxAge: 60 * 60 * 1, // 1 hora
       });
       originalRequest.headers.Authorization = `Bearer ${response.data.accessToken}`;

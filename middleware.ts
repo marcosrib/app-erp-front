@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-export default async function middleware(req: NextRequest) {
+export default async function middleware(req: NextRequest ) {
     const { pathname } = req.nextUrl
     console.log(  pathname  );
     const token = req.cookies.get("erp.token")?.value

@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 import ReactPaginate from 'react-paginate'
 import { useTable } from './hooks/useTable'
+
 type Props = {
     url: string;
     children: ReactNode 
@@ -10,12 +11,12 @@ export function TableBody({ children , url}: Props) {
 
  const {data, handlePageChange, totalPages} = useTable(url);
  
-  const header = React.Children.toArray(children)[0];
-
   if (!Array.isArray(data) || data.length === 0) {
     return null;
   }
-    return (
+  const header = React.Children.toArray(children)[0];
+ 
+  return (
       <>
       <div className="flex flex-col my-6 mx-4 rounded-2xl shadow-xl shadow-gray-200">
         <div className="overflow-x-auto rounded-2xl">

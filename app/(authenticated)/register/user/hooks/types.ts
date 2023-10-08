@@ -6,7 +6,7 @@ export type ProfileProps = {
     name: string,
   }
   
-  export type SelectProfileOptions = {
+  export type SelectProfileOptionsProps = {
     value: number,
     label: string,
   }
@@ -19,4 +19,4 @@ export type ProfileProps = {
     profiles: ProfileProps[]
 }
 
-export type userFormData = z.infer<typeof userFormSchema>
+export type UserFormData = z.infer<typeof userFormSchema>

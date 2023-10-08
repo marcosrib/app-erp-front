@@ -1,3 +1,4 @@
+'use client'
 import Select from 'react-select';
 import clsx from 'clsx'
 import { Controller } from "react-hook-form";
@@ -6,17 +7,13 @@ import { Input } from "@/app/components/input";
 import { FormSearch } from "../../../components/formSearch";
 import Button from "../../../components/button/Button";
 import { Modal } from "../../../components/modal";
-import { UserFormProps } from './UserTypes';
-import { useFormUser } from '../hooks/useForm';
-import { useModal } from '@/app/(authenticated)/components/modal/hooks/useModal';
+import { useFormUser } from '../hooks/useFormUser';
 
-export default function UserForm({
-    editFormData, 
-    selectProfileDefaultValue 
-}: UserFormProps) {
 
-  const {register, control, errors, handleSubmit, submitUserForm, profileOptions } = useFormUser()
-  const { toggleModal } = useModal() 
+export default function UserForm() {
+
+  const {register, control, errors, handleSubmit, submitUserForm, openModal } = useFormUser();
+
     return (
         <>
         <FormSearch.Root>
@@ -31,29 +28,29 @@ export default function UserForm({
            icon={<MdAdd size={16} />}
            color="search" 
            label="Adicionar"
-           onClick={toggleModal}
+           onClick={() => openModal()}
           />
          <Button color="cancel" label="Limpar"/>
         </FormSearch.Buttons>
       </FormSearch.Root>
       <Modal.Root 
-       title={editFormData?.id ? 'Atualizar usuário' : 'Cadastrar usuário'}>
+       title={ 'Cadastrar usuário'}>
         <Modal.Form onSubmit={handleSubmit(submitUserForm)}>
           <Modal.FormInputs>
          <Input.Root>
          <Input.Label label="Nome" />
          <Input.Input 
           {...register('name')}
-         defaultValue={editFormData?.name} />
+         />
           <Input.LabelError 
               helperText={errors.name?.message}
             />
          </Input.Root>
          <Input.Root>
          <Input.Label label="E-mail"/>
-         <Input.Input  
-             {...register('email')}
-            defaultValue={editFormData?.email}/>
+         <Input.Input
+            {...register('email')}
+            />
              <Input.LabelError 
               helperText={errors.email?.message}
             />
@@ -77,9 +74,7 @@ export default function UserForm({
         render={({ field }) => (
          <Select 
          {...field}
-          options={profileOptions}
           isSearchable={false}
-          defaultValue={selectProfileDefaultValue}
           classNames={{
             control: (state) =>
             clsx(
