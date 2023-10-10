@@ -1,7 +1,7 @@
 
 import { ReactNode } from 'react'
 import { MdClose } from 'react-icons/md'
-import { useModal } from './hooks/useModal';
+import { useModalStore } from './stores/useModalStore';
   
 type Props = {
   title: string,
@@ -10,7 +10,7 @@ type Props = {
 
 export function ModalRoot( { title, children }: Props ) { 
 
-    const { isOpen, toggleModal } = useModal()
+    const { isOpen, toggleModal } = useModalStore()
 
     return (
         <>

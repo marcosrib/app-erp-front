@@ -1,19 +1,21 @@
 'use client'
+import React, { useMemo } from "react";
 import { TableCustom } from "@/app/(authenticated)/components/table";
 
 import { FaLock, FaUnlock } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { useUserStore } from "../store/useUserStore";
-import { useModal } from "@/app/(authenticated)/components/modal/hooks/useModal";
+import { useModalStore } from "@/app/(authenticated)/components/modal/stores/useModalStore";
 
-export default function UserList() {
 
+ function UserList() {
    const { addUserEdit } = useUserStore();
-   const { toggleModal } = useModal()
+   const { toggleModal } = useModalStore()
    function handleUserEdit(user) {
     addUserEdit(user);
     toggleModal();
    }
+      
     return (
         <TableCustom.Root>
         <TableCustom.Body url="/api/user/">
@@ -53,6 +55,7 @@ export default function UserList() {
         return (<TableCustom.Actions>
 
         <TableCustom.Button 
+          type="button"
           onClick={() => handleUserEdit(user)}
           label="Editar">
          <TableCustom.Icon  icon={ <FiEdit size={16}/> }/>
@@ -67,3 +70,4 @@ export default function UserList() {
       </TableCustom.Root>
     )
 }
+export default React.memo(UserList);

@@ -9,11 +9,12 @@ type Props = {
 
 export function TableBody({ children , url}: Props) {
 
- const {data, handlePageChange, totalPages} = useTable(url);
+ const {data, isLoading, handlePageChange } = useTable(url);
  
-  if (!Array.isArray(data) || data.length === 0) {
-    return null;
-  }
+ if (isLoading) {
+  return(<div>Carregando ...</div>)
+ }
+ console.log('djjjj')
   const header = React.Children.toArray(children)[0];
  
   return (
@@ -25,7 +26,7 @@ export function TableBody({ children , url}: Props) {
       <table className="min-w-full divide-y divide-gray-200 table-fixed">
         {header}
         <tbody className="bg-white divide-y divide-gray-200">
-         {data.map((row, rowIndex) => (
+         {data.data.map((row, rowIndex) => (
         <tr key={rowIndex} className="hover:bg-gray-100">
           {React.Children.map(children, (child, columnIndex) => {
             if (React.isValidElement(child)) {
@@ -60,7 +61,7 @@ export function TableBody({ children , url}: Props) {
         </div>  
         <div className="flex justify-center items-center p-4 my-4 mx-4 bg-white rounded-2xl shadow-xl shadow-gray-200 sm:flex sm:justify-between">
        <ReactPaginate
-            pageCount={totalPages}
+            pageCount={data.totalPages}
             previousLabel={'Anterior'}
             nextLabel={'Próximo'}
             pageRangeDisplayed={7}

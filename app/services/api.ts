@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { GetServerSidePropsContext } from 'next';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
 
-const { 'erp.token': token } = parseCookies(undefined);
+const { 'erp.token': token } = parseCookies();
 console.log(token);
 
 const apiConfig = {

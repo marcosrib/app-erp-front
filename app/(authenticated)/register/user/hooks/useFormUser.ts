@@ -1,20 +1,20 @@
+
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { submitUserFormDataProps, ProfileProps, SelectProfileOptionsProps, UserFormData } from "./types";
 import api from "@/app/services/api";
 
-import { useModal } from "@/app/(authenticated)/components/modal/hooks/useModal";
 import { useEffect, useState } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userFormSchema } from "./schema";
+import { useModalStore } from "@/app/(authenticated)/components/modal/stores/useModalStore";
 
 
 export function useFormUser() {
-    const [profileOptions, setProfileOprions] = useState<SelectProfileOptionsProps[]>([])
+    const [profileOptions, setProfileOprions] = useState<SelectProfileOptionsProps[]>([]);
     const { userEdit, addUserEdit } = useUserStore();
-    const { toggleModal } = useModal()
-
+    const { toggleModal } = useModalStore();
     const {
         control, 
         register,
@@ -56,13 +56,17 @@ export function useFormUser() {
       fetchProfiles();
      },[])
 
-     useEffect(() => {  
+      useEffect(() => {  
         setValue('name', userEdit.name)
         setValue('email', userEdit.email)
-        setValue('profile', {
-           value: userEdit?.profiles[0]?.id,
-           label: userEdit?.profiles[0]?.name
-        } )
+        if (userEdit?.profiles && userEdit.profiles.length > 0) {
+          setValue('profile', {
+              value: userEdit.profiles[0]?.id,
+              label: userEdit.profiles[0]?.name
+          })
+        } else {
+          setValue('profile', { value: 0 , label: ''})
+        }
      },[userEdit])
       
       
@@ -93,7 +97,7 @@ export function useFormUser() {
         handleCreateUser(userWithProfilesArray);*/
     }  
 
-    function openModal() {
+   /* function openModal() {
       addUserEdit({
         id: '',
         email: '',
@@ -102,7 +106,7 @@ export function useFormUser() {
         profiles: []      
       });
       toggleModal();
-    }
+    }*/
 
     return {
         control, 
@@ -111,6 +115,6 @@ export function useFormUser() {
         handleSubmit,
         submitUserForm,
         profileOptions,
-        openModal
+        //openModal
     }
 }
