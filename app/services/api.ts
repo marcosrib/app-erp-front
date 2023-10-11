@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
 
-const { 'erp.token': token } = parseCookies();
-console.log(token);
-
+const apiInstance = () =>   {
+  const cookies = parseCookies(); 
+  const { 'erp.token': token } = cookies;
+  
 const apiConfig = {
   baseURL: 'http://localhost:8082',
   timeout: 10000,
@@ -56,4 +57,6 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+return api;
+}
+export default apiInstance

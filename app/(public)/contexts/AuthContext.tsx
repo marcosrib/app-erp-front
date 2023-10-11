@@ -1,6 +1,6 @@
 "use client"
 import React, { createContext, useState } from 'react';
-import api from '../../services/api';
+import apiInstance from '../../services/api';
 import { setCookie } from 'nookies';
 import { useRouter } from 'next/navigation'
 
@@ -33,19 +33,24 @@ export function AuthProvider({ children }: Props) {
   const router = useRouter()
 
   async function signIn({ email, password }: SignInData) {
+    const api = apiInstance();
     const response = await api.post('/auth/login/', {
       email,
       password,
     });
 
     setCookie(undefined, 'erp.token', response.data.accessToken, {
-      maxAge: 60 * 60 * 1, // 1 hora
+      maxAge: 60 * 60 * 1, 
+      secure: true, 
+      sameSite: 'lax',
     });
 
     setCookie(undefined, 'erp.refreshtoken', response.data.refreshToken, {
       maxAge: 60 * 60 * 1, // 1 hora
+      secure: true, 
+      sameSite: 'lax',
     });
-    
+   
     api.defaults.headers['Authorization'] = `Bearer ${response.data.accessToken}`
     
     const claimData = JSON.parse(atob(response.data.accessToken .split('.')[1]));

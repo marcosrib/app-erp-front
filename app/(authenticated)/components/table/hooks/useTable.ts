@@ -1,6 +1,6 @@
 import { useState } from "react";
-import api from "@/app/services/api";
 import { useQuery } from "@tanstack/react-query";
+import apiInstance from "@/app/services/api";
 
 
 export function useTable(url: string) {
@@ -13,6 +13,7 @@ export function useTable(url: string) {
     }
 
     async function getUsers() {
+      const api = apiInstance();
         const response = await api.get(url, {
           params: {
             page: currentPage + 1,

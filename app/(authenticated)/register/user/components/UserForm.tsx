@@ -12,7 +12,7 @@ import { useFormUser } from '../hooks/useFormUser';
 
 export default function UserForm() {
 
-  const {register, control, errors, handleSubmit, submitUserForm, openModal } = useFormUser();
+  const {register, control, errors,profiles, handleSubmit, submitUserForm, openModal} = useFormUser();
 
     return (
         <>
@@ -75,6 +75,7 @@ export default function UserForm() {
          <Select 
          {...field}
           isSearchable={false}
+          options={profiles}
           classNames={{
             control: (state) =>
             clsx(

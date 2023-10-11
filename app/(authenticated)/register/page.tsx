@@ -4,8 +4,8 @@ import TabContent from "../components/Tabs/TabContentex";
 import TabsCadastro from "../components/Tabs/TabsCadastro";
 import Users from "./user/page";
 
-
 export default function Register() {
+
   const tabs = [
     {
       title: 'Usuários',

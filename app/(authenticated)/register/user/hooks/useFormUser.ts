@@ -1,60 +1,59 @@
 
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { submitUserFormDataProps, ProfileProps, SelectProfileOptionsProps, UserFormData } from "./types";
-import api from "@/app/services/api";
-
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userFormSchema } from "./schema";
 import { useModalStore } from "@/app/(authenticated)/components/modal/stores/useModalStore";
+import { submitUserFormDataProps, ProfileProps, SelectProfileOptionsProps, UserFormData } from "./types";
+import apiInstance from "@/app/services/api";
 
 
 export function useFormUser() {
-    const [profileOptions, setProfileOprions] = useState<SelectProfileOptionsProps[]>([]);
     const { userEdit, addUserEdit } = useUserStore();
     const { toggleModal } = useModalStore();
+    const queryClient = useQueryClient(); 
+    const api = apiInstance();
     const {
         control, 
         register,
         handleSubmit,
-        reset,
         setValue,
         formState: { errors }
       } = useForm<UserFormData>({
         mode: 'onBlur',
         resolver: zodResolver(userFormSchema)
       })
-    
-    function handleCreateUser(user: submitUserFormDataProps) {
-        api.post('/api/user/', user)
-        .then(response => {
-          toggleModal()
-        })
-        .catch(error => {
-            console.log(error);
-            toast.error(error.response.data.message);
-        });
-    }
   
-    const fetchProfiles = () => {
-      api.get('/api/profile/')
-        .then((profilesResponse) => {
-          setProfileOprions(profilesResponse.data.map((profile: ProfileProps) => ({
-            value: profile.id,
-            label: profile.name,
-          })))
-        })
-        .catch((error) => {
-          console.error("Ocorreu um erro ao buscar os perfis:", error);
-          throw error;
-        });
+      const mutation = useMutation((user: submitUserFormDataProps) => {
+        return api.post('/api/user/', user);
+      }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries(['table']);
+          queryClient.fetchQuery(['table', 1])
+          toggleModal();
+          toast.success('Usuário criado com sucesso');
+        },
+        onError: (error) => {
+          toast.error('Ocorreu um erro ao criar o usuário');
+        },
+      });
+    
+    const { data: profiles } = useQuery({
+      queryKey: ['userFormProfile'],
+      queryFn: () => fetchProfiles(),
+    })
+
+    const fetchProfiles = async (): Promise<SelectProfileOptionsProps[]> => {
+     const profilesResponse = await api.get('/api/profile/');
+      return profilesResponse.data.map((profile: ProfileProps) => ({
+        value: profile.id,
+        label: profile.name,
+      }));
     };
    
-    useEffect(() => {
-      fetchProfiles();
-     },[])
 
       useEffect(() => {  
         setValue('name', userEdit.name)
@@ -74,10 +73,9 @@ export function useFormUser() {
        // console.log(editFormData?.id);
     }
     
-    function submitUserForm(user: userFormData) {
-      console.log('submit');
+    function submitUserForm(user: UserFormData) {
+      console.log(user);
       
-       // toggleModal()
         const { profile, ...userWithoutProfile } = user;
         const renamedProfile = {
             id: profile.value,
@@ -88,16 +86,15 @@ export function useFormUser() {
           ...userWithoutProfile,
           profiles: [renamedProfile],
         };
-
-       
-
-    /*  if(editFormData?.id) {
-          return handleEditUser(userWithProfilesArray);
-        }
-        handleCreateUser(userWithProfilesArray);*/
+  
+      if(userEdit?.id) {
+          return ;
+      }
+      mutation.mutate(userWithProfilesArray);
     }  
+    
 
-   /* function openModal() {
+   function openModal() {
       addUserEdit({
         id: '',
         email: '',
@@ -106,7 +103,7 @@ export function useFormUser() {
         profiles: []      
       });
       toggleModal();
-    }*/
+    }
 
     return {
         control, 
@@ -114,7 +111,7 @@ export function useFormUser() {
         errors,
         handleSubmit,
         submitUserForm,
-        profileOptions,
-        //openModal
+        profiles,
+        openModal
     }
 }
