@@ -1,24 +1,14 @@
 import { create } from 'zustand'
+import { UserDataProps } from '../types';
 
-type ProfileProps = {
-    id: number,
-    name: string,
-}
-type UserEditProps = {
-    id: string,
-    name: string,
-    email: string,
-    password: string,
-    profiles: ProfileProps[]
-}
- 
+
 type StoreProps = {
-    userEdit: UserEditProps,
-    addUserEdit: (user: UserEditProps) => void;
+    userEdit: UserDataProps,
+    addUserEdit: (user: UserDataProps) => void;
 }
 
 export const useUserStore = create<StoreProps>((set) => ({
-  userEdit: {} as UserEditProps,
+  userEdit: {} as UserDataProps,
   addUserEdit: (user) =>
     set((state) => ({
       userEdit: { ...state.userEdit, ...user }, 

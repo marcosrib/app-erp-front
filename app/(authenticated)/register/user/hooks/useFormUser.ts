@@ -2,12 +2,12 @@
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userFormSchema } from "./schema";
 import { useModalStore } from "@/app/(authenticated)/components/modal/stores/useModalStore";
-import { submitUserFormDataProps, ProfileProps, SelectProfileOptionsProps, UserFormData } from "./types";
+import { UserDataProps, ProfileProps, SelectProfileOptionsProps, UserFormData } from "../types";
 import apiInstance from "@/app/services/api";
 
 
@@ -27,7 +27,7 @@ export function useFormUser() {
         resolver: zodResolver(userFormSchema)
       })
   
-      const mutation = useMutation((user: submitUserFormDataProps) => {
+      const mutation = useMutation((user: UserDataProps) => {
         return api.post('/api/user/', user);
       }, {
         onSuccess: () => {
@@ -36,8 +36,8 @@ export function useFormUser() {
           toggleModal();
           toast.success('Usuário criado com sucesso');
         },
-        onError: (error) => {
-          toast.error('Ocorreu um erro ao criar o usuário');
+        onError: (error: any) => {         
+          toast.error(error.response.data.message);
         },
       });
     
@@ -66,16 +66,15 @@ export function useFormUser() {
         } else {
           setValue('profile', { value: 0 , label: ''})
         }
+        setIdValueInSchema();
      },[userEdit])
       
       
-    function handleEditUser(user: submitUserFormDataProps) {
-       // console.log(editFormData?.id);
+    function handleEditUser(user: UserDataProps) {
+    
     }
     
-    function submitUserForm(user: UserFormData) {
-      console.log(user);
-      
+    function submitUserForm(user: UserFormData) {     
         const { profile, ...userWithoutProfile } = user;
         const renamedProfile = {
             id: profile.value,
@@ -88,15 +87,21 @@ export function useFormUser() {
         };
   
       if(userEdit?.id) {
+        handleEditUser(userWithProfilesArray);
           return ;
       }
       mutation.mutate(userWithProfilesArray);
     }  
-    
+
+    function setIdValueInSchema() {
+      if(userEdit.id !== undefined ) {
+        setValue('id', userEdit.id);
+      }
+    }
 
    function openModal() {
+    setValue('id', undefined);
       addUserEdit({
-        id: '',
         email: '',
         name: '',
         password: '',

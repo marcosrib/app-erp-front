@@ -9,8 +9,10 @@ import { useModalStore } from "@/app/(authenticated)/components/modal/stores/use
 
 
  function UserList() {
+  
    const { addUserEdit } = useUserStore();
    const { toggleModal } = useModalStore()
+
    function handleUserEdit(user) {
     addUserEdit(user);
     toggleModal();

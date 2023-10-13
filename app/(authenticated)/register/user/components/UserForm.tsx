@@ -13,9 +13,10 @@ import { useFormUser } from '../hooks/useFormUser';
 export default function UserForm() {
 
   const {register, control, errors,profiles, handleSubmit, submitUserForm, openModal} = useFormUser();
-
+   
     return (
         <>
+       
         <FormSearch.Root>
         <FormSearch.InputContainer>
             <Input.Root>
@@ -35,8 +36,10 @@ export default function UserForm() {
       </FormSearch.Root>
       <Modal.Root 
        title={ 'Cadastrar usuário'}>
+         
         <Modal.Form onSubmit={handleSubmit(submitUserForm)}>
           <Modal.FormInputs>
+         
          <Input.Root>
          <Input.Label label="Nome" />
          <Input.Input 
@@ -86,6 +89,9 @@ export default function UserForm() {
         />
         )}
       />
+       <Input.LabelError 
+          helperText={errors.profile?.value?.message}
+        />
         </Input.Root>
          </Modal.FormInputs>
          <Modal.FormFooter>

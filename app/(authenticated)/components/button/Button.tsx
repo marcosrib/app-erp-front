@@ -25,10 +25,10 @@ export default function Button({ label, color, icon, ...props } : Props) {
             className={button({ color })}
             {...props}
         >
-        <div className="flex items-center ">
+        <div className="flex items-center">
         {icon && <span className="mr-2">{icon}</span>}
         {label}
       </div>
         </button>
-    )
+  )
 }

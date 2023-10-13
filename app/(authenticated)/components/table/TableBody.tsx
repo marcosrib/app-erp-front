@@ -14,8 +14,8 @@ export function TableBody({ children , url}: Props) {
  if (isLoading) {
   return(<div>Carregando ...</div>)
  }
- console.log('djjjj')
-  const header = React.Children.toArray(children)[0];
+
+ const header = React.Children.toArray(children)[0];
  
   return (
       <>
@@ -26,7 +26,7 @@ export function TableBody({ children , url}: Props) {
       <table className="min-w-full divide-y divide-gray-200 table-fixed">
         {header}
         <tbody className="bg-white divide-y divide-gray-200">
-         {data.data.map((row, rowIndex) => (
+         {data.data.map((row: any, rowIndex: number) => (
         <tr key={rowIndex} className="hover:bg-gray-100">
           {React.Children.map(children, (child, columnIndex) => {
             if (React.isValidElement(child)) {

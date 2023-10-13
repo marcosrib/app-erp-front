@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { userFormSchema } from "./schema"
+import { userFormSchema } from "./hooks/schema"
 
 export type ProfileProps = {
     id: number,
@@ -11,8 +11,8 @@ export type ProfileProps = {
     label: string,
   }
   
-  export type submitUserFormDataProps = {
-    id?: string,
+export type UserDataProps = {
+    id?: number,
     name: string,
     email: string,
     password: string,
