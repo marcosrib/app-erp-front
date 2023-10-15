@@ -13,7 +13,8 @@ export const userFormSchema = z.object({
       .nonempty('O e-mail é obrigatório')
       .email('Formato do e-mail inválido'),
     profile: profileSchema,
-    password: z.string()
+    password: z.string(),
+    status: z.boolean(),
 }).refine((data) => {
   if (data.id === undefined) {    
     return data.password && data.password.length >= 8;

@@ -16,6 +16,7 @@ export type UserDataProps = {
     name: string,
     email: string,
     password: string,
+    status: boolean,
     profiles: ProfileProps[]
 }
 

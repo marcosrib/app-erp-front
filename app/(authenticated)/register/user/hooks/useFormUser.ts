@@ -96,12 +96,14 @@ export function useFormUser() {
     function setIdValueInSchema() {
       if(userEdit.id !== undefined ) {
         setValue('id', userEdit.id);
+        setValue('password', '');
       }
     }
 
    function openModal() {
     setValue('id', undefined);
       addUserEdit({
+        'id': undefined,
         email: '',
         name: '',
         password: '',
@@ -109,6 +111,7 @@ export function useFormUser() {
       });
       toggleModal();
     }
+console.log(userEdit.id );
 
     return {
         control, 
@@ -117,6 +120,7 @@ export function useFormUser() {
         handleSubmit,
         submitUserForm,
         profiles,
+        isEdit: userEdit.id !== undefined,
         openModal
     }
 }

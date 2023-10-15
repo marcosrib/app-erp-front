@@ -8,12 +8,21 @@ import { FormSearch } from "../../../components/formSearch";
 import Button from "../../../components/button/Button";
 import { Modal } from "../../../components/modal";
 import { useFormUser } from '../hooks/useFormUser';
+import { CheckBox } from '@/app/(authenticated)/components/checkbox';
 
 
 export default function UserForm() {
 
-  const {register, control, errors,profiles, handleSubmit, submitUserForm, openModal} = useFormUser();
-   
+  const {
+    register,
+    control, 
+    errors, 
+    profiles, 
+    isEdit, 
+    handleSubmit, 
+    submitUserForm, 
+    openModal } = useFormUser();
+
     return (
         <>
        
@@ -35,7 +44,7 @@ export default function UserForm() {
         </FormSearch.Buttons>
       </FormSearch.Root>
       <Modal.Root 
-       title={ 'Cadastrar usuário'}>
+       title={isEdit ? 'Editar Usuário' : 'Cadastrar Usuário'}>
          
         <Modal.Form onSubmit={handleSubmit(submitUserForm)}>
           <Modal.FormInputs>
@@ -93,9 +102,24 @@ export default function UserForm() {
           helperText={errors.profile?.value?.message}
         />
         </Input.Root>
+        <Input.Root>
+        <Controller
+          name="status"
+          control={control}
+          defaultValue={false}
+          render={({ field: { value, onChange } }) => (
+        <CheckBox 
+          name="status"
+          value={value}
+          onChange={onChange}
+          label='Status'
+         />
+        )}
+        />
+        </Input.Root>
          </Modal.FormInputs>
          <Modal.FormFooter>
-          <Button label="Atualizar" color="search" type="submit"/>
+          <Button label={isEdit ? 'Atualizar' : 'Cadastrar'} color="search" type="submit"/>
          </Modal.FormFooter>
         </Modal.Form>
       </Modal.Root>
