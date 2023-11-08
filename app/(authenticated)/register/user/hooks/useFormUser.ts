@@ -7,7 +7,7 @@ import { useUserStore } from "../store/useUserStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userFormSchema } from "./schema";
 import { useModalStore } from "@/app/(authenticated)/components/modal/stores/useModalStore";
-import { UserDataProps, ProfileProps, SelectProfileOptionsProps, UserFormData } from "../types";
+import { UserDataProps, ProfileProps, SelectProfileOptionsProps, UserFormData, UpdateSatusProps } from "../types";
 import apiInstance from "@/app/services/api";
 
 
@@ -27,7 +27,7 @@ export function useFormUser() {
         resolver: zodResolver(userFormSchema)
       })
   
-      const mutation = useMutation((user: UserDataProps) => {
+      const mutationCreateUser = useMutation((user: UserDataProps) => {
         return api.post('/api/user/', user);
       }, {
         onSuccess: () => {
@@ -35,6 +35,35 @@ export function useFormUser() {
           queryClient.fetchQuery(['table', 1])
           toggleModal();
           toast.success('Usuário criado com sucesso');
+        },
+        onError: (error: any) => {         
+          toast.error(error.response.data.message);
+        },
+      });
+
+      const mutationEditUser = useMutation((user: UserDataProps) => {
+        return api.put(`/api/user/${user.id}`, user);
+      }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries(['table']);
+          queryClient.fetchQuery(['table', 1])
+          toggleModal();
+          toast.success('Usuário editado com sucesso');
+        },
+        onError: (error: any) => {         
+          toast.error(error.response.data.message);
+        },
+      });
+
+      const mutationEditStatusUser = useMutation((updateSatus: UpdateSatusProps) => {
+        const status = updateSatus.status; 
+        return api.patch(`/api/user/${updateSatus.id}`, { status });
+      }, {
+        onSuccess: (response) => {
+          let status = JSON.parse(response.config.data).status ? "Ativado" : "Inativado";
+          queryClient.invalidateQueries(['table']);
+          queryClient.fetchQuery(['table', 1])
+          toast.success(`Usuario ${status} com sucesso`);
         },
         onError: (error: any) => {         
           toast.error(error.response.data.message);
@@ -53,11 +82,11 @@ export function useFormUser() {
         label: profile.name,
       }));
     };
-   
 
       useEffect(() => {  
         setValue('name', userEdit.name)
         setValue('email', userEdit.email)
+        setValue('status', userEdit.status)
         if (userEdit?.profiles && userEdit.profiles.length > 0) {
           setValue('profile', {
               value: userEdit.profiles[0]?.id,
@@ -69,10 +98,7 @@ export function useFormUser() {
         setIdValueInSchema();
      },[userEdit])
       
-      
-    function handleEditUser(user: UserDataProps) {
-    
-    }
+  
     
     function submitUserForm(user: UserFormData) {     
         const { profile, ...userWithoutProfile } = user;
@@ -87,10 +113,10 @@ export function useFormUser() {
         };
   
       if(userEdit?.id) {
-        handleEditUser(userWithProfilesArray);
+        mutationEditUser.mutate(userWithProfilesArray);
           return ;
       }
-      mutation.mutate(userWithProfilesArray);
+      mutationCreateUser.mutate(userWithProfilesArray);
     }  
 
     function setIdValueInSchema() {
@@ -100,6 +126,14 @@ export function useFormUser() {
       }
     }
 
+  function updateSatus(user: UserFormData) {
+    const updateSatusData = {
+      id: user.id,
+      status: !user.status
+    }
+    mutationEditStatusUser.mutate(updateSatusData);
+  }
+
    function openModal() {
     setValue('id', undefined);
       addUserEdit({
@@ -107,11 +141,11 @@ export function useFormUser() {
         email: '',
         name: '',
         password: '',
-        profiles: []      
+        profiles: [],
+        status: false
       });
       toggleModal();
     }
-console.log(userEdit.id );
 
     return {
         control, 
@@ -121,6 +155,7 @@ console.log(userEdit.id );
         submitUserForm,
         profiles,
         isEdit: userEdit.id !== undefined,
-        openModal
+        openModal,
+        updateSatus
     }
 }

@@ -10,7 +10,7 @@ import { Input } from '@/app/components/input/';
 const loginFormSchema = z.object({
   email: z.string()
     .nonempty('O e-mail é obrigatório')
-    .email('Formato do e-mail inválido'),
+    .email('Formato do e-mali inválido'),
   password: z.string()
     .min(6, 'A senha precisa de no minimo 6 caracteres')
 })

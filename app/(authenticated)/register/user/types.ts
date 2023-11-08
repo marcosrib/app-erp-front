@@ -6,10 +6,15 @@ export type ProfileProps = {
     name: string,
   }
   
-  export type SelectProfileOptionsProps = {
-    value: number,
-    label: string,
-  }
+export type SelectProfileOptionsProps = {
+  value: number,
+  label: string,
+}
+export type UpdateSatusProps = {
+  id?: number,
+  status: boolean,
+  
+}
   
 export type UserDataProps = {
     id?: number,

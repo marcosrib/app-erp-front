@@ -1,19 +1,22 @@
 'use client'
-import React, { useMemo } from "react";
+import React from "react";
 import { TableCustom } from "@/app/(authenticated)/components/table";
 
 import { FaLock, FaUnlock } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { useUserStore } from "../store/useUserStore";
 import { useModalStore } from "@/app/(authenticated)/components/modal/stores/useModalStore";
+import { UserDataProps } from "../types";
+import { useFormUser } from "../hooks/useFormUser";
 
 
  function UserList() {
-  
-   const { addUserEdit } = useUserStore();
-   const { toggleModal } = useModalStore()
 
-   function handleUserEdit(user) {
+   const { addUserEdit } = useUserStore();
+   const { toggleModal } = useModalStore();
+   const { updateSatus } = useFormUser();
+
+   function handleUserEdit(user : UserDataProps) {
     addUserEdit(user);
     toggleModal();
    }
@@ -58,11 +61,13 @@ import { useModalStore } from "@/app/(authenticated)/components/modal/stores/use
 
         <TableCustom.Button 
           type="button"
-          onClick={() => handleUserEdit(user)}
-          label="Editar">
+          onClick={() => handleUserEdit(user)} 
+          color="edit">
          <TableCustom.Icon  icon={ <FiEdit size={16}/> }/>
         </TableCustom.Button>
-        <TableCustom.Button label={user.status ? 'Ativo' : 'Inativo'}>
+        <TableCustom.Button
+          onClick={() => updateSatus(user)}
+          color={user.status ? 'active' : 'inactive'}>
          <TableCustom.Icon icon={user.status ? <FaUnlock color={'white'} size={16}/> : <FaLock color={'white'} size={16}/>}/>
         </TableCustom.Button>     
           </TableCustom.Actions>) 

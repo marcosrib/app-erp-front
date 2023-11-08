@@ -14,21 +14,27 @@ export function useTable(url: string) {
 
     async function getUsers() {
       const api = apiInstance();
+    
+      
         const response = await api.get(url, {
           params: {
             page: currentPage + 1,
             size: 5,
           },
         });
+
         return response.data;
     }
-
+   
     const {
       isLoading,
       data,
     } = useQuery({
       queryKey: ['table', currentPage],
-      queryFn: () => getUsers(),
+      queryFn: async () => { 
+      const data =  await getUsers() 
+      return data;
+      },
       keepPreviousData : true,
       enabled: true
     })
