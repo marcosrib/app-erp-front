@@ -62,7 +62,6 @@ export function useFormUser() {
         onSuccess: (response) => {
           let status = JSON.parse(response.config.data).status ? "Ativado" : "Inativado";
           queryClient.invalidateQueries(['table']);
-          queryClient.fetchQuery(['table', 1])
           toast.success(`Usuario ${status} com sucesso`);
         },
         onError: (error: any) => {         
@@ -101,7 +100,7 @@ export function useFormUser() {
   
     
     function submitUserForm(user: UserFormData) {     
-             
+
         const { profile, ...userWithoutProfile } = user;
         const renamedProfile = {
             id: profile.value,

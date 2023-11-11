@@ -6,8 +6,10 @@ const button = tv({
     base: 'px-4 py-2 text-white rounded-md bg-gray-500 hover:bg-grey-600',
     variants: {
         color: {
-          search: 'bg-cyan-700 hover:bg-cyan-800',
-          cancel: 'bg-gray-500 hover:bg-gray-600'
+          search: 'bg-teal-700 hover:bg-teal-800',
+          clean: 'bg-gray-500 hover:bg-gray-600',
+          add: 'bg-cyan-700 hover:bg-cyan-800'
+          
         }
         
     }

@@ -6,8 +6,8 @@ const button = tv({
     variants: {
         color: {
           edit: 'bg-cyan-700 hover:bg-cyan-800',
-          active: 'bg-green-500 hover:bg-green-600',
-          inactive: 'bg-red-500 hover:bg-red-600'
+          active: 'bg-teal-700 hover:bg-teal-800',
+          inactive: 'bg-red-700 hover:bg-red-800'
         }
         
     }

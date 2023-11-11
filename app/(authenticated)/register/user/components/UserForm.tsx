@@ -42,21 +42,22 @@ export default function UserForm() {
         <FormSearch.Buttons>
         <Button
            type='submit' 
-           color="cancel" 
+           color="search" 
            label="Pesquisar"
+          />
+        <Button
+           type='button' 
+           color="clean" 
+           label="Limpar"
           />
          <Button 
            type='button'
            icon={<MdAdd size={16} />}
-           color="search" 
+           color="add" 
            label="Adicionar"
            onClick={() => openModal()}
           />
-         <Button
-           type='button' 
-           color="cancel" 
-           label="Limpar"
-          />
+         
         </FormSearch.Buttons>
       </FormSearch.Root>
       <Modal.Root 

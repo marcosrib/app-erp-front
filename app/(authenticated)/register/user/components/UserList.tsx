@@ -63,7 +63,7 @@ import { useFormUser } from "../hooks/useFormUser";
           type="button"
           onClick={() => handleUserEdit(user)} 
           color="edit">
-         <TableCustom.Icon  icon={ <FiEdit size={16}/> }/>
+         <TableCustom.Icon  icon={ <FiEdit color={'white'}  size={16}/> }/>
         </TableCustom.Button>
         <TableCustom.Button
           onClick={() => updateSatus(user)}
