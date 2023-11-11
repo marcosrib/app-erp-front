@@ -10,8 +10,8 @@ type Props = {
 
 export function ModalRoot( { title, children }: Props ) { 
 
-    const { isOpen, toggleModal } = useModalStore()
-
+    const { isOpen, toggleModal } = useModalStore();
+        
     return (
         <>
         {isOpen && (

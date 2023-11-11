@@ -20,10 +20,7 @@ export function NavAccordionMenu ({children, label, active, icon}: Props) {
         setExpanded(active);
       }
     }, [active]);
-    
-    console.log(expanded);
-    console.log(active);
-    
+  
     return (
        <>
          <button

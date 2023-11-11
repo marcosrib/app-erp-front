@@ -20,7 +20,7 @@ export function NavLinkMenu({children, route, active }:Props) {
          font-normal 
          text-dark-500 
          dark:bg-gray-800
-         rounded-lg
+         rounded-lghttp://localhost:3000/dashboard
          h-11
          hover:bg-gray-200 
          data-[active=true]:shadow-lg 

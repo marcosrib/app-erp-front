@@ -1,15 +1,17 @@
 import React, { ReactNode } from 'react'
 import ReactPaginate from 'react-paginate'
 import { useTable } from './hooks/useTable'
+import { useFilterStore } from '../../hooks/useFilterStore';
 
 type Props = {
     url: string;
-    children: ReactNode 
+    children: ReactNode;
 }
 
 export function TableBody({ children , url}: Props) {
 
- const {data, isLoading, handlePageChange } = useTable(url);
+ const { filters } = useFilterStore(); 
+ const {data, isLoading, handlePageChange } = useTable(url, filters);
  
  if (isLoading) {
   return(<div>Carregando ...</div>)

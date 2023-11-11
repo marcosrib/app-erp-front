@@ -9,6 +9,8 @@ import Button from "../../../components/button/Button";
 import { Modal } from "../../../components/modal";
 import { useFormUser } from '../hooks/useFormUser';
 import { CheckBox } from '@/app/(authenticated)/components/checkbox';
+import { userSerachSchema } from '../hooks/schema';
+import { useUserSerach } from '../hooks/useUserSerach';
 
 
 export default function UserForm() {
@@ -23,24 +25,38 @@ export default function UserForm() {
     submitUserForm, 
     openModal } = useFormUser();
 
+    const { handleSearchSubmit, handleAddfilters, registerSearch, searchErrros } = useUserSerach();
+
     return (
         <>
-       
-        <FormSearch.Root>
+        <FormSearch.Root  onSubmit={handleSearchSubmit(handleAddfilters)}>
         <FormSearch.InputContainer>
             <Input.Root>
               <Input.Label label="E-mail"/>
-              <Input.Input />
+              <Input.Input {...registerSearch('email')} />
+              <Input.LabelError 
+              helperText={searchErrros.email?.message}
+            />
             </Input.Root>
         </FormSearch.InputContainer>
         <FormSearch.Buttons>
+        <Button
+           type='submit' 
+           color="cancel" 
+           label="Pesquisar"
+          />
          <Button 
+           type='button'
            icon={<MdAdd size={16} />}
            color="search" 
            label="Adicionar"
            onClick={() => openModal()}
           />
-         <Button color="cancel" label="Limpar"/>
+         <Button
+           type='button' 
+           color="cancel" 
+           label="Limpar"
+          />
         </FormSearch.Buttons>
       </FormSearch.Root>
       <Modal.Root 

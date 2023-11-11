@@ -24,3 +24,12 @@ export const userFormSchema = z.object({
   path: ["password"],
   message: "A senha precisa ter no minimo 8 caractéres",
 });
+export const userSerachSchema = z.object({
+  email: z.string()
+  .refine((val) => {
+    return val === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+  }, {
+    message: 'Formato do e-mail inválido'
+  })
+  .nullable(),
+});

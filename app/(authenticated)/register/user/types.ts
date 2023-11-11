@@ -10,6 +10,7 @@ export type SelectProfileOptionsProps = {
   value: number,
   label: string,
 }
+
 export type UpdateSatusProps = {
   id?: number,
   status: boolean,
@@ -23,6 +24,10 @@ export type UserDataProps = {
     password: string,
     status: boolean,
     profiles: ProfileProps[]
+}
+
+export type UserSearchDataProps = {
+  email: string,
 }
 
 export type UserFormData = z.infer<typeof userFormSchema>
