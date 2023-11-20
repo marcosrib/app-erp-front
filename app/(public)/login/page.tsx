@@ -1,11 +1,12 @@
 'use client';
-import { useContext } from 'react';
+
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { AuthContext } from '../contexts/AuthContext';
 import { Input } from '@/app/components/input/';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const loginFormSchema = z.object({
   email: z.string()
@@ -26,12 +27,16 @@ export default function Signin() {
     resolver: zodResolver(loginFormSchema),
 
   })
-  const { signIn } = useContext(AuthContext);
-
+  //const { signIn } = useContext(AuthContext);
+  const router =  useRouter();
  
 
   async function handleSignIn({ email, password }: CreateUserFormData) {
-   await signIn({ email, password });
+    const result = await signIn('credentials', { email, password,redirect: false})
+    if(result?.error) {
+      return;
+    }
+    router.replace('/dashboard');
   }
 
   return (

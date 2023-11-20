@@ -9,13 +9,14 @@ import { userFormSchema } from "./schema";
 import { useModalStore } from "@/app/(authenticated)/components/modal/stores/useModalStore";
 import { UserDataProps, ProfileProps, SelectProfileOptionsProps, UserFormData, UpdateSatusProps } from "../types";
 import apiInstance from "@/app/services/api";
+import { getClientSideApiInstance } from "@/app/services/getClientSideApiInstance";
 
 
 export function useFormUser() {
     const { userEdit, addUserEdit } = useUserStore();
     const { toggleModal } = useModalStore();
     const queryClient = useQueryClient(); 
-    const api = apiInstance();
+    const api = getClientSideApiInstance();
     const {
         control, 
         register,

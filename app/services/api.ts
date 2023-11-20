@@ -1,15 +1,16 @@
 import axios from 'axios';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
+import { createLocalToken, getLocalToken } from './cookies/localTokenService';
 
-const apiInstance = () =>   {
-  const cookies = parseCookies(); 
-  const { 'erp.token': token } = cookies;
+const apiInstance = (token: string) =>   {
+
   
 const apiConfig = {
   baseURL: 'http://localhost:8082',
   timeout: 10000,
   headers: {},
 };
+
 
 if (token) {
   apiConfig.headers = {
@@ -33,22 +34,24 @@ api.interceptors.response.use(
       window.location.href = '/login';
       return Promise.reject(error);
     }
-    const { 'erp.token': access_token } = parseCookies();
+    const access_token = 'slklkl'//getLocalToken();
     const originalRequest = error.config;
+
     if (error.response?.status === 401 && access_token) {
       isRetryRefreshToken = true
-      const { 'erp.refreshtoken': refreshToken } = parseCookies();
+      const refreshToken = 'k'//getLocalToken();
+      console.log(refreshToken);
+      
       const parameters = {
         method: 'POST',
       };
       const body = {
         refreshToken,
       };
-      const response = await api.post('/auth/refresh/', body, parameters);
 
-      setCookie(undefined , 'erp.token', response.data.accessToken, {
-        maxAge: 60 * 60 * 1, // 1 hora
-      });
+      const response = await api.post('/auth/refresh/', body, parameters);
+      createLocalToken(response.data.accessToken);
+   
       originalRequest.headers.Authorization = `Bearer ${response.data.accessToken}`;
       return axios(originalRequest);
     }

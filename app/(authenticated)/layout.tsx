@@ -1,31 +1,30 @@
-import '../globals.css';
-import type { Metadata } from 'next';
 
-import { Inter } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
 import AppProviders from './providers'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
-const inter = Inter({ subsets: ['latin'] });
+import { getServerSession } from 'next-auth';
+import { nextAuthOptions } from '../api/auth/[...nextauth]/route';
 
-export const metadata: Metadata = {
-  title: 'ERP',
-  description: 'Sistema de gerênciamento',
-};
+import { redirect } from 'next/navigation';
 
 
-export default function RootLayout({
+export default async function PrivateLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
 
+ const session = await getServerSession(nextAuthOptions);
+
+ if(!session) {
+    redirect('/login');
+ }
+
   return (
-    
-    <html lang="en">
-      <body className={inter.className}>
+    <>
         <ToastContainer />
         <main className="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
           <div className="flex items-start justify-between">
@@ -40,7 +39,6 @@ export default function RootLayout({
             </div>
           </div>
         </main>
-      </body>
-    </html>  
+      </> 
   );
 }

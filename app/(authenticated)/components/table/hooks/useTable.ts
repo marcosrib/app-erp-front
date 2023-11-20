@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import apiInstance from "@/app/services/api";
+import { getClientSideApiInstance } from "@/app/services/getClientSideApiInstance";
 
 export function useTable(url: string, filters: {}) {
 
@@ -19,7 +20,7 @@ export function useTable(url: string, filters: {}) {
     return filteredFilters ? filteredFilters : '';
     }
     async function getUsers() {
-      const api = apiInstance();
+      const api = getClientSideApiInstance();
       const filteredValues = buildQueryString();        
       const response = await api.get(url, {
         params: {

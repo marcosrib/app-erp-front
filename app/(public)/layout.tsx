@@ -1,24 +1,22 @@
-import '../globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { AuthProvider } from './contexts/AuthContext';
-const inter = Inter({ subsets: ['latin'] });
+import { getServerSession } from "next-auth";
+import { nextAuthOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: 'ERP',
-  description: 'Sistema gerenciamento',
-};
 
-export default function RootLayout({
+export default async function PublicLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(nextAuthOptions);
+ 
+  if(session) {
+    redirect('/dashboard')
+  }
+
   return (
-    <AuthProvider>
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
-      </html>
-    </AuthProvider>
+    <>
+    {children}
+    </>  
   );
 }
