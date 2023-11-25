@@ -19,8 +19,7 @@ export default function UserForm() {
     profiles, 
     isEdit, 
     handleSubmit, 
-    submitUserForm, 
-    openModal } = useFormUser();
+    submitUserForm } = useFormUser();
 
     return (
         <>

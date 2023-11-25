@@ -3,14 +3,15 @@ import { FormSearch } from "@/app/(authenticated)/components/formSearch";
 import { Input } from "@/app/components/input";
 import { useUserSerach } from "../hooks/useUserSerach";
 import { MdAdd } from "react-icons/md";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 
 export default function UserSearch() {
 
     const { handleSearchSubmit, handleAddfilters, registerSearch, searchErrros } = useUserSerach();
-    const searcheParams = useSearchParams();
 
+    const searcheParams = useSearchParams();
+    const pathName = usePathname();
     function handleOpenModal() {
 
     }

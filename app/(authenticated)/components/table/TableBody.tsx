@@ -5,19 +5,21 @@ import { getUsers } from '@/app/services/user/userService';
 import Pagination from './Pagination';
 
 type Props = {
-    url: string;
-    children: ReactNode;
-    params?: any;
+  url: string;
+  children: ReactNode;
+  params?: any;
 }
 
 export async function TableBody({ children, url, params}: Props) {
 
   const session = await getServerSession(nextAuthOptions);
+
   const initialParams = {
     page: 1,
     size: 5,
     ...params
   }
+
   const paramsUrl = new URLSearchParams(initialParams).toString(); 
   const data = await getUsers(`${url}?${paramsUrl}`, session?.accessToken);
 
