@@ -2,6 +2,7 @@ import React from "react";
 import { TableCustom } from "@/app/(authenticated)/components/table";
 import ButtonEdit from "./ButtonEdit";
 import { ParamsProps } from "../types";
+import ButtonActive from "./ButtonActive";
 
 
 export default async function UserList({ searchParams } : ParamsProps) {
@@ -60,6 +61,7 @@ export default async function UserList({ searchParams } : ParamsProps) {
         return (
         <TableCustom.Actions>
           <ButtonEdit />  
+          <ButtonActive status={user.status} />
         </TableCustom.Actions>) 
         }}
         </TableCustom.Column>
