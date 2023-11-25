@@ -1,23 +1,28 @@
-import React, { ReactNode } from 'react'
-import ReactPaginate from 'react-paginate'
-import { useTable } from './hooks/useTable'
-import { useFilterStore } from '../../hooks/useFilterStore';
+import React, { ReactNode } from 'react';
+import { getServerSession } from 'next-auth';
+import { nextAuthOptions } from '@/app/api/auth/[...nextauth]/route';
+import { getUsers } from '@/app/services/user/userService';
+import Pagination from './Pagination';
 
 type Props = {
     url: string;
     children: ReactNode;
+    params?: any;
 }
 
-export function TableBody({ children , url}: Props) {
+export async function TableBody({ children, url, params}: Props) {
 
- const { filters } = useFilterStore(); 
- const {data, isLoading, handlePageChange } = useTable(url, filters);
- 
- if (isLoading) {
-  return(<div>Carregando ...</div>)
- }
+  const session = await getServerSession(nextAuthOptions);
+  const initialParams = {
+    page: 1,
+    size: 5,
+    ...params
+  }
+  const paramsUrl = new URLSearchParams(initialParams).toString(); 
+  const data = await getUsers(`${url}?${paramsUrl}`, session?.accessToken);
 
- const header = React.Children.toArray(children)[0];
+  
+  const header = React.Children.toArray(children)[0];
  
   return (
       <>
@@ -61,24 +66,14 @@ export function TableBody({ children , url}: Props) {
           </div>
          </div>
         </div>  
-        <div className="flex justify-center items-center p-4 my-4 mx-4 bg-white rounded-2xl shadow-xl shadow-gray-200 sm:flex sm:justify-between">
-       <ReactPaginate
-            pageCount={data.totalPages}
-            previousLabel={'Anterior'}
-            nextLabel={'Próximo'}
-            pageRangeDisplayed={7}
-            marginPagesDisplayed={0}
-            breakLabel={null} 
-            breakClassName={'hidden'}
-            pageLinkClassName={'px-2 rounded-md'}
-            previousLinkClassName={'bg-gray-200 px-2 py-2 mr-2 rounded-md'}
-            nextLinkClassName={'bg-gray-200 px-2 py-2 ml-2 rounded-md'}
-            activeClassName="bg-slate-500  text-white"
-            pageClassName="px-2 py-1.5 rounded-lg"
-            containerClassName={'flex justify-center items-center'}
-            onPageChange={({ selected }) => handlePageChange(selected)}
-           />
-           </div>
+        <div className="
+          flex justify-center items-center 
+          p-4 my-4 mx-4
+          bg-white rounded-2xl 
+          shadow-xl shadow-gray-200 
+          sm:flex sm:justify-between">
+         <Pagination totalPages={data.totalPages}   />
+        </div>
     </>   
     )
 }

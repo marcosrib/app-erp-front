@@ -2,15 +2,12 @@
 import Select from 'react-select';
 import clsx from 'clsx'
 import { Controller } from "react-hook-form";
-import { MdAdd } from "react-icons/md";
 import { Input } from "@/app/components/input";
-import { FormSearch } from "../../../components/formSearch";
 import Button from "../../../components/button/Button";
 import { Modal } from "../../../components/modal";
 import { useFormUser } from '../hooks/useFormUser';
 import { CheckBox } from '@/app/(authenticated)/components/checkbox';
-import { userSerachSchema } from '../hooks/schema';
-import { useUserSerach } from '../hooks/useUserSerach';
+import UserSearch from './UserSearch';
 
 
 export default function UserForm() {
@@ -25,41 +22,9 @@ export default function UserForm() {
     submitUserForm, 
     openModal } = useFormUser();
 
-    const { handleSearchSubmit, handleAddfilters, registerSearch, searchErrros } = useUserSerach();
-
     return (
         <>
-        <FormSearch.Root  onSubmit={handleSearchSubmit(handleAddfilters)}>
-        <FormSearch.InputContainer>
-            <Input.Root>
-              <Input.Label label="E-mail"/>
-              <Input.Input {...registerSearch('email')} />
-              <Input.LabelError 
-              helperText={searchErrros.email?.message}
-            />
-            </Input.Root>
-        </FormSearch.InputContainer>
-        <FormSearch.Buttons>
-        <Button
-           type='submit' 
-           color="search" 
-           label="Pesquisar"
-          />
-        <Button
-           type='button' 
-           color="clean" 
-           label="Limpar"
-          />
-         <Button 
-           type='button'
-           icon={<MdAdd size={16} />}
-           color="add" 
-           label="Adicionar"
-           onClick={() => openModal()}
-          />
-         
-        </FormSearch.Buttons>
-      </FormSearch.Root>
+        <UserSearch />
       <Modal.Root 
        title={isEdit ? 'Editar Usuário' : 'Cadastrar Usuário'}>
          

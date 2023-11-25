@@ -10,6 +10,7 @@ import { useModalStore } from "@/app/(authenticated)/components/modal/stores/use
 import { UserDataProps, ProfileProps, SelectProfileOptionsProps, UserFormData, UpdateSatusProps } from "../types";
 import apiInstance from "@/app/services/api";
 import { getClientSideApiInstance } from "@/app/services/getClientSideApiInstance";
+import { getUsers } from "@/app/services/user/userService";
 
 
 export function useFormUser() {
@@ -70,18 +71,18 @@ export function useFormUser() {
         },
       });
     
-    const { data: profiles } = useQuery({
+    /*const { data: profiles } = useQuery({
       queryKey: ['userFormProfile'],
       queryFn: () => fetchProfiles(),
-    })
+    })*/
 
-    const fetchProfiles = async (): Promise<SelectProfileOptionsProps[]> => {
+  /*  const fetchProfiles = async (): Promise<SelectProfileOptionsProps[]> => {
      const profilesResponse = await api.get('/api/profile/');
       return profilesResponse.data.map((profile: ProfileProps) => ({
         value: profile.id,
         label: profile.name,
       }));
-    };
+    };*/
 
       useEffect(() => {  
         setValue('name', userEdit.name)
@@ -154,7 +155,7 @@ export function useFormUser() {
         errors,
         handleSubmit,
         submitUserForm,
-        profiles,
+        profiles: [],
         isEdit: userEdit.id !== undefined,
         openModal,
         updateSatus

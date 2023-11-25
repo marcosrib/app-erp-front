@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
-import { createLocalToken, getLocalToken } from './cookies/localTokenService';
+
 
 const apiInstance = (token: string) =>   {
 

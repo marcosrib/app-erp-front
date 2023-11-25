@@ -1,29 +1,29 @@
-'use client'
 import React from "react";
 import { TableCustom } from "@/app/(authenticated)/components/table";
-
-import { FaLock, FaUnlock } from "react-icons/fa";
-import { FiEdit } from "react-icons/fi";
-import { useUserStore } from "../store/useUserStore";
-import { useModalStore } from "@/app/(authenticated)/components/modal/stores/useModalStore";
-import { UserDataProps } from "../types";
-import { useFormUser } from "../hooks/useFormUser";
+import ButtonEdit from "./ButtonEdit";
+import { ParamsProps } from "../types";
 
 
- function UserList() {
+export default async function UserList({ searchParams } : ParamsProps) {
 
-   const { addUserEdit } = useUserStore();
+   /*const { addUserEdit } = useUserStore();
    const { toggleModal } = useModalStore();
    const { updateSatus } = useFormUser();
 
    function handleUserEdit(user : UserDataProps) {
     addUserEdit(user);
     toggleModal();
-   }
+   }*/
+
+
+   
       
     return (
         <TableCustom.Root>
-        <TableCustom.Body url="/api/user/">
+        <TableCustom.Body
+         url="api/user/" 
+         params={searchParams}
+        >
         <TableCustom.Header>
           <TableCustom.HeaderContent title= 'Id'/>
           <TableCustom.HeaderContent title= 'Nome'/>
@@ -57,24 +57,13 @@ import { useFormUser } from "../hooks/useFormUser";
         <TableCustom.Column field="actions">
         {(row) => {
           let user = JSON.parse(row);
-        return (<TableCustom.Actions>
-
-        <TableCustom.Button 
-          type="button"
-          onClick={() => handleUserEdit(user)} 
-          color="edit">
-         <TableCustom.Icon  icon={ <FiEdit color={'white'}  size={16}/> }/>
-        </TableCustom.Button>
-        <TableCustom.Button
-          onClick={() => updateSatus(user)}
-          color={user.status ? 'active' : 'inactive'}>
-         <TableCustom.Icon icon={user.status ? <FaUnlock color={'white'} size={16}/> : <FaLock color={'white'} size={16}/>}/>
-        </TableCustom.Button>     
-          </TableCustom.Actions>) 
+        return (
+        <TableCustom.Actions>
+          <ButtonEdit />  
+        </TableCustom.Actions>) 
         }}
         </TableCustom.Column>
         </TableCustom.Body>
       </TableCustom.Root>
     )
 }
-export default React.memo(UserList);

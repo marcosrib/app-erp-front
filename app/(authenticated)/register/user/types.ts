@@ -30,4 +30,8 @@ export type UserSearchDataProps = {
   email: string,
 }
 
+export type ParamsProps = {
+  searchParams?: { email: string, page: string},
+}
+
 export type UserFormData = z.infer<typeof userFormSchema>
