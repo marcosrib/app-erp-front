@@ -1,7 +1,21 @@
 export async function fetchApi<T = unknown>(input: RequestInfo | URL, init?: RequestInit | undefined) {
+  
+    const defaultHeaders = {
+        'Content-Type': 'application/json'
+    };
+
+    const headers = {
+        ...defaultHeaders,
+        ...(init?.headers || {}) 
+    };
+
+    const modifiedInit = {
+        ...init,
+        headers: headers
+    };
  
     try {
-        const response = await fetch(`${process.env.ERP_API_BASE_URL}/${input}`, init);
+        const response = await fetch(`${process.env.ERP_API_BASE_URL}/${input}`, modifiedInit);
         
         if (!response.ok) {
             const errorData = await response.json();

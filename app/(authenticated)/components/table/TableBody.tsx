@@ -20,6 +20,7 @@ export async function TableBody({ children, url, params}: Props) {
     ...params
   }
 
+
   const paramsUrl = new URLSearchParams(initialParams).toString(); 
   const data = await getUsers(`${url}?${paramsUrl}`, session?.accessToken);
 

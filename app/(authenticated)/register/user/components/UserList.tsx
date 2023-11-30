@@ -1,24 +1,14 @@
 import React from "react";
 import { TableCustom } from "@/app/(authenticated)/components/table";
-import ButtonEdit from "./ButtonEdit";
+import UserEditForm from "./UserEditForm";
 import { ParamsProps } from "../types";
 import ButtonActive from "./ButtonActive";
-
+import { getProfiles } from "../actions/userAction";
 
 export default async function UserList({ searchParams } : ParamsProps) {
 
-   /*const { addUserEdit } = useUserStore();
-   const { toggleModal } = useModalStore();
-   const { updateSatus } = useFormUser();
-
-   function handleUserEdit(user : UserDataProps) {
-    addUserEdit(user);
-    toggleModal();
-   }*/
-
-
-   
-      
+    const profiles = await getProfiles();
+  
     return (
         <TableCustom.Root>
         <TableCustom.Body
@@ -60,7 +50,7 @@ export default async function UserList({ searchParams } : ParamsProps) {
           let user = JSON.parse(row);
         return (
         <TableCustom.Actions>
-          <ButtonEdit />  
+          <UserEditForm profiles={profiles}/>  
           <ButtonActive status={user.status} />
         </TableCustom.Actions>) 
         }}

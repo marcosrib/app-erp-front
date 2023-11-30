@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { userFormSchema } from "./hooks/schema"
+import { userEditSchema } from "./schemas/userEditSchema"
 
 export type ProfileProps = {
     id: number,
@@ -26,6 +27,16 @@ export type UserDataProps = {
     profiles: ProfileProps[]
 }
 
+export type UserEditProps = {
+  id: number,
+  name: string,
+  email: string,
+  password: string,
+  status: boolean,
+  profiles: ProfileProps[]
+}
+
+
 export type UserSearchDataProps = {
   email: string,
 }
@@ -35,3 +46,5 @@ export type ParamsProps = {
 }
 
 export type UserFormData = z.infer<typeof userFormSchema>
+
+export type UserEditFormTypeSchema = z.infer<typeof userEditSchema>
