@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from '@/app/api/auth/[...nextauth]/route';
-import { getUsers } from '@/app/services/user/userService';
 import Pagination from './Pagination';
+import { getUsers } from '../../register/user/actions/userAction';
 
 type Props = {
   url: string;
@@ -22,7 +22,12 @@ export async function TableBody({ children, url, params}: Props) {
 
 
   const paramsUrl = new URLSearchParams(initialParams).toString(); 
+  
   const data = await getUsers(`${url}?${paramsUrl}`, session?.accessToken);
+
+ if(data) {
+   return<p className='my-6'>Dados não encotrado</p>;
+ }
 
   
   const header = React.Children.toArray(children)[0];

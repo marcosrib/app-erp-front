@@ -19,7 +19,6 @@ export type UpdateSatusProps = {
 }
   
 export type UserDataProps = {
-    id?: number,
     name: string,
     email: string,
     password: string,
@@ -35,7 +34,6 @@ export type UserEditProps = {
   status: boolean,
   profiles: ProfileProps[]
 }
-
 
 export type UserSearchDataProps = {
   email: string,

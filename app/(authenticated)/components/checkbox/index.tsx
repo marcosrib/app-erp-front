@@ -5,6 +5,7 @@ type CheckBoxProps = {
   name: string;
   value: boolean;
   onChange: (checked: boolean) => void;
+  
 };
 
 export const CheckBox = forwardRef<HTMLInputElement, CheckBoxProps>(

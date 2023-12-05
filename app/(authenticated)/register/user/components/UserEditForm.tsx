@@ -4,25 +4,29 @@ import Select from 'react-select';
 import clsx from 'clsx'
 import { CheckBox } from "@/app/(authenticated)/components/checkbox";
 import { Modal } from "@/app/(authenticated)/components/modal";
-import { TableCustom } from "@/app/(authenticated)/components/table";
 import { Input } from "@/app/components/input";
-import { FiEdit } from "react-icons/fi";
+import { useSearchParams } from 'next/navigation'
 import { Controller, useForm } from "react-hook-form";
 import Button from '@/app/(authenticated)/components/button/Button';
 import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { userEditSchema } from '../schemas/userEditSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SelectProfileOptionsProps, UserEditFormTypeSchema } from '../types';
+import { SelectProfileOptionsProps, UserEditFormTypeSchema, UserEditProps } from '../types';
+import { getUserById, updateUser } from '../actions/userAction';
+import { toast } from 'react-toastify';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 
 type Props = {
- profiles: SelectProfileOptionsProps[]
+ profile: SelectProfileOptionsProps[],
 }
 
-export default function UserEditForm({ profiles }: Props) {
-
+export default function UserEditForm({ profile }: Props) {
   const { toggleModal } = useModalStore();
-  
+  const searchParams = useSearchParams();
+  const userId = searchParams.get('id');
+
   const {
     control, 
     register,
@@ -31,15 +35,42 @@ export default function UserEditForm({ profiles }: Props) {
   } = useForm<UserEditFormTypeSchema>({
     mode: 'onBlur',
     resolver: zodResolver(userEditSchema)
-  })
+  });
 
-  console.log(profiles);
+  const { data: user, isSuccess, isError, error } = useQuery({
+      queryKey: ['usersById', userId],
+      queryFn: () => fetchUserById(Number(userId)),
+      retry: 0,
+    }) 
+
+ async function fetchUserById(id:  number) {
+   return getUserById(id);
+  }
+
+console.log('ero vazio',isError, error);
+
+ 
   
-   function submitUserForm(data: UserEditFormTypeSchema) {
-    console.log(data);
-    
-   }
+  
+  useEffect(() => {
+    if (isSuccess) {
+      toggleModal();
+    }
+  }, [isSuccess, toggleModal, userId]);
+ 
 
+
+
+
+ function submitUserForm(data: UserEditFormTypeSchema) {
+    console.log('rjojojj');
+    
+    try {
+      updateUser(data, user?.id);
+    } catch (error) {
+      toast.error('Erro ao atualizar o usuário');
+    }
+  }
     return (
       <>
       <Modal.Root 
@@ -51,6 +82,7 @@ export default function UserEditForm({ profiles }: Props) {
         <Input.Root>
         <Input.Label label="Nome" />
         <Input.Input 
+         defaultValue={user?.name}
          {...register('name')}
         />
          <Input.LabelError 
@@ -60,6 +92,7 @@ export default function UserEditForm({ profiles }: Props) {
         <Input.Root>
         <Input.Label label="E-mail"/>
         <Input.Input
+           defaultValue={user?.email}
            {...register('email')}
            />
             <Input.LabelError 
@@ -86,7 +119,7 @@ export default function UserEditForm({ profiles }: Props) {
         <Select 
         {...field}
          isSearchable={false}
-         options={profiles}
+         options={profile}
          classNames={{
            control: (state) =>
            clsx(
@@ -104,8 +137,8 @@ export default function UserEditForm({ profiles }: Props) {
        <Input.Root>
        <Controller
          name="status"
+         defaultValue={user?.status}
          control={control}
-         defaultValue={false}
          render={({ field: { value, onChange } }) => (
        <CheckBox 
          name="status"
@@ -122,13 +155,7 @@ export default function UserEditForm({ profiles }: Props) {
         </Modal.FormFooter>
        </Modal.Form>
      </Modal.Root>
-        <TableCustom.Button 
-        type="button"
-        onClick={() => toggleModal()} 
-        color="edit">
-       <TableCustom.Icon  icon={ <FiEdit
-        color={'white'}  size={16}/> }/>
-      </TableCustom.Button>
+       
       </>
     )
 }

@@ -1,15 +1,24 @@
 import React from "react";
 import { TableCustom } from "@/app/(authenticated)/components/table";
-import UserEditForm from "./UserEditForm";
+
 import { ParamsProps } from "../types";
 import ButtonActive from "./ButtonActive";
 import { getProfiles } from "../actions/userAction";
+import ButtonEdit from "./ButtonEdit";
+import UserEditForm from "./UserEditForm";
 
 export default async function UserList({ searchParams } : ParamsProps) {
 
-    const profiles = await getProfiles();
-  
-    return (
+    const profile = await getProfiles();
+    
+    async function teste(data: FormData) {
+      'use server'
+     console.log('daa',data);
+     
+    }
+
+    return ( 
+      <>
         <TableCustom.Root>
         <TableCustom.Body
          url="api/user/" 
@@ -50,12 +59,16 @@ export default async function UserList({ searchParams } : ParamsProps) {
           let user = JSON.parse(row);
         return (
         <TableCustom.Actions>
-          <UserEditForm profiles={profiles}/>  
+     
+        <ButtonEdit id={user.id}/>
+     
           <ButtonActive status={user.status} />
         </TableCustom.Actions>) 
         }}
         </TableCustom.Column>
         </TableCustom.Body>
       </TableCustom.Root>
+      <UserEditForm profile={profile} />
+      </>
     )
 }

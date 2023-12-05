@@ -7,10 +7,8 @@ const profileSchema = z.object({
   });
   
 export const userEditSchema = z.object({
-    id: z.number().optional(),
-    name: z.string().min(5,{ message: "O nome precisa er no minimo 5 caracteres" }),
+    name: z.string().min(5,{ message: "O nome precisa ter no minimo 5 caracteres" }),
     email: z.string()
-      .nonempty('O e-mail é obrigatório')
       .email('Formato do e-mail inválido'),
     profile: profileSchema,
     password: z.string(),
