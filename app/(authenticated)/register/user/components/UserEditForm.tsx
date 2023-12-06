@@ -16,6 +16,7 @@ import { getUserById, updateUser } from '../actions/userAction';
 import { toast } from 'react-toastify';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import CustomSelect from '@/app/(authenticated)/components/select/CustomSelect';
 
 
 type Props = {
@@ -106,24 +107,11 @@ console.log('ero vazio',isError, error);
         <Input.Root>
         <Input.Label 
          label="Perfis" />
-       <Controller
-       name="profile"
-       control={control}
-       render={({ field }) => (
-        <Select 
-        {...field}
-         isSearchable={false}
-         options={profile}
-         classNames={{
-           control: (state) =>
-           clsx(
-             state.isFocused ? '!border-indigo-600 !outline-none !shadow-none' : '!border-gray-300',
-             'p-0.5 !rounded-lg'
-           )
-         }} 
-       />
-       )}
-     />
+        <CustomSelect   
+        name='profile'
+        options={[{ value: 0, label: 'Nenhum perfil encontrado'}]}
+        control={control}
+        />
       <Input.LabelError 
          helperText={errors.profile?.value?.message}
        />

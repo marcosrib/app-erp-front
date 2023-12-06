@@ -53,7 +53,7 @@ export async function getProfiles(): Promise<SelectProfileOptionsProps[]> {
           label: profile.name
         }));
       }
-      return []
+      return [{ value: 0, label: 'Nenhum perfil encontrado'}]
     } catch (error) {
       console.log(error);
       return []
