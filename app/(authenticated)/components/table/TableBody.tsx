@@ -24,8 +24,8 @@ export async function TableBody({ children, url, params}: Props) {
   const paramsUrl = new URLSearchParams(initialParams).toString(); 
   
   const data = await getUsers(`${url}?${paramsUrl}`, session?.accessToken);
-
- if(data) {
+   
+ if(!data) {
    return<p className='my-6'>Dados não encotrado</p>;
  }
 

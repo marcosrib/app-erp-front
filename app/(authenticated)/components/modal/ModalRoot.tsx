@@ -1,16 +1,31 @@
-
+'use client'
 import { ReactNode } from 'react'
 import { MdClose } from 'react-icons/md'
-import { useModalStore } from './stores/useModalStore';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
   
 type Props = {
   title: string,
   children: ReactNode,
 }
 
+const SHOW_MODAL = 'showModalForm';
+
 export function ModalRoot( { title, children }: Props ) { 
 
-    const { isOpen, toggleModal } = useModalStore();
+    const router = useRouter();
+    const pathName = usePathname();
+    const searchParams = useSearchParams();
+
+    const params = new URLSearchParams(searchParams)
+    const showModal = params.get(SHOW_MODAL);
+
+    const isOpen = showModal === 'true';    
+
+    function handleToggleModal() {  
+      const params = new URLSearchParams(searchParams);      
+      params.set(SHOW_MODAL, 'false')
+      router.push(`${pathName}/?${params.toString()}`);
+    } 
         
     return (
         <>
@@ -28,7 +43,7 @@ export function ModalRoot( { title, children }: Props ) {
                    bg-transparent hover:bg-gray-200 
                    hover:text-gray-900 rounded-2xl text-sm
                    p-1.5 ml-auto inline-flex items-center"
-                   onClick={toggleModal}
+                   onClick={handleToggleModal}
                    >
                    <MdClose size={20} />
                   </button>

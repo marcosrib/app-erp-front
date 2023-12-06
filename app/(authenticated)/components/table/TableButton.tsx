@@ -1,4 +1,5 @@
-import { ComponentProps, ReactNode, use } from "react"
+import Link from "next/link"
+import { ReactNode, use } from "react"
 import { tv, VariantProps } from "tailwind-variants"
 
 const button = tv({
@@ -13,20 +14,18 @@ const button = tv({
     }
 })
 
-type Props = ComponentProps<'button'> 
-& VariantProps<typeof button> & {
+type Props = VariantProps<typeof button> & {
     label?: string,
+    url: string
     children: ReactNode
 }
 
-export function TableButton({label,color, children, ...props}: Props) {
+export function TableButton({label,color, children, url}: Props) {
     return (
-        <button 
-         type="button" 
+        <Link href={url}
          className={button({ color })}
-          {...props}
-          >
+        >
          {children}{label}
-       </button>
+       </Link>
     )
 }

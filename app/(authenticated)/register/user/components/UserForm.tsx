@@ -23,7 +23,7 @@ export default function UserForm() {
 
     return (
         <>
-        <UserSearch />
+    {/*    <UserSearch />
       <Modal.Root 
        title={isEdit ? 'Editar Usuário' : 'Cadastrar Usuário'}>
          
@@ -103,7 +103,7 @@ export default function UserForm() {
           <Button label={isEdit ? 'Atualizar' : 'Cadastrar'} color="search" type="submit"/>
          </Modal.FormFooter>
         </Modal.Form>
-      </Modal.Root>
-    </>
+          </Modal.Root> */}
+    </> 
     )
 }

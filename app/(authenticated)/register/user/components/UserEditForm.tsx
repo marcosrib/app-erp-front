@@ -37,9 +37,15 @@ export default function UserEditForm({ profile }: Props) {
     resolver: zodResolver(userEditSchema)
   });
 
-  const { data: user, isSuccess, isError, error } = useQuery({
+
+  const { data: user, isError, error } = useQuery({
       queryKey: ['usersById', userId],
-      queryFn: () => fetchUserById(Number(userId)),
+      queryFn: () => {
+      if (userId) {
+        return fetchUserById(Number(userId));
+      } 
+        return Promise.resolve(null);
+      },
       retry: 0,
     }) 
 
@@ -48,18 +54,6 @@ export default function UserEditForm({ profile }: Props) {
   }
 
 console.log('ero vazio',isError, error);
-
- 
-  
-  
-  useEffect(() => {
-    if (isSuccess) {
-      toggleModal();
-    }
-  }, [isSuccess, toggleModal, userId]);
- 
-
-
 
 
  function submitUserForm(data: UserEditFormTypeSchema) {

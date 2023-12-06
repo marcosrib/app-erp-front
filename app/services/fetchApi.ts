@@ -25,7 +25,6 @@ export async function fetchApi<T = unknown>(input: RequestInfo | URL, init?: Req
         const result = await response.json();
         return result as T;
     } catch (error) {
-        console.error('Erro ao fazer fetch:', error);
         throw error; 
     }
   

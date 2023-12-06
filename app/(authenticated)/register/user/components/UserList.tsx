@@ -4,8 +4,9 @@ import { TableCustom } from "@/app/(authenticated)/components/table";
 import { ParamsProps } from "../types";
 import ButtonActive from "./ButtonActive";
 import { getProfiles } from "../actions/userAction";
-import ButtonEdit from "./ButtonEdit";
+import { FiEdit } from "react-icons/fi";
 import UserEditForm from "./UserEditForm";
+
 
 export default async function UserList({ searchParams } : ParamsProps) {
 
@@ -59,9 +60,12 @@ export default async function UserList({ searchParams } : ParamsProps) {
           let user = JSON.parse(row);
         return (
         <TableCustom.Actions>
-     
-        <ButtonEdit id={user.id}/>
-     
+        <TableCustom.Button
+          url="/register/user?id=1&showModalForm=true"
+          color={'edit'}
+        >
+          <TableCustom.Icon icon={ <FiEdit color={'white'}  size={16}/> }/>
+        </TableCustom.Button> 
           <ButtonActive status={user.status} />
         </TableCustom.Actions>) 
         }}

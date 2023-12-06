@@ -1,14 +1,13 @@
 
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userFormSchema } from "./schema";
 import { useModalStore } from "@/app/(authenticated)/components/modal/stores/useModalStore";
-import { UserDataProps, ProfileProps, SelectProfileOptionsProps, UserFormData, UpdateSatusProps } from "../types";
-import apiInstance from "@/app/services/api";
+import { UserDataProps, UserFormData, UpdateSatusProps } from "../types";
 import { getClientSideApiInstance } from "@/app/services/getClientSideApiInstance";
 
 

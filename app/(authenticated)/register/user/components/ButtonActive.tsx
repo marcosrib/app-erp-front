@@ -8,7 +8,7 @@ type Props = {
 export default function ButtonActive({ status }: Props) {
     return (
         <TableCustom.Button
-          onClick={() => null}
+         url=""
           color={status ? 'active' : 'inactive'}>
          <TableCustom.Icon icon={status ? <FaUnlock color={'white'} size={16}/> : <FaLock color={'white'} size={16}/>}/>
         </TableCustom.Button> 
