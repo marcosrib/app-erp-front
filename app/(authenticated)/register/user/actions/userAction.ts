@@ -3,6 +3,7 @@
 import { fetchApi } from "@/app/services/fetchApi";
 import { ProfileProps, SelectProfileOptionsProps, UserEditFormTypeSchema, UserEditProps } from "../types";
 import { getHeaders } from "@/app/(authenticated)/actions/headers";
+import { revalidatePath } from "next/cache";
 interface Profiles {
   id: string,
   name: string
@@ -75,11 +76,17 @@ export async function updateUser(user: UserEditFormTypeSchema, id: number | unde
     profiles: [renamedProfile],
   };
 
-  const respose = await fetchApi(`api/user/${id}`, {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify(userWithProfilesArray)
-  })
+  try {
+    await fetchApi(`api/user/${id}`, {
+      method: 'PUT',
+      headers: headers,
+      body: JSON.stringify(userWithProfilesArray)
+    })
+    revalidatePath('/register/user')
+  } catch (error) {
+    throw error;
+  }
+ 
 }
 
 export async function getUserById(id: number): Promise<UserEditProps> {

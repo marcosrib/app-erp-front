@@ -1,22 +1,19 @@
 'use client'
 
-import Select from 'react-select';
-import clsx from 'clsx'
 import { CheckBox } from "@/app/(authenticated)/components/checkbox";
 import { Modal } from "@/app/(authenticated)/components/modal";
 import { Input } from "@/app/components/input";
-import { useSearchParams } from 'next/navigation'
 import { Controller, useForm } from "react-hook-form";
 import Button from '@/app/(authenticated)/components/button/Button';
 import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { userEditSchema } from '../schemas/userEditSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SelectProfileOptionsProps, UserEditFormTypeSchema, UserEditProps } from '../types';
-import { getUserById, updateUser } from '../actions/userAction';
+import { SelectProfileOptionsProps, UserEditFormTypeSchema} from '../types';
 import { toast } from 'react-toastify';
-import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import CustomSelect from '@/app/(authenticated)/components/select/CustomSelect';
+import { useUserStore } from '../store/useUserStore';
+import { useEffect } from 'react';
+import { updateUser } from "../actions/userAction";
 
 
 type Props = {
@@ -24,14 +21,14 @@ type Props = {
 }
 
 export default function UserEditForm({ profile }: Props) {
-  const { toggleModal } = useModalStore();
-  const searchParams = useSearchParams();
-  const userId = searchParams.get('id');
+  const {toggleModal} = useModalStore();
+  const { userEdit: user } = useUserStore();
 
   const {
     control, 
     register,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<UserEditFormTypeSchema>({
     mode: 'onBlur',
@@ -39,33 +36,32 @@ export default function UserEditForm({ profile }: Props) {
   });
 
 
-  const { data: user, isError, error } = useQuery({
-      queryKey: ['usersById', userId],
-      queryFn: () => {
-      if (userId) {
-        return fetchUserById(Number(userId));
-      } 
-        return Promise.resolve(null);
-      },
-      retry: 0,
-    }) 
-
- async function fetchUserById(id:  number) {
-   return getUserById(id);
-  }
-
-console.log('ero vazio',isError, error);
+console.log('ero vazio', user);
 
 
  function submitUserForm(data: UserEditFormTypeSchema) {
-    console.log('rjojojj');
-    
     try {
-      updateUser(data, user?.id);
+      updateUser(data, user.id);
+      toggleModal();
     } catch (error) {
       toast.error('Erro ao atualizar o usuário');
     }
   }
+
+  useEffect(() => {  
+    setValue('name', user.name)
+    setValue('email', user.email)
+    setValue('status', user.status)
+    if (user?.profiles && user.profiles.length > 0) {
+      setValue('profile', {
+          value: user.profiles[0]?.id,
+          label: user.profiles[0]?.name
+      })
+    } else {
+      setValue('profile', { value: 0 , label: ''})
+    }
+ })
+  
     return (
       <>
       <Modal.Root 
@@ -109,7 +105,7 @@ console.log('ero vazio',isError, error);
          label="Perfis" />
         <CustomSelect   
         name='profile'
-        options={[{ value: 0, label: 'Nenhum perfil encontrado'}]}
+        options={profile}
         control={control}
         />
       <Input.LabelError 

@@ -1,21 +1,19 @@
 import React from "react";
 import { TableCustom } from "@/app/(authenticated)/components/table";
-
-import { ParamsProps } from "../types";
+import { ParamsProps, UserEditProps } from "../types";
 import ButtonActive from "./ButtonActive";
 import { getProfiles } from "../actions/userAction";
-import { FiEdit } from "react-icons/fi";
 import UserEditForm from "./UserEditForm";
+import ButtonEdit from "./ButtonEdit";
 
-
-export default async function UserList({ searchParams } : ParamsProps) {
+export default async function UserList({ searchParams} : ParamsProps) {
 
     const profile = await getProfiles();
+    console.log(profile);
     
-    async function teste(data: FormData) {
+    
+    const handleDeliteUser = async (data: UserEditProps )=> {
       'use server'
-     console.log('daa',data);
-     
     }
 
     return ( 
@@ -60,19 +58,14 @@ export default async function UserList({ searchParams } : ParamsProps) {
           let user = JSON.parse(row);
         return (
         <TableCustom.Actions>
-        <TableCustom.Button
-          url="/register/user?id=1&showModalForm=true"
-          color={'edit'}
-        >
-          <TableCustom.Icon icon={ <FiEdit color={'white'}  size={16}/> }/>
-        </TableCustom.Button> 
+          <ButtonEdit user={user}/>
           <ButtonActive status={user.status} />
         </TableCustom.Actions>) 
         }}
         </TableCustom.Column>
         </TableCustom.Body>
       </TableCustom.Root>
-      <UserEditForm profile={profile} />
+      <UserEditForm profile={profile}  />
       </>
     )
 }

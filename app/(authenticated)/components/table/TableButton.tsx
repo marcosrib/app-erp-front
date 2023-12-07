@@ -1,9 +1,9 @@
-import Link from "next/link"
-import { ReactNode, use } from "react"
+'use client'
+import { ComponentProps, ReactNode } from "react"
 import { tv, VariantProps } from "tailwind-variants"
 
 const button = tv({
-    base: 'inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-green-800 rounded-lg hover:bg-gray-300 hover:text-gray-900 hover:scale-[1.02] transition-all',
+    base: 'w-max h-max inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-green-800 rounded-lg hover:bg-gray-300 hover:text-gray-900 hover:scale-[1.02] transition-all',
     variants: {
         color: {
           edit: 'bg-cyan-700 hover:bg-cyan-800',
@@ -16,16 +16,22 @@ const button = tv({
 
 type Props = VariantProps<typeof button> & {
     label?: string,
-    url: string
-    children: ReactNode
+    children: ReactNode,
+    data: any,
+    onClick: (data: any) => Promise<void>
 }
 
-export function TableButton({label,color, children, url}: Props) {
+export function TableButton({label,color, children, data, onClick, ...props}: Props) {
+
     return (
-        <Link href={url}
-         className={button({ color })}
-        >
-         {children}{label}
-       </Link>
+            <button 
+                className={button({ color })}
+                type="button"
+                {...props} 
+                onClick={() => onClick(data)}
+            > 
+                {children}{label}
+            </button>
+  
     )
 }
