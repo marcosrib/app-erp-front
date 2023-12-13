@@ -2,7 +2,6 @@
 
 import { useModalStore } from "@/app/(authenticated)/components/modal/stores/useModalStore";
 import { TableCustom } from "@/app/(authenticated)/components/table";
-import Link from "next/link";
 import { FiEdit } from "react-icons/fi";
 import { useUserStore } from "../store/useUserStore";
 interface Props {

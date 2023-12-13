@@ -1,23 +1,14 @@
-import React from "react";
 import { TableCustom } from "@/app/(authenticated)/components/table";
-import { ParamsProps, UserEditProps } from "../types";
+import { ParamsProps } from "../types";
 import ButtonActive from "./ButtonActive";
-import { getProfiles } from "../actions/userAction";
-import UserEditForm from "./UserEditForm";
 import ButtonEdit from "./ButtonEdit";
+import UserSearch from "./UserSearch";
 
 export default async function UserList({ searchParams} : ParamsProps) {
 
-    const profile = await getProfiles();
-    console.log(profile);
-    
-    
-    const handleDeliteUser = async (data: UserEditProps )=> {
-      'use server'
-    }
-
     return ( 
       <>
+        <UserSearch searchParams={searchParams}/> 
         <TableCustom.Root>
         <TableCustom.Body
          url="api/user/" 
@@ -59,13 +50,12 @@ export default async function UserList({ searchParams} : ParamsProps) {
         return (
         <TableCustom.Actions>
           <ButtonEdit user={user}/>
-          <ButtonActive status={user.status} />
+          <ButtonActive data={user} page={searchParams?.page} />
         </TableCustom.Actions>) 
         }}
         </TableCustom.Column>
         </TableCustom.Body>
       </TableCustom.Root>
-      <UserEditForm profile={profile}  />
       </>
     )
 }

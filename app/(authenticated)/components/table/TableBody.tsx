@@ -1,6 +1,4 @@
 import React, { ReactNode } from 'react';
-import { getServerSession } from 'next-auth';
-import { nextAuthOptions } from '@/app/api/auth/[...nextauth]/route';
 import Pagination from './Pagination';
 import { getUsers } from '../../register/user/actions/userAction';
 
@@ -12,23 +10,19 @@ type Props = {
 
 export async function TableBody({ children, url, params}: Props) {
 
-  const session = await getServerSession(nextAuthOptions);
-
   const initialParams = {
     page: 1,
     size: 5,
     ...params
   }
 
-
   const paramsUrl = new URLSearchParams(initialParams).toString(); 
   
-  const data = await getUsers(`${url}?${paramsUrl}`, session?.accessToken);
+  const data = await getUsers(`${url}?${paramsUrl}`);
    
  if(!data) {
-   return<p className='my-6'>Dados não encotrado</p>;
+   return <p className='my-6'>Dados não encotrado</p>;
  }
-
   
   const header = React.Children.toArray(children)[0];
  

@@ -22,7 +22,7 @@ export async function fetchApi<T = unknown>(input: RequestInfo | URL, init?: Req
             const errorData = await response.json();
             throw  errorData;
         }
-        if (response.status === 204) return;
+        if (response.status === 204  || response.status === 201) return;
         
         const result = await response.json();
        

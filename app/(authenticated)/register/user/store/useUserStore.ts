@@ -5,6 +5,7 @@ import { UserEditProps } from '../types';
 type StoreProps = {
     userEdit: UserEditProps,
     addUserEdit: (user: UserEditProps) => void;
+    resetDataForm: () => void;
 }
 
 export const useUserStore = create<StoreProps>((set) => ({
@@ -13,4 +14,5 @@ export const useUserStore = create<StoreProps>((set) => ({
     set((state) => ({
       userEdit: { ...state.userEdit, ...user }, 
     })),
+    resetDataForm: () => set({ userEdit: {} as UserEditProps })
 }))

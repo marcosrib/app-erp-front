@@ -9,9 +9,7 @@ type Props = {
 }
 
 export function ModalRoot( { title, children }: Props ) { 
-  const { isOpen, toggleModal } = useModalStore();
-  console.log('isO]', isOpen);
-  
+  const { isOpen, toggleModal } = useModalStore(); 
 
     return (
         <>

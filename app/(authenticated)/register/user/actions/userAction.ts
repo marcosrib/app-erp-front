@@ -1,9 +1,11 @@
 'use server'
 
 import { fetchApi } from "@/app/services/fetchApi";
-import { ProfileProps, SelectProfileOptionsProps, UserEditFormTypeSchema, UserEditProps } from "../types";
+import { ProfileProps, SelectProfileOptionsProps, UserCreateTypeSchema, UserEditFormTypeSchema, UserEditProps } from "../types";
 import { getHeaders } from "@/app/(authenticated)/actions/headers";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+
+
 interface Profiles {
   id: string,
   name: string
@@ -27,7 +29,7 @@ interface UserData {
 }
 
 
-export async function getUsers(url: string, token?: string) {
+export async function getUsers(url: string)  {
   try {
     const headers = await getHeaders();
     return await fetchApi<UserData>(url, {
@@ -63,6 +65,40 @@ export async function getProfiles(): Promise<SelectProfileOptionsProps[]> {
      
 }
 
+export async function createUser(user: UserCreateTypeSchema) {
+  const headers = await getHeaders();
+  const { profile, ...userWithoutProfile } = user;
+  const renamedProfile = {
+      id: profile.value,
+      name: profile.label,
+    };
+  
+  const userWithProfilesArray = {
+    ...userWithoutProfile,
+    profiles: [renamedProfile],
+  };
+
+  try {
+    await fetchApi('api/user/', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(userWithProfilesArray)
+    })
+    revalidatePath('/register/user')
+    return { 
+      status: 201,
+      message : 'Usuário cadastrado com sucesso'
+    }
+  } catch (error) {
+    const err = error as any;
+    return { 
+      stauts: err.status,
+      message : 'Erro ao cadastrar usuário:' + err.message
+    }
+  }
+ 
+}
+
 export async function updateUser(user: UserEditFormTypeSchema, id: number | undefined) {
   const headers = await getHeaders();
   const { profile, ...userWithoutProfile } = user;
@@ -84,7 +120,35 @@ export async function updateUser(user: UserEditFormTypeSchema, id: number | unde
     })
     revalidatePath('/register/user')
   } catch (error) {
-    throw error;
+    const err = error as any;
+    return { 
+      stauts: err.status,
+      message : 'Erro ao cadastrar usuário:' + err.message
+    }
+  }
+ 
+}
+
+export async function updateStatusUser(status: boolean, id: number | undefined) {
+  const headers = await getHeaders();
+  const statuMessage = status ? 'ativado' : 'inativado'
+  try {
+    await fetchApi(`api/user/${id}`, {
+      method: 'PATCH',
+      headers: headers,
+      body: JSON.stringify({ status })
+    })
+    //revalidateTag('table-itens')
+    return { 
+      status: 201,
+      message : `Usuário ${statuMessage} com sucesso!`
+    }
+  } catch (error) {
+    const err = error as any;
+    return { 
+      stauts: err.status,
+      message : 'Erro ao atualizar status do usuário:' + err.message
+    }
   }
  
 }

@@ -2,15 +2,41 @@
 
 import { TableCustom } from "@/app/(authenticated)/components/table";
 import { FaUnlock, FaLock } from "react-icons/fa";
+import { updateStatusUser } from "../actions/userAction";
+import { toast } from "react-toastify";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 type Props = {
- status: boolean
+ data: any,
+ page?: string | undefined
 }
-export default function ButtonActive({ status }: Props) {
+export default function ButtonActive({ data, page }: Props) {
+    const router = useRouter();
+    const searcheParams = useSearchParams();
+    const pathName = usePathname();
+
+    async function handleUpdateStatusUser(data: any): Promise<void> {
+        const status = !data.status;
+        const updateStatusResult =  await updateStatusUser(status, data.id);
+        if(updateStatusResult.status !== 201) {
+            toast.error(updateStatusResult.message);
+            return
+       }
+       const params = new URLSearchParams(searcheParams.toString());
+      
+        const pageParam = page || '1';
+        params.set('isActive', `${status}-${data.id}` ), 
+        params.set('page', pageParam)
+      
+        router.push(`${pathName}/?${params.toString()}`);
+    
+       toast.success(updateStatusResult.message)
+    }
     return (
         <TableCustom.Button
-         url=""
-          color={status ? 'active' : 'inactive'}>
-         <TableCustom.Icon icon={status ? <FaUnlock color={'white'} size={16}/> : <FaLock color={'white'} size={16}/>}/>
+          data={data}
+          onClick={handleUpdateStatusUser}
+          color={data.status ? 'active' : 'inactive'}>
+         <TableCustom.Icon icon={data.status ? <FaUnlock color={'white'} size={16}/> : <FaLock color={'white'} size={16}/>}/>
         </TableCustom.Button> 
         
     )

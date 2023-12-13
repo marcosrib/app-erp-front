@@ -17,7 +17,7 @@ import { updateUser } from "../actions/userAction";
 
 
 type Props = {
- profile: SelectProfileOptionsProps[],
+ profile: SelectProfileOptionsProps[] | undefined,
 }
 
 export default function UserEditForm({ profile }: Props) {
@@ -35,16 +35,12 @@ export default function UserEditForm({ profile }: Props) {
     resolver: zodResolver(userEditSchema)
   });
 
-
-console.log('ero vazio', user);
-
-
  function submitUserForm(data: UserEditFormTypeSchema) {
     try {
       updateUser(data, user.id);
       toggleModal();
     } catch (error) {
-      toast.error('Erro ao atualizar o usuário');
+      toast.error('Erro ao atualizar o usuário.');
     }
   }
 
