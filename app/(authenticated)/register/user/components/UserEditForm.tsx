@@ -19,7 +19,7 @@ import { generateIdRevalidate } from "@/app/utils/revalidate";
 
 
 type Props = {
- profile: SelectProfileOptionsProps[] | undefined,
+ profile: SelectProfileOptionsProps[],
 }
 
 export default function UserEditForm({ profile }: Props) {

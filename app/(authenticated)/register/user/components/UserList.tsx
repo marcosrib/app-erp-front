@@ -19,7 +19,7 @@ export default async function UserList({ searchParams} : ParamsProps) {
           <TableCustom.HeaderContent title= 'Nome'/>
           <TableCustom.HeaderContent title= 'Email'/>
           <TableCustom.HeaderContent title= 'Perfil'/>
-          <TableCustom.HeaderContent title= 'actions'/>
+          <TableCustom.HeaderContent title= 'Ações'/>
         </TableCustom.Header>
         <TableCustom.Column field="id">
         {(field) => {

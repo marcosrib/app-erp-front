@@ -1,6 +1,6 @@
 'use client'
 import Button from "@/app/(authenticated)/components/button/Button";
-import { FormSearch } from "@/app/(authenticated)/components/formSearch";
+import { Form } from "@/app/(authenticated)/components/form";
 import { Input } from "@/app/components/input";
 import { MdAdd } from "react-icons/md";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
@@ -55,8 +55,8 @@ export default function UserSearch({ searchParams }: ParamsProps ) {
       reset()
     }
     return (
-        <FormSearch.Root  onSubmit={handleSubmit(handleSearchSubmit)}>
-        <FormSearch.InputContainer>
+        <Form.Root title="Usuários" onSubmit={handleSubmit(handleSearchSubmit)}>
+        <Form.InputContainer>
             <Input.Root>
               <Input.Label label="E-mail"/>
               <Input.Input {...registerSearch('email')} />
@@ -64,8 +64,8 @@ export default function UserSearch({ searchParams }: ParamsProps ) {
               helperText={errors.email?.message}
             />
             </Input.Root>
-        </FormSearch.InputContainer>
-        <FormSearch.Buttons>
+        </Form.InputContainer>
+        <Form.Buttons>
         <Button
            type='submit' 
            color="search" 
@@ -85,7 +85,7 @@ export default function UserSearch({ searchParams }: ParamsProps ) {
            onClick={handleOpenModal}
           />
          
-        </FormSearch.Buttons>
-      </FormSearch.Root>
+        </Form.Buttons>
+      </Form.Root>
     )
 }

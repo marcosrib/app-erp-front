@@ -33,8 +33,8 @@ export default function Sidbar() {
               <Nav.IconLabel label='Usuario'/>
             </Nav.Link>
             <Nav.Link 
-              route='/register/profile'
-              active={path ==='/register/profile'}
+              route='/register/permission'
+              active={path ==='/register/permission'}
               >
               <Nav.IconLabel label='Pefil'/>
             </Nav.Link>

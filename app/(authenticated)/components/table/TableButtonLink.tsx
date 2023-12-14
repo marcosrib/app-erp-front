@@ -1,4 +1,5 @@
 'use client'
+import Link from "next/link"
 import { ReactNode } from "react"
 import { tv, VariantProps } from "tailwind-variants"
 
@@ -7,31 +8,26 @@ const button = tv({
     variants: {
         color: {
           edit: 'bg-cyan-700 hover:bg-cyan-800',
-          active: 'bg-teal-700 hover:bg-teal-800',
-          inactive: 'bg-red-700 hover:bg-red-800'
         }
         
     }
 })
 
 type Props = VariantProps<typeof button> & {
-    label?: string,
-    children: ReactNode,
-    data: any,
-    onClick: (data: any) => Promise<void>
+    label?: string;
+    children: ReactNode;
+    href: string;
 }
 
-export function TableButton({label,color, children, data, onClick, ...props}: Props) {
+export function TableButtonLink({label,color, children, href}: Props) {
 
     return (
-            <button 
+            <Link 
+                href={href}
                 className={button({ color })}
-                type="button"
-                {...props} 
-                onClick={() => onClick(data)}
             > 
                 {children}{label}
-            </button>
+            </Link>
   
     )
 }

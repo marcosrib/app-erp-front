@@ -23,7 +23,7 @@ export default function ButtonEdit({user}: Props) {
           onClick={handleEditUser}
           color={'edit'}
         >
-          <TableCustom.Icon icon={ <FiEdit color={'white'}  size={16}/> }/>
+        <TableCustom.Icon icon={ <FiEdit color={'white'}  size={16}/> }/>
         </TableCustom.Button> 
   )
 
