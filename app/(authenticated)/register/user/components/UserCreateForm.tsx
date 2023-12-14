@@ -12,6 +12,8 @@ import { userCreateSchema } from '../schemas/userCreateSchema';
 import { createUser } from '../actions/userAction';
 import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { toast } from 'react-toastify';
+import { generateIdRevalidate } from '@/app/utils/revalidate';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 type Props = {
   profile: SelectProfileOptionsProps[] | undefined,
@@ -19,9 +21,14 @@ type Props = {
 
 export default function UserCreateForm({profile}: Props) {
   const { toggleModal } = useModalStore();
+  const router = useRouter();
+  const searcheParams = useSearchParams();
+  const pathName = usePathname();
+
   const {
     control, 
     register,
+    reset,
     handleSubmit,
     formState: { errors }
   } = useForm<UserCreateTypeSchema>({
@@ -31,6 +38,7 @@ export default function UserCreateForm({profile}: Props) {
 
     async function submitUserForm(data: UserCreateTypeSchema) {
 
+      
        const userResult = await createUser(data);
        if(userResult.status !== 201) {
         toast.error(userResult.message);
@@ -38,6 +46,14 @@ export default function UserCreateForm({profile}: Props) {
        }
        toggleModal();
        toast.success(userResult.message);
+       const params = new URLSearchParams(searcheParams.toString());
+
+       const rev_id =  generateIdRevalidate();
+       params.set('page', '1');
+       params.set('rev', `${rev_id}`);
+     
+       router.push(`${pathName}/?${params.toString()}`);
+       reset();
     }
     return (
         <>

@@ -14,6 +14,8 @@ import CustomSelect from '@/app/(authenticated)/components/select/CustomSelect';
 import { useUserStore } from '../store/useUserStore';
 import { useEffect } from 'react';
 import { updateUser } from "../actions/userAction";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { generateIdRevalidate } from "@/app/utils/revalidate";
 
 
 type Props = {
@@ -23,6 +25,9 @@ type Props = {
 export default function UserEditForm({ profile }: Props) {
   const {toggleModal} = useModalStore();
   const { userEdit: user } = useUserStore();
+  const router = useRouter();
+  const searcheParams = useSearchParams();
+  const pathName = usePathname();
 
   const {
     control, 
@@ -35,13 +40,24 @@ export default function UserEditForm({ profile }: Props) {
     resolver: zodResolver(userEditSchema)
   });
 
- function submitUserForm(data: UserEditFormTypeSchema) {
-    try {
-      updateUser(data, user.id);
+ async function submitUserForm(data: UserEditFormTypeSchema) {
+ 
+     const updateUserResult = await updateUser(data, user.id);
+      if(updateUserResult.status !== 204) {
+        toast.error(updateUserResult.message);
+        return
+      }
       toggleModal();
-    } catch (error) {
-      toast.error('Erro ao atualizar o usuário.');
-    }
+      toast.success(updateUserResult.message);
+      const params = new URLSearchParams(searcheParams.toString());
+
+      const pageParam = params.get('page') || '1';
+      const rev_id =  generateIdRevalidate();
+      params.set('page', pageParam)
+      params.set('rev', `${rev_id}`), 
+    
+      router.push(`${pathName}/?${params.toString()}`);
+
   }
 
   useEffect(() => {  

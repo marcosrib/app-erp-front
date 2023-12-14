@@ -5,6 +5,7 @@ import { FaUnlock, FaLock } from "react-icons/fa";
 import { updateStatusUser } from "../actions/userAction";
 import { toast } from "react-toastify";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { generateIdRevalidate } from "@/app/utils/revalidate";
 type Props = {
  data: any,
  page?: string | undefined
@@ -24,8 +25,9 @@ export default function ButtonActive({ data, page }: Props) {
        const params = new URLSearchParams(searcheParams.toString());
       
         const pageParam = page || '1';
-        params.set('isActive', `${status}-${data.id}` ), 
+        const rev_id =  generateIdRevalidate();
         params.set('page', pageParam)
+        params.set('rev', `${rev_id}`), 
       
         router.push(`${pathName}/?${params.toString()}`);
     
