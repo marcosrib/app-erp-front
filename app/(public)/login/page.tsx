@@ -5,8 +5,11 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Input } from '@/app/components/input/';
-import { signIn } from 'next-auth/react';
+import { signIn  } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import Spinner from '@/app/components/loading/Spinner';
+import { useState } from 'react';
 
 const loginFormSchema = z.object({
   email: z.string()
@@ -19,6 +22,7 @@ const loginFormSchema = z.object({
 type CreateUserFormData = z.infer<typeof loginFormSchema>
 
 export default function Signin() {
+   const [ isLoading, setIsLoading ] = useState(false);
    const {
     register,
     handleSubmit,
@@ -27,17 +31,28 @@ export default function Signin() {
     resolver: zodResolver(loginFormSchema),
 
   })
-  //const { signIn } = useContext(AuthContext);
+
   const router =  useRouter();
- 
 
   async function handleSignIn({ email, password }: CreateUserFormData) {
-    const result = await signIn('credentials', { email, password,redirect: false})
+    setIsLoading(true);
+   
+    const result = await signIn('credentials', { email, password,redirect: false});
+  
+  
     if(result?.error) {
+      if (result?.status === 401) {
+        toast.error('Usuário ou senha inválidos');
+      } else {
+        toast.error('Erro ao realizar login');
+      }
+      setIsLoading(false);
       return;
     }
     router.replace('/dashboard');
   }
+  
+  
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -71,9 +86,10 @@ export default function Signin() {
           <div>
             <button
               type="submit"
+               disabled={isLoading}
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              Login
+              { isLoading ? <Spinner /> : 'Login' }
             </button>
           </div>
         </form>

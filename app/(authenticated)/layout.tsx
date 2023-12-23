@@ -1,7 +1,4 @@
-
-import { ToastContainer } from 'react-toastify';
 import AppProviders from './providers'
-import 'react-toastify/dist/ReactToastify.css'
 
 import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
@@ -25,7 +22,6 @@ export default async function PrivateLayout({
 
   return (
     <>
-        <ToastContainer />
         <main className="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
           <div className="flex items-start justify-between">
             <Sidebar />

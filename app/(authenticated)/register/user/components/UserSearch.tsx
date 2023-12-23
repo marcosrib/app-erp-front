@@ -84,7 +84,6 @@ export default function UserSearch({ searchParams }: ParamsProps ) {
            label="Adicionar"
            onClick={handleOpenModal}
           />
-         
         </Form.Buttons>
       </Form.Root>
     )
