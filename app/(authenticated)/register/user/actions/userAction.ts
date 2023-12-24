@@ -84,7 +84,6 @@ export async function createUser(user: UserCreateTypeSchema) {
       headers: headers,
       body: JSON.stringify(userWithProfilesArray)
     })
-    revalidatePath('/register/user')
     return { 
       status: 201,
       message : 'Usuário cadastrado com sucesso'

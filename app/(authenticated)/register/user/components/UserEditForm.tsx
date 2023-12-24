@@ -48,7 +48,7 @@ export default function UserEditForm({ profile }: Props) {
         return
       }
       toggleModal();
-      toast.success(updateUserResult.message);
+     
       const params = new URLSearchParams(searcheParams.toString());
 
       const pageParam = params.get('page') || '1';
@@ -57,7 +57,7 @@ export default function UserEditForm({ profile }: Props) {
       params.set('rev', `${rev_id}`), 
     
       router.push(`${pathName}/?${params.toString()}`);
-
+      toast.success(updateUserResult.message);
   }
 
   useEffect(() => {  
