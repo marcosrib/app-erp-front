@@ -14,9 +14,9 @@ export type AbilityIdsProps = {
     id: number;
 }
 
-export type PermissionsFormDataProps = {
-    name: string;
-    abilities: AbilitiesProps[];
-}
+export type SelectedAbilitiesProps = {
+    id: number;
+    checked: boolean;
+   }
 
 export type PermissionsTypeSchema = z.infer<typeof permissionsSchema>

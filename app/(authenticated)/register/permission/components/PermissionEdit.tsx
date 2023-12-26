@@ -7,7 +7,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { MdAdd } from 'react-icons/md';
 import TextArea from '@/app/(authenticated)/components/textarea/TextArea';
 import Card from '@/app/(authenticated)/components/card/Card';
-import { PermissionsProps, PermissionsTypeSchema } from '../types';
+import {
+  PermissionsProps,
+  PermissionsTypeSchema,
+  SelectedAbilitiesProps,
+} from '../types';
 import { permissionsSchema } from '../schema';
 
 import { updatePermissions } from '../actions/permissionsAction';
@@ -15,6 +19,10 @@ import { updatePermissions } from '../actions/permissionsAction';
 type Props = {
   permissions: PermissionsProps[];
   profileId: number;
+};
+
+type AbilitiesProps = {
+  abilities: SelectedAbilitiesProps;
 };
 
 export default function PermissionEdit({ permissions, profileId }: Props) {
@@ -32,22 +40,23 @@ export default function PermissionEdit({ permissions, profileId }: Props) {
   });
 
   function handleUpdadePerrmissionSubmit(data: PermissionsTypeSchema) {
-    console.log('data', data);
     const formData = getValues();
-    const checkedIDs = formData.permissions.reduce((acc, item) => {
-      const checkedAbilities = item.abilities
-        .filter((ability) => ability.checked)
-        .map((ability) => ability.id);
-      return [...acc, ...checkedAbilities];
-    }, []);
-    const arrayOfObjects = checkedIDs.map((number) => ({ id: number }));
+    console.log('form data', formData);
+
+    const checkedAbilities = formData.permissions.flatMap(
+      (item: AbilitiesProps) =>
+        item.abilities
+          .filter((ability: SelectedAbilitiesProps) => ability.checked)
+          .map((ability: SelectedAbilitiesProps) => ({ id: ability.id }))
+    );
+    console.log(checkedAbilities);
 
     const permission = {
       name: data.name,
-      abilities: arrayOfObjects,
+      abilities: checkedAbilities,
     };
 
-    updatePermissions(`api/profile/${profileId}`, permission);
+    // updatePermissions(`api/profile/${profileId}/`, permission);
   }
   console.log('erros', errors);
 
@@ -85,14 +94,17 @@ export default function PermissionEdit({ permissions, profileId }: Props) {
               };
 
               return (
-                <div key={abilityIndex}>
+                <div className="flex items-center" key={abilityIndex}>
                   <Controller
-                    name={`permissions[${index}].abilities[${abilityIndex}]`}
+                    name={
+                      `permissions[${index}].abilities[${abilityIndex}]` as any
+                    }
                     control={control}
                     defaultValue={defaultValue}
                     render={({ field }) => (
                       <input
                         type="checkbox"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         defaultChecked={defaultValue.checked}
                         onChange={(e) => {
                           field.onChange({
@@ -103,7 +115,9 @@ export default function PermissionEdit({ permissions, profileId }: Props) {
                       />
                     )}
                   />
-                  <label>{ability.name}</label>
+                  <label className="ml-2 font-medium text-gray-700 dark:text-gray-300">
+                    {ability.name}
+                  </label>
                 </div>
               );
             })}

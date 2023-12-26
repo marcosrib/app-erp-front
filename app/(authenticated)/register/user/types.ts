@@ -1,5 +1,4 @@
 import { z } from "zod"
-import { userFormSchema } from "./hooks/schema"
 import { userEditSchema } from "./schemas/userEditSchema"
 import { userCreateSchema } from "./schemas/userCreateSchema"
 
@@ -20,11 +19,11 @@ export type UpdateSatusProps = {
 }
   
 export type UserDataProps = {
-    name: string,
-    email: string,
-    password: string,
-    status: boolean,
-    profiles: ProfileProps[]
+  name: string,
+  email: string,
+  password: string,
+  status: boolean,
+  profiles: ProfileProps[]
 }
 
 export type UserEditProps = {

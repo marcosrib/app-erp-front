@@ -23,6 +23,8 @@ export async function getPermissions(url: string)  {
 
 export async function updatePermissions(url: string, permission: PermissionsProps)  {
   try {
+    console.log(permission);
+    
     const headers = await getHeaders();
     await fetchApi<Props>(url, {
         method: 'PUT',
