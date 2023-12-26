@@ -1,18 +1,16 @@
-
-import { InputHTMLAttributes, forwardRef } from "react";
+import { InputHTMLAttributes, forwardRef } from 'react';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
 export const InputTag = forwardRef<HTMLInputElement, InputProps>(
   ({ type = 'text', name = '', ...props }, ref) => {
-  
     return (
       <input
         type={type}
         ref={ref}
         name={name}
         {...props}
-             className="border
+        className="border
          border-gray-300 
          text-gray-900
          sm:text-sm 

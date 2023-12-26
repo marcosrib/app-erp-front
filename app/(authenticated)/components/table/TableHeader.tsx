@@ -1,15 +1,13 @@
-import React, { ReactNode } from "react"
+import React, { ReactNode } from 'react';
 
 type Props = {
-    children: ReactNode
-}
+  children: ReactNode;
+};
 
-export function TableHeader({children}: Props) {
-    return (
-        <thead className="bg-white">
-        <tr>
-         {children}
-        </tr>
-      </thead>
-    ) 
+export function TableHeader({ children }: Props) {
+  return (
+    <thead className="bg-white">
+      <tr>{children}</tr>
+    </thead>
+  );
 }

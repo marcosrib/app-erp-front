@@ -1,13 +1,13 @@
-import { InputActions } from './InputActions'
-import { InputLabel } from './InputLabel'
-import { InputLabelError } from './InputLabelError'
-import { InputRoot } from './InputRoot'
-import { InputTag } from './InputTag'
+import { InputActions } from './InputActions';
+import { InputLabel } from './InputLabel';
+import { InputLabelError } from './InputLabelError';
+import { InputRoot } from './InputRoot';
+import { InputTag } from './InputTag';
 
 export const Input = {
-    Root: InputRoot,
-    Label: InputLabel,
-    Input: InputTag,
-    LabelError: InputLabelError,
-    Actions: InputActions
-}
+  Root: InputRoot,
+  Label: InputLabel,
+  Input: InputTag,
+  LabelError: InputLabelError,
+  Actions: InputActions,
+};

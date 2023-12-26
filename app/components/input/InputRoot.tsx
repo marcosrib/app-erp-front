@@ -1,13 +1,9 @@
-import { ReactNode } from "react"
+import { ReactNode } from 'react';
 
 interface Props {
-  children: ReactNode 
+  children: ReactNode;
 }
 
-export function InputRoot({children}: Props) {
-    return (
-      <div className="mb-4">
-        {children}
-      </div>
-    )
+export function InputRoot({ children }: Props) {
+  return <div className="mb-4">{children}</div>;
 }

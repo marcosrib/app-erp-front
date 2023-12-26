@@ -1,14 +1,9 @@
-
-import { ReactNode } from "react"
+import { ReactNode } from 'react';
 
 type Props = {
-    field: 'combinedData' | string;
-   children: (rowData: any) => ReactNode;
-}
-export function TableBodyColumn({children, field}: Props) {
-    return (
-    <>
-    {children(field)}
-    </>
-    ) 
+  field: 'combinedData' | string;
+  children: (rowData: any) => ReactNode;
+};
+export function TableBodyColumn({ children, field }: Props) {
+  return <>{children(field)}</>;
 }

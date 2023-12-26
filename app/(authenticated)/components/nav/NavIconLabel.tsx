@@ -1,11 +1,11 @@
 type Props = {
-    label: string
-}
+  label: string;
+};
 
-export function NavIconLabel({label}: Props) {
-    return(
-        <>
-         <span className="mx-2 text-sm font-normal">{label}</span>
-        </>  
-    )
+export function NavIconLabel({ label }: Props) {
+  return (
+    <>
+      <span className="mx-2 text-sm font-normal">{label}</span>
+    </>
+  );
 }

@@ -1,4 +1,4 @@
-import { ChangeEvent, InputHTMLAttributes, forwardRef } from "react";
+import { forwardRef } from 'react';
 
 type CheckBoxProps = {
   label: string;
@@ -6,18 +6,15 @@ type CheckBoxProps = {
   value?: boolean;
   defaultChecked?: boolean;
   onChange: (checked: boolean) => void;
-  
 };
 
 export const CheckBox = forwardRef<HTMLInputElement, CheckBoxProps>(
-  ({ label, name, value, defaultChecked, onChange , ...props }, ref) => {
-
+  ({ label, name, value, defaultChecked, onChange, ...props }, ref) => {
     return (
       <div className="flex">
         <div className="flex items-center h-5">
           <input
             ref={ref}
-          
             name={name}
             aria-describedby="helper-checkbox-text"
             type="checkbox"
@@ -28,7 +25,9 @@ export const CheckBox = forwardRef<HTMLInputElement, CheckBoxProps>(
           />
         </div>
         <div className="ml-2 text-sm">
-          <label className="font-medium text-gray-700 dark:text-gray-300">{label}</label>
+          <label className="font-medium text-gray-700 dark:text-gray-300">
+            {label}
+          </label>
         </div>
       </div>
     );

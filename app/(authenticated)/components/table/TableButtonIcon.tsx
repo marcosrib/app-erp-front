@@ -1,13 +1,9 @@
-import { ReactNode } from 'react'
+import { ReactNode } from 'react';
 
 type Props = {
-    icon: ReactNode
-}
+  icon: ReactNode;
+};
 
-export function TableButtonIcon({icon}:Props) {
-    return (
-        <span className="w-4">
-            {icon}
-        </span>
-    )
+export function TableButtonIcon({ icon }: Props) {
+  return <span className="w-4">{icon}</span>;
 }

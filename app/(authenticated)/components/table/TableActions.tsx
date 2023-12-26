@@ -1,14 +1,10 @@
-'use client'
-import { ReactNode } from "react"
+'use client';
+import { ReactNode } from 'react';
 
 type Props = {
-    children: ReactNode
-}
+  children: ReactNode;
+};
 
-export function TableActions({ children}: Props) {
-    return (
-        <td className="px-4 space-x-2 whitespace-nowrap">
-            {children}
-        </td>
-    )
+export function TableActions({ children }: Props) {
+  return <td className="px-4 space-x-2 whitespace-nowrap">{children}</td>;
 }

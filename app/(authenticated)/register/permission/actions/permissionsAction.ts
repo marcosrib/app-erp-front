@@ -21,13 +21,13 @@ export async function getPermissions(url: string)  {
   }
 }
 
-export async function updatePermissions(url: string, idsProfiles)  {
+export async function updatePermissions(url: string, permission: PermissionsProps)  {
   try {
     const headers = await getHeaders();
     await fetchApi<Props>(url, {
         method: 'PUT',
         headers: headers,
-        body: JSON.stringify(idsProfiles)
+        body: JSON.stringify(permission)
     })
     return { 
       status: 201,
