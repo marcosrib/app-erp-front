@@ -2,7 +2,7 @@
 
 import { fetchApi } from "@/app/services/fetchApi";
 import { getHeaders } from "@/app/(authenticated)/actions/headers";
-import { PermissionsProps } from "../types";
+import { PermissionDataProps, PermissionsProps } from "../types";
 
 type Props = {
  permissions: PermissionsProps
@@ -21,7 +21,7 @@ export async function getPermissions(url: string)  {
   }
 }
 
-export async function updatePermissions(url: string, permission: PermissionsProps)  {
+export async function updatePermissions(url: string, permission: PermissionDataProps)  {
   try {
     console.log(permission);
     

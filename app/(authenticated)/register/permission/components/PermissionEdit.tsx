@@ -8,11 +8,12 @@ import { MdAdd } from 'react-icons/md';
 import TextArea from '@/app/(authenticated)/components/textarea/TextArea';
 import Card from '@/app/(authenticated)/components/card/Card';
 import {
+  AbilityIdsProps,
   PermissionsProps,
   PermissionsTypeSchema,
   SelectedAbilitiesProps,
 } from '../types';
-import { permissionsSchema } from '../schema';
+import { permissionSchema } from '../schema';
 
 import { updatePermissions } from '../actions/permissionsAction';
 
@@ -21,44 +22,36 @@ type Props = {
   profileId: number;
 };
 
-type AbilitiesProps = {
-  abilities: SelectedAbilitiesProps;
-};
-
 export default function PermissionEdit({ permissions, profileId }: Props) {
   const {
     register: registerSearch,
     handleSubmit,
     setValue,
     reset,
-    getValues,
+
     control,
     formState: { errors },
   } = useForm<PermissionsTypeSchema>({
     mode: 'onBlur',
-    resolver: zodResolver(permissionsSchema),
+    resolver: zodResolver(permissionSchema),
   });
 
-  function handleUpdadePerrmissionSubmit(data: PermissionsTypeSchema) {
-    const formData = getValues();
+  function handleUpdadePerrmissionSubmit(formData: PermissionsTypeSchema) {
     console.log('form data', formData);
 
-    const checkedAbilities = formData.permissions.flatMap(
-      (item: AbilitiesProps) =>
-        item.abilities
-          .filter((ability: SelectedAbilitiesProps) => ability.checked)
-          .map((ability: SelectedAbilitiesProps) => ({ id: ability.id }))
-    );
-    console.log(checkedAbilities);
+    const checkedAbilities = formData.permissions.flatMap((item) =>
+      item.abilities
+        .filter((ability) => ability.checked)
+        .map((ability) => ({ id: ability.id }))
+    ) as AbilityIdsProps[];
 
     const permission = {
-      name: data.name,
+      name: formData.name,
       abilities: checkedAbilities,
     };
 
-    // updatePermissions(`api/profile/${profileId}/`, permission);
+    updatePermissions(`api/profile/${profileId}/`, permission);
   }
-  console.log('erros', errors);
 
   return (
     <>

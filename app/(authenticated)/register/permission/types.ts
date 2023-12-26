@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { permissionsSchema } from "./schema";
+import { permissionSchema } from "./schema";
 
 export type AbilitiesProps = {
- id: number;
- name: 'string',
- hasAbilityProfile: boolean;
+    id: number;
+    name: 'string',
+    hasAbilityProfile: boolean;
 }
 export type PermissionsProps = {
     name: string;
@@ -14,9 +14,9 @@ export type AbilityIdsProps = {
     id: number;
 }
 
-export type SelectedAbilitiesProps = {
-    id: number;
-    checked: boolean;
-   }
+export type PermissionDataProps = {
+    name: string;
+    abilities: AbilityIdsProps[];
+} 
 
-export type PermissionsTypeSchema = z.infer<typeof permissionsSchema>
+export type PermissionsTypeSchema = z.infer<typeof permissionSchema>
