@@ -7,15 +7,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { MdAdd } from 'react-icons/md';
 import TextArea from '@/app/(authenticated)/components/textarea/TextArea';
 import Card from '@/app/(authenticated)/components/card/Card';
-import {
-  AbilityIdsProps,
-  PermissionsProps,
-  PermissionsTypeSchema,
-  SelectedAbilitiesProps,
-} from '../types';
+import { PermissionsProps, PermissionsTypeSchema } from '../types';
 import { permissionSchema } from '../schema';
 
 import { updatePermissions } from '../actions/permissionsAction';
+import { CheckBox } from '@/app/(authenticated)/components/checkbox';
 
 type Props = {
   permissions: PermissionsProps[];
@@ -37,20 +33,7 @@ export default function PermissionEdit({ permissions, profileId }: Props) {
   });
 
   function handleUpdadePerrmissionSubmit(formData: PermissionsTypeSchema) {
-    console.log('form data', formData);
-
-    const checkedAbilities = formData.permissions.flatMap((item) =>
-      item.abilities
-        .filter((ability) => ability.checked)
-        .map((ability) => ({ id: ability.id }))
-    ) as AbilityIdsProps[];
-
-    const permission = {
-      name: formData.name,
-      abilities: checkedAbilities,
-    };
-
-    updatePermissions(`api/profile/${profileId}/`, permission);
+    updatePermissions(`api/profile/${profileId}/`, formData);
   }
 
   return (
@@ -95,9 +78,9 @@ export default function PermissionEdit({ permissions, profileId }: Props) {
                     control={control}
                     defaultValue={defaultValue}
                     render={({ field }) => (
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      <CheckBox
+                        name={`permissions[${index}].abilities[${abilityIndex}]`}
+                        label={ability.name}
                         defaultChecked={defaultValue.checked}
                         onChange={(e) => {
                           field.onChange({
@@ -108,9 +91,6 @@ export default function PermissionEdit({ permissions, profileId }: Props) {
                       />
                     )}
                   />
-                  <label className="ml-2 font-medium text-gray-700 dark:text-gray-300">
-                    {ability.name}
-                  </label>
                 </div>
               );
             })}
