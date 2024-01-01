@@ -27,7 +27,6 @@ export function NavAccordionMenu({ children, label, active, icon }: Props) {
         onClick={toggleMenu}
         className="w-full flex items-center py-2.5 
            px-4 text-base 
-        
            font-normal 
            rounded-lg
            text-dark-500 

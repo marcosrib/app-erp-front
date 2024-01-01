@@ -21,6 +21,7 @@ export function NavLink({children, route, active }:Props) {
         w-full p-2 
         font-bold 
         rounded-lg
+        mt-2
         pl-6 
         text-gray-500
         transition-colors duration-200

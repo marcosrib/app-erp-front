@@ -17,6 +17,7 @@ export function NavLinkMenu({ children, route, active }: Props) {
         flex items-center
          py-2.5 px-4 text-base 
          font-normal 
+         rounded-lg
          text-dark-500 
          dark:bg-gray-800
          rounded-lghttp://localhost:3000/dashboard
