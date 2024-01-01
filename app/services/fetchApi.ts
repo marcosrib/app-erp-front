@@ -14,7 +14,7 @@ export async function fetchApi<T = unknown>(input: RequestInfo | URL, init?: Req
         ...init,
         headers: headers
     };
-   
+
     try {
         const response = await fetch(`${process.env.ERP_API_BASE_URL}/${input}`, modifiedInit);
      
@@ -25,8 +25,7 @@ export async function fetchApi<T = unknown>(input: RequestInfo | URL, init?: Req
         if (response.status === 204  || response.status === 201) return;
         
         const result = await response.json();
-       
-        
+         
         return result as T;
     } catch (error) {
         throw error; 

@@ -3,8 +3,6 @@
 import { fetchApi } from "@/app/services/fetchApi";
 import { ProfileProps, SelectProfileOptionsProps, UserCreateTypeSchema, UserEditFormTypeSchema, UserEditProps } from "../types";
 import { getHeaders } from "@/app/(authenticated)/actions/headers";
-import { revalidatePath, revalidateTag } from "next/cache";
-
 
 interface Profiles {
   id: string,

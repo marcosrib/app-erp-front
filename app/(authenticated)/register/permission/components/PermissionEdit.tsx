@@ -7,24 +7,27 @@ import { Controller, useForm } from 'react-hook-form';
 import { MdAdd } from 'react-icons/md';
 import TextArea from '@/app/(authenticated)/components/textarea/TextArea';
 import Card from '@/app/(authenticated)/components/card/Card';
-import { PermissionsProps, PermissionsTypeSchema } from '../types';
+import { PerfilProps, PermissionsProps, PermissionsTypeSchema } from '../types';
 import { permissionSchema } from '../schema';
 
 import { updatePermissions } from '../actions/permissionsAction';
 import { CheckBox } from '@/app/(authenticated)/components/checkbox';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 type Props = {
   permissions: PermissionsProps[];
   profileId: number;
+  perfil?: PerfilProps;
 };
 
-export default function PermissionEdit({ permissions, profileId }: Props) {
+export default function PermissionEdit({ permissions, profileId, perfil }: Props) {
+
+  const router = useRouter();
+
   const {
     register: registerSearch,
     handleSubmit,
-    setValue,
-    reset,
-
     control,
     formState: { errors },
   } = useForm<PermissionsTypeSchema>({
@@ -32,8 +35,19 @@ export default function PermissionEdit({ permissions, profileId }: Props) {
     resolver: zodResolver(permissionSchema),
   });
 
-  function handleUpdadePerrmissionSubmit(formData: PermissionsTypeSchema) {
-    updatePermissions(`api/profile/${profileId}/`, formData);
+
+  async function handleUpdadePerrmissionSubmit(formData: PermissionsTypeSchema) {
+    
+    const profile = await updatePermissions(`api/profile/${profileId}/`, formData);
+    
+    if (profile.status !== 201) {
+      toast.error(profile.message);
+      return;
+    }
+
+    router.push('/register/permission', { shallow: true } );
+    toast.success(profile.message);
+
   }
 
   return (
@@ -45,7 +59,10 @@ export default function PermissionEdit({ permissions, profileId }: Props) {
         <Form.InputContainer>
           <Input.Root>
             <Input.Label label="Nome" />
-            <Input.Input {...registerSearch('name')} />
+            <Input.Input
+             defaultValue={perfil?.name}
+             {...registerSearch('name')}
+            />
             <Input.LabelError helperText={errors.name?.message} />
           </Input.Root>
           <TextArea label="Descrição" />

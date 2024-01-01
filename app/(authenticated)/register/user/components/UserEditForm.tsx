@@ -25,7 +25,7 @@ export default function UserEditForm({ profile }: Props) {
   const { toggleModal } = useModalStore();
   const { userEdit: user } = useUserStore();
   const router = useRouter();
-  const searcheParams = useSearchParams();
+  const searchParams = useSearchParams();
   const pathName = usePathname();
 
   const {
@@ -47,7 +47,7 @@ export default function UserEditForm({ profile }: Props) {
     }
     toggleModal();
 
-    const params = new URLSearchParams(searcheParams.toString());
+    const params = new URLSearchParams(searchParams.toString());
 
     const pageParam = params.get('page') || '1';
     const rev_id = generateIdRevalidate();
