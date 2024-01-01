@@ -3,6 +3,8 @@
 import { fetchApi } from "@/app/services/fetchApi";
 import { getHeaders } from "@/app/(authenticated)/actions/headers";
 import { AbilityIdsProps, PermissionDataProps, PermissionsProps, PermissionsTypeSchema } from "../types";
+import { redirect } from "next/navigation";
+
 
 type Props = {
  permissions: PermissionsProps
@@ -42,6 +44,7 @@ export async function updatePermissions(url: string, permissionFormData: Permiss
         headers: headers,
         body: JSON.stringify(convertedPermissionFormData(permissionFormData))
     })
+   
     return { 
       status: 201,
       message : 'Usuário cadastrado com sucesso'
