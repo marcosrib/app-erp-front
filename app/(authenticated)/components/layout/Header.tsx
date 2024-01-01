@@ -1,4 +1,11 @@
-export default function Header() {
+import { formaterUserName } from "@/app/utils/formatUserName";
+import { nextAuthOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
+export default async function Header() {
+  const session = await getServerSession(nextAuthOptions);
+
+  const userName = formaterUserName(session?.user.name ?? "");
+  
   return (
     <header className="z-40 flex items-center justify-between w-full h-16">
       <div className="block ml-6 lg:hidden">
@@ -41,15 +48,11 @@ export default function Header() {
             </svg>
           </button>
           <span className="w-1 h-8 bg-gray-200 rounded-lg"></span>
-          <a href="#" className="relative block">
-            <img
-              alt="profil"
-              src="/images/person/1.jpg"
-              className="mx-auto object-cover rounded-full h-10 w-10 "
-            />
-          </a>
+          <div className="relative w-10 h-10 overflow-hidden bg-white rounded-full dark:bg-gray-600">
+            <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path></svg>
+          </div>
           <button className="flex items-center text-gray-500 dark:text-white text-md">
-            Charlie R
+            {userName}
             <svg
               width={20}
               height={20}

@@ -1,6 +1,4 @@
-import { MdToken } from "react-icons/md";
 import { fetchApi } from "../fetchApi";
-
 interface User {
     id: string,
     name: string,
@@ -8,7 +6,6 @@ interface User {
     refreshToken: string,
     accessTokenExpiry: number
 }
-
 interface Token {
     accessToken: string,
 }
@@ -30,14 +27,14 @@ export async function signIn(email?: string,password?: string) {
 }
 
 export async function refreshToken(refreshToken: string) {
-        const token = await fetchApi<Token>('auth/refresh/', {
-            method: 'POST',
-            body: JSON.stringify({
-                refreshToken
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        return token;
+    const token = await fetchApi<Token>('auth/refresh/', {
+        method: 'POST',
+        body: JSON.stringify({
+            refreshToken
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    return token;
 }
