@@ -68,6 +68,7 @@ export async function updatePermissions(url: string, permissionFormData: Permiss
   
     const permission = {
       name: formData.name,
+      description: formData.description,
       abilities: checkedAbilities,
     };
 

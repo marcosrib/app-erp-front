@@ -49,7 +49,8 @@ export default function PermissionEdit({ permissions, profileId, perfil }: Props
     toast.success(profile.message);
 
   }
-
+ console.log('eroes',errors);
+ 
   return (
     <>
       <Form.Root
@@ -65,7 +66,11 @@ export default function PermissionEdit({ permissions, profileId, perfil }: Props
             />
             <Input.LabelError helperText={errors.name?.message} />
           </Input.Root>
-          <TextArea label="Descrição" />
+          <TextArea 
+            {...registerSearch('description')}
+            label="Descrição" 
+            defaultValue={perfil?.description}
+            errors={errors.description?.message} />
         </Form.InputContainer>
         <Form.Buttons>
           <Button

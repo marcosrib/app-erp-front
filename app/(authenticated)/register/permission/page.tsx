@@ -10,6 +10,7 @@ export default async function Permission({ searchParams }: ParamsProps) {
         <TableCustom.Header>
           <TableCustom.HeaderContent title="Id" />
           <TableCustom.HeaderContent title="Nome" />
+          <TableCustom.HeaderContent title="Descrição" />
           <TableCustom.HeaderContent title="Ações" />
         </TableCustom.Header>
         <TableCustom.Column field="id">
@@ -18,6 +19,11 @@ export default async function Permission({ searchParams }: ParamsProps) {
           }}
         </TableCustom.Column>
         <TableCustom.Column field="name">
+          {(field) => {
+            return <p>{field}</p>;
+          }}
+        </TableCustom.Column>
+        <TableCustom.Column field="description">
           {(field) => {
             return <p>{field}</p>;
           }}

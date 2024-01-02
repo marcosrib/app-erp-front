@@ -24,6 +24,7 @@ export type PermissionDataProps = {
 export type PerfilProps = {
     id: number;
     name: string;
+    description: string;
 }
 
 export type PermissionsTypeSchema = z.infer<typeof permissionSchema>
