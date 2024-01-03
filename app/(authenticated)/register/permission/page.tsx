@@ -1,10 +1,23 @@
+import { MdAdd } from 'react-icons/md';
 import { FiEdit } from 'react-icons/fi';
 import { TableCustom } from '../../components/table';
 import { TableButtonLink } from '../../components/table/TableButtonLink';
 import { ParamsProps } from '../user/types';
+import SlashActions from '../../components/slashActions';
+import { ButtonLink } from '../../components/button/ButtonLink';
 
 export default async function Permission({ searchParams }: ParamsProps) {
   return (
+    <>
+    <SlashActions title='Permissões'>
+      <ButtonLink 
+       label='Adicionar'
+        href="/register/permission/" 
+        color="add"
+      >
+        <MdAdd color={'white'} size={16} />
+      </ButtonLink>
+    </SlashActions>
     <TableCustom.Root>
       <TableCustom.Body isSize={false} url="api/profile/" params={searchParams}>
         <TableCustom.Header>
@@ -47,5 +60,6 @@ export default async function Permission({ searchParams }: ParamsProps) {
         </TableCustom.Column>
       </TableCustom.Body>
     </TableCustom.Root>
+    </>
   );
 }
