@@ -12,7 +12,7 @@ export default async function Permission({ searchParams }: ParamsProps) {
     <SlashActions title='Permissões'>
       <ButtonLink 
        label='Adicionar'
-        href="/register/permission/" 
+        href="/register/permission/create" 
         color="add"
       >
         <MdAdd color={'white'} size={16} />

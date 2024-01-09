@@ -2,44 +2,38 @@
 
 import { fetchApi } from "@/app/services/fetchApi";
 import { getHeaders } from "@/app/(authenticated)/actions/headers";
-import { AbilityIdsProps, PermissionDataProps, PermissionsProps, PermissionsTypeSchema } from "../types";
-import { redirect } from "next/navigation";
+import { AbilityIdsProps, PermissionsProps, PerfilProps, PermissionsTypeSchema } from "../types";
 
-
-type Props = {
- permissions: PermissionsProps
-}
-
-export async function getPermissions(url: string)  {
+export async function getPermissions(url: string): Promise<PermissionsProps[] | undefined> {
   try {
     const headers = await getHeaders();
-    return await fetchApi<Props>(url, {
+    return await fetchApi<PermissionsProps[]>(url, {
         method: 'GET',
         headers: headers
     })
   } catch (error) {
     console.log(error)
-    return []
+    return undefined;
   }
 }
 
-export async function getPerfil(url: string)  {
+export async function getPerfil(url: string): Promise<PerfilProps | undefined> {
   try {
     const headers = await getHeaders();
-    return await fetchApi<Props>(url, {
+    return await fetchApi(url, {
         method: 'GET',
         headers: headers
     })
   } catch (error) {
     console.log(error)
-    return []
+    return undefined;
   }
 }
 
 export async function updatePermissions(url: string, permissionFormData: PermissionsTypeSchema)  {
   try {    
     const headers = await getHeaders();
-    await fetchApi<Props>(url, {
+    await fetchApi(url, {
         method: 'PUT',
         headers: headers,
         body: JSON.stringify(convertedPermissionFormData(permissionFormData))
@@ -58,6 +52,31 @@ export async function updatePermissions(url: string, permissionFormData: Permiss
       message : 'Erro ao cadastrar usuário:' + err.message
     }
   }
+}
+export async function createPermissions(url: string, permissionFormData: PermissionsTypeSchema)  {
+  try {    
+    const headers = await getHeaders();
+    await fetchApi(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(convertedPermissionFormData(permissionFormData))
+    })
+   
+    return { 
+      status: 201,
+      message : 'Usuário cadastrado com sucesso'
+    }
+  } catch (error) {
+    const err = error as any;
+    console.log(err);
+    
+    return { 
+      stauts: err.status,
+      message : 'Erro ao cadastrar usuário:' + err.message
+    }
+  }
+}
+  
 
   function convertedPermissionFormData(formData: PermissionsTypeSchema) {
     const checkedAbilities = formData.permissions.flatMap((item) =>
@@ -74,4 +93,3 @@ export async function updatePermissions(url: string, permissionFormData: Permiss
 
     return permission;
   }
-}

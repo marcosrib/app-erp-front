@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
 type Props = {
-  permissions: PermissionsProps[];
+  permissions: PermissionsProps[] ;
   profileId: number;
   perfil?: PerfilProps;
 };
@@ -49,7 +49,6 @@ export default function PermissionEdit({ permissions, profileId, perfil }: Props
     toast.success(profile.message);
 
   }
- console.log('eroes',errors);
  
   return (
     <>
@@ -77,7 +76,7 @@ export default function PermissionEdit({ permissions, profileId, perfil }: Props
             type="submit"
             icon={<MdAdd size={16} />}
             color="add"
-            label="Cadastrar"
+            label="Atualizar"
           />
         </Form.Buttons>
       </Form.Root>

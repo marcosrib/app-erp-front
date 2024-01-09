@@ -7,10 +7,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { MdAdd } from 'react-icons/md';
 import TextArea from '@/app/(authenticated)/components/textarea/TextArea';
 import Card from '@/app/(authenticated)/components/card/Card';
-import { PerfilProps, PermissionsProps, PermissionsTypeSchema } from '../types';
+import { PermissionsProps, PermissionsTypeSchema } from '../types';
 import { permissionSchema } from '../schema';
 
-import { updatePermissions } from '../actions/permissionsAction';
+import { createPermissions } from '../actions/permissionsAction';
 import { CheckBox } from '@/app/(authenticated)/components/checkbox';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -34,9 +34,9 @@ export default function PermissionCreate({ permissions }: Props) {
   });
 
 
-  async function handleUpdadePerrmissionSubmit(formData: PermissionsTypeSchema) {
+  async function handleCreatePerrmissionSubmit(formData: PermissionsTypeSchema) {
     
-   /* const profile = await updatePermissions(`api/profile/${profileId}/`, formData);
+   const profile = await createPermissions(`api/profile`, formData);
     
     if (profile.status !== 201) {
       toast.error(profile.message);
@@ -44,7 +44,7 @@ export default function PermissionCreate({ permissions }: Props) {
     }
 
     router.push('/register/permission', { shallow: true } );
-    toast.success(profile.message);*/
+    toast.success(profile.message);
 
   }
  console.log('eroes',errors);
@@ -53,7 +53,7 @@ export default function PermissionCreate({ permissions }: Props) {
     <>
       <Form.Root
         title="Editar permissões"
-        onSubmit={handleSubmit(handleUpdadePerrmissionSubmit)}
+        onSubmit={handleSubmit(handleCreatePerrmissionSubmit)}
       >
         <Form.InputContainer>
           <Input.Root>
