@@ -1,3 +1,5 @@
+
+import usePermissionStore from '@/app/(authenticated)/store/usePermissionStore';
 import { refreshToken, signIn } from '@/app/services/auth/authService';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -33,10 +35,12 @@ const nextAuthOptions: NextAuthOptions = {
                 
                    const user = await signIn(credentials?.email, credentials?.password);   
         
-                    if (user.accessToken) {
+                    if (user) {
                         const claimUser = JSON.parse(atob(user.accessToken .split('.')[1]));
                         user.name =  claimUser.name;
                         user.accessTokenExpiry = claimUser.exp;
+                        usePermissionStore.setState({ state: { permissions: user.authorities } });
+                        user.authorities = []
                         return Promise.resolve(user);
                     }
 
@@ -57,7 +61,8 @@ const nextAuthOptions: NextAuthOptions = {
             token.accessToken = user.accessToken;
             token.refreshToken = user.refreshToken;
             token.accessTokenExpiry = user.accessTokenExpiry;
-            token.name = user.name;
+            token.name = user.name; 
+            token.authorities = user.authorities;
         }
 
         const tokenExpiration = token.accessTokenExpiry as number; // Tempo de expiração do token em segundos
@@ -86,8 +91,8 @@ const nextAuthOptions: NextAuthOptions = {
             
         return Promise.resolve(session);
       }
-    }
-
+    },
+ 
 }
 
 const handler = NextAuth(nextAuthOptions)

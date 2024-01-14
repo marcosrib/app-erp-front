@@ -3,8 +3,10 @@ import { ParamsProps } from "../types";
 import ButtonActive from "./ButtonActive";
 import ButtonEdit from "./ButtonEdit";
 import UserSearch from "./UserSearch";
+import { hasPermission } from "@/app/(authenticated)/actions/hasPermission";
 
 export default async function UserList({ searchParams} : ParamsProps) {
+  const isPermissionUpdate = await hasPermission('USER', 'UPDATE');
 
     return ( 
       <>
@@ -48,10 +50,15 @@ export default async function UserList({ searchParams} : ParamsProps) {
         {(row) => {
           let user = JSON.parse(row);
         return (
-        <TableCustom.Actions>
-          <ButtonEdit user={user}/>
-          <ButtonActive data={user} page={searchParams?.page} />
-        </TableCustom.Actions>) 
+          <TableCustom.Actions>
+        {isPermissionUpdate && (
+          <>
+            <ButtonEdit user={user}/>
+            <ButtonActive data={user} page={searchParams?.page} />
+          </>
+        )}
+        </TableCustom.Actions>
+        ) 
         }}
         </TableCustom.Column>
         </TableCustom.Body>

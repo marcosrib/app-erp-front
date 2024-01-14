@@ -4,6 +4,7 @@ import { MdLibraryBooks } from 'react-icons/md';
 import { usePathname } from 'next/navigation';
 import { Nav } from '../nav';
 
+
 export default function Sidbar() {
   const path = usePathname();
  
@@ -13,6 +14,7 @@ export default function Sidbar() {
         <div className="flex items-center justify-start pt-6 ml-8">
           <p className="text-xl font-bold dark:text-white">ERP</p>
         </div>
+       
         <Nav.Root>
           <Nav.LinkMenu route="/dashboard" active={path === '/dashboard'}>
             <Nav.Icon icon={<BiSolidDashboard size={20} />} />
@@ -22,10 +24,10 @@ export default function Sidbar() {
             label="Cadastro"
             active={path.includes('/register')}
             icon={<MdLibraryBooks size={20} />}
-          >
-            <Nav.Link route="/register/user" active={path === '/register/user'}>
-              <Nav.IconLabel label="Usuario" />
-            </Nav.Link>
+          > 
+              <Nav.Link route="/register/user" active={path === '/register/user'}>
+                <Nav.IconLabel label="Usuario" />
+              </Nav.Link>
             <Nav.Link
               route="/register/permission"
               active={path.includes('/register/permission')}

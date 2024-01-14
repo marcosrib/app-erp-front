@@ -7,7 +7,8 @@ export default async function PublicLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(nextAuthOptions);
+ 
+ const session = await getServerSession(nextAuthOptions);
 
   if (session) {
     redirect('/dashboard');

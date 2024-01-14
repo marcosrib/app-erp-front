@@ -1,7 +1,3 @@
-'use client';
-import { useEffect } from 'react';
-import api from '@/app/services/api';
-
 export default function Dashboard() {
   return (
     <div className="h-screen pb-24">

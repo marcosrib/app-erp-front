@@ -4,9 +4,7 @@ import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
 import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from '../api/auth/[...nextauth]/route';
-
 import { redirect } from 'next/navigation';
-
 
 export default async function PrivateLayout({
   children,
@@ -19,8 +17,7 @@ export default async function PrivateLayout({
  if(!session) {
     redirect('/login');
  }
-
-  return (
+return (
     <>
         <main className="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
           <div className="flex items-start justify-between">

@@ -12,10 +12,10 @@ declare module 'next-auth' {
             name: string,
             accessToken: string,
             refreshToken: string,
-            accessTokenExpiry: number
+            accessTokenExpiry: number,
+            authorities: []
     }
 }
-
 declare module "next-auth/jwt" {
     interface JWT {
         accessToken: string,

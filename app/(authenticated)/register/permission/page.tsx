@@ -5,8 +5,16 @@ import { TableButtonLink } from '../../components/table/TableButtonLink';
 import { ParamsProps } from '../user/types';
 import SlashActions from '../../components/slashActions';
 import { ButtonLink } from '../../components/button/ButtonLink';
+import { hasPermission } from '../../actions/hasPermission';
+import { redirect } from 'next/navigation';
 
 export default async function Permission({ searchParams }: ParamsProps) {
+
+  const isPermission = await hasPermission('PERMISSION', 'READ');
+  if(!isPermission) {
+    redirect('/unauthorized');
+  }
+
   return (
     <>
     <SlashActions title='Permissões'>

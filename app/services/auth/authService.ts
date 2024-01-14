@@ -4,7 +4,8 @@ interface User {
     name: string,
     accessToken: string,
     refreshToken: string,
-    accessTokenExpiry: number
+    accessTokenExpiry: number,
+    authorities: []
 }
 interface Token {
     accessToken: string,
