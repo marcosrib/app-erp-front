@@ -21,7 +21,7 @@ FROM node:18-alpine
 
 # Defina o diretório de trabalho novamente
 WORKDIR /app
-
+RUN mkdir ./.next
 # Copie apenas os arquivos necessários da etapa anterior (builder)
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
