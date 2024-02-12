@@ -22,7 +22,6 @@ export default function CostCenterSearch() {
   const {
     register: registerSearch,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors },
   } = useForm<CostCenterSearchProps>({
@@ -32,8 +31,6 @@ export default function CostCenterSearch() {
 
   function handleOpenModal() {
     resetDataForm();
-    console.log('kçç');
-
     toggleModal();
   }
 
@@ -45,6 +42,10 @@ export default function CostCenterSearch() {
   }
 
   function clearForm() {
+    const params = new URLSearchParams(searcheParams.toString());
+    params.delete('page');
+    params.delete('name');
+    router.push(`${pathName}/?${params.toString()}`);
     reset();
   }
   return (

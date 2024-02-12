@@ -1,14 +1,17 @@
 import { TableCustom } from '@/app/(authenticated)/components/table';
-import ButtonEdit from '@/app/(authenticated)/register/user/components/ButtonEdit';
 import CostCenterSearch from './CostCenterSearch';
 import CostCenterButtonEdit from './CostCenterButtonEdit';
+import { SearchParamProps } from '../types';
 
-export default function CostCenterList() {
+export default function CostCenterList({ searchParams }: SearchParamProps) {
   return (
     <>
       <CostCenterSearch />
       <TableCustom.Root>
-        <TableCustom.Body url="api/cost-center/pagination">
+        <TableCustom.Body
+          params={searchParams}
+          url="api/cost-center/pagination"
+        >
           <TableCustom.Header>
             <TableCustom.HeaderContent title="Id" />
             <TableCustom.HeaderContent title="Nome" />

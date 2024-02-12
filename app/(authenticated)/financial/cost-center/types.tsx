@@ -10,4 +10,7 @@ export type CostCenterEditProps = {
   name: string;
 };
 
+export type SearchParamProps = {
+  searchParams?: { name: string };
+};
 export type costCenterTypeSchema = z.infer<typeof costCenterSchema>;
