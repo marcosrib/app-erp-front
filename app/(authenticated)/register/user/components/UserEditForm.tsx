@@ -46,7 +46,6 @@ export default function UserEditForm({ profile }: Props) {
       return;
     }
     toggleModal();
-
     const params = new URLSearchParams(searchParams.toString());
 
     const pageParam = params.get('page') || '1';
@@ -69,7 +68,7 @@ export default function UserEditForm({ profile }: Props) {
     } else {
       setValue('profile', { value: 0, label: '' });
     }
-  });
+  }, [user]);
 
   return (
     <>

@@ -22,7 +22,7 @@ type Props = {
 export default function UserCreateForm({ profile }: Props) {
   const { toggleModal } = useModalStore();
   const router = useRouter();
-  const searcheParams = useSearchParams();
+  const searchParams = useSearchParams();
   const pathName = usePathname();
 
   const {
@@ -44,7 +44,7 @@ export default function UserCreateForm({ profile }: Props) {
     }
     toggleModal();
     toast.success(userResult.message);
-    const params = new URLSearchParams(searcheParams.toString());
+    const params = new URLSearchParams(searchParams.toString());
 
     const rev_id = generateIdRevalidate();
     params.set('page', '1');

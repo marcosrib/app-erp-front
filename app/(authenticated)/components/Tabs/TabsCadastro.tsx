@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useRouter } from 'next/navigation';
 import Users from '../../register/user/page';
 
@@ -6,7 +6,6 @@ export default function TabsCadastro() {
   const router = useRouter();
 
   const handleTabClick = (tabName) => {
- 
     router.push(`/register?tab=${tabName}`);
   };
 
@@ -27,9 +26,8 @@ export default function TabsCadastro() {
         </a>
       </div>
       <div className="mt-4">
-        { 'usuario'=== 'usuario' ? <Users /> : <Users />}
+        {'usuario' === 'usuario' ? <Users /> : <Users />}
       </div>
     </div>
   );
 }
-

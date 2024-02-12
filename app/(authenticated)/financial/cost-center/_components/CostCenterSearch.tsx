@@ -1,18 +1,18 @@
 'use client';
 import Button from '@/app/(authenticated)/components/button/Button';
 import { Form } from '@/app/(authenticated)/components/form';
-import { Input } from '@/app/components/input';
-import { MdAdd } from 'react-icons/md';
-import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
-import { useUserStore } from '../store/useUserStore';
-import { ParamsProps, UserSearchDataProps } from '../types';
-import { userSerachSchema } from '../hooks/schema';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useUserStore } from '@/app/(authenticated)/register/user/store/useUserStore';
+import { Input } from '@/app/components/input';
+import { CostCenterSearchProps, costCenterTypeSchema } from '../types';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { MdAdd } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { costCenterSchema } from '../schemas/costCenterCreateSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function UserSearch({ searchParams }: ParamsProps) {
+export default function CostCenterSearch() {
   const { toggleModal } = useModalStore();
   const { resetDataForm } = useUserStore();
   const router = useRouter();
@@ -25,28 +25,22 @@ export default function UserSearch({ searchParams }: ParamsProps) {
     setValue,
     reset,
     formState: { errors },
-  } = useForm<UserSearchDataProps>({
+  } = useForm<CostCenterSearchProps>({
     mode: 'onBlur',
-    resolver: zodResolver(userSerachSchema),
+    resolver: zodResolver(costCenterSchema),
   });
 
   function handleOpenModal() {
     resetDataForm();
+    console.log('kçç');
+
     toggleModal();
   }
 
-  useEffect(() => {
-    console.log('useEfect');
-
-    if (searchParams?.email) {
-      setValue('email', searchParams.email);
-    }
-  }, [searchParams]);
-
-  function handleSearchSubmit(data: UserSearchDataProps) {
+  function handleSearchSubmit(data: costCenterTypeSchema) {
     const params = new URLSearchParams(searcheParams.toString());
     params.set('page', '1');
-    params.set('email', data.email);
+    params.set('name', data.name);
     router.push(`${pathName}/?${params.toString()}`);
   }
 
@@ -54,12 +48,15 @@ export default function UserSearch({ searchParams }: ParamsProps) {
     reset();
   }
   return (
-    <Form.Root title="Usuários" onSubmit={handleSubmit(handleSearchSubmit)}>
+    <Form.Root
+      title="Centro de custo"
+      onSubmit={handleSubmit(handleSearchSubmit)}
+    >
       <Form.InputContainer>
         <Input.Root>
-          <Input.Label label="E-mail" />
-          <Input.Input {...registerSearch('email')} />
-          <Input.LabelError helperText={errors.email?.message} />
+          <Input.Label label="Nome" />
+          <Input.Input {...registerSearch('name')} />
+          <Input.LabelError helperText={errors.name?.message} />
         </Input.Root>
       </Form.InputContainer>
       <Form.Buttons>
