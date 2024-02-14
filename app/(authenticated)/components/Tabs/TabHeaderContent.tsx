@@ -1,21 +1,36 @@
-import Link from "next/link";
+import clsx from 'clsx';
 
 type Props = {
-    label: string,
-    onClick?: () => void
-}
+  label: string;
+  searchParams: { label: string };
+  initialPage?: boolean;
+};
 
-export function TabHeaderContent({label, onClick}:Props) {
-    return (
-      <Link href='users'>
-      <div
-       
-        className={`py-2 px-6 cursor-pointer rounded-t-lg text-blue-500 border-t-2 border-r-2 border-l-2 bg-white
-                `}
-        onClick={onClick}
-        >
-        {label}
-      </div>
-      </Link>
-    );
-  }
+export function TabHeaderContent({
+  label,
+  searchParams,
+  initialPage = false,
+}: Props) {
+  const initPage = initialPage && searchParams.label == null;
+  return (
+    <div
+      className={clsx(
+        'py-4',
+        'px-6',
+        'mr-2',
+        'cursor-pointer',
+        'rounded-t-lg',
+        'border-t-2',
+        'border-r-2',
+        'border-l-2',
+        'font-semibold',
+        'border-transparent',
+        searchParams.label === label || initPage
+          ? 'bg-cyan-700 text-white'
+          : 'bg-gray-200 text-gray-800'
+      )}
+    >
+      {label}
+    </div>
+  );
+}

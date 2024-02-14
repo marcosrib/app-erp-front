@@ -1,17 +1,12 @@
-'use client'
-import { ReactNode } from "react";
-import { useTabs } from "../../contexts/TabContext";
+import { ReactNode } from 'react';
 
 type Props = {
-    children: {
-        [key: number]: ReactNode;
-    };
-}
-export function TabContent({children}: Props) {
-    const { activeTab } = useTabs();    
-    return (
-        <div className="p-4">
-         {children[activeTab]}
-        </div>
-    )
+  children: {
+    [key: number]: ReactNode;
+  };
+  searchParams: { tabIndex: number };
+};
+export function TabContent({ searchParams, children }: Props) {
+  let index = searchParams.tabIndex ? searchParams.tabIndex : 0;
+  return <div className="p-4 bg-gray-50">{children[index]}</div>;
 }
