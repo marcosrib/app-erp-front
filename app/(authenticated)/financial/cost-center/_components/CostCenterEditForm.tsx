@@ -13,8 +13,12 @@ import { updateCostCenter } from '../actions/costCenterAction';
 
 type Props = {
   data: CostCenterEditProps;
+  resetUseCostCenterStore: () => void;
 };
-export default function CostCenterEditForm({ data }: Props) {
+export default function CostCenterEditForm({
+  data,
+  resetUseCostCenterStore,
+}: Props) {
   const { toggleModal } = useModalStore();
 
   const {
@@ -27,14 +31,14 @@ export default function CostCenterEditForm({ data }: Props) {
     resolver: zodResolver(costCenterSchema),
   });
 
-  async function submitUserForm(dataForm: costCenterTypeSchema) {
-    console.log('fom', data.id);
+  async function submitCostCenterForm(dataForm: costCenterTypeSchema) {
     const updateUserResult = await updateCostCenter(dataForm, data.id);
     if (updateUserResult.status !== 204) {
       toast.error(updateUserResult.message);
       return;
     }
     toggleModal();
+    resetUseCostCenterStore();
     toast.success(updateUserResult.message);
   }
 
@@ -44,7 +48,7 @@ export default function CostCenterEditForm({ data }: Props) {
   return (
     <>
       <Modal.Root title={'Editar Centro de custo'}>
-        <Modal.Form onSubmit={handleSubmit(submitUserForm)}>
+        <Modal.Form onSubmit={handleSubmit(submitCostCenterForm)}>
           <Modal.FormInputs>
             <Input.Root>
               <Input.Label label="Nome" />
