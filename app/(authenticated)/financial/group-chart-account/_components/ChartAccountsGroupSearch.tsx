@@ -3,18 +3,21 @@ import Button from '@/app/(authenticated)/components/button/Button';
 import { Form } from '@/app/(authenticated)/components/form';
 import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { Input } from '@/app/components/input';
-import { CostCenterSearchProps, costCenterTypeSchema } from '../types';
+import {
+  ChartAccountsGroupProps,
+  chartAccountsGroupTypeSchema,
+} from '../types';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { MdAdd } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
-import { costCenterSchema } from '../schemas/costCenterCreateSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCostCenterStore } from '../store/useCostCenterStore';
+import { useChartAccountsGroupStore } from '../store/useChartAccountsGroupStore';
+import { chartAccountsGroupSchema } from '../schemas/chartAccountsGroupSchema';
 
-export default function CostCenterSearch() {
+export default function ChartAccountsGroupSearch() {
   const { toggleModal } = useModalStore();
-  const { resetDataForm } = useCostCenterStore();
+  const { resetDataForm } = useChartAccountsGroupStore();
   const router = useRouter();
   const searcheParams = useSearchParams();
   const pathName = usePathname();
@@ -24,9 +27,9 @@ export default function CostCenterSearch() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<CostCenterSearchProps>({
+  } = useForm<ChartAccountsGroupProps>({
     mode: 'onBlur',
-    resolver: zodResolver(costCenterSchema),
+    resolver: zodResolver(chartAccountsGroupSchema),
   });
 
   function handleOpenModal() {
@@ -34,7 +37,7 @@ export default function CostCenterSearch() {
     toggleModal();
   }
 
-  function handleSearchSubmit(data: costCenterTypeSchema) {
+  function handleSearchSubmit(data: chartAccountsGroupTypeSchema) {
     const params = new URLSearchParams(searcheParams.toString());
     params.set('page', '1');
     params.set('name', data.name);
@@ -50,7 +53,7 @@ export default function CostCenterSearch() {
   }
   return (
     <Form.Root
-      title="Centro de custo"
+      title="Grupo plano de custo"
       onSubmit={handleSubmit(handleSearchSubmit)}
     >
       <Form.InputContainer>

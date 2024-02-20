@@ -45,6 +45,7 @@ export default function CostCenterEditForm({
   useEffect(() => {
     setValue('name', data.name);
   }, [data]);
+
   return (
     <>
       <Modal.Root title={'Editar Centro de custo'}>
