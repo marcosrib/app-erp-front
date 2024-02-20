@@ -17,7 +17,7 @@ export async function createCostCenter(costCenter: costCenterTypeSchema) {
       return  messageErro(201, 'Centro de custo cadastrado com sucesso');
     } catch (error) {
       const err = error as any;
-      return messageErro( err.status, `Usuário ao atualizar usuário: ${err.message}`);
+      return messageErro( err.status, `Erro ao atualizar centro de custo: ${err.message}`);
     }
    
   }
@@ -31,10 +31,10 @@ export async function createCostCenter(costCenter: costCenterTypeSchema) {
         body: JSON.stringify(data)
       })
       revalidatePath('financial/cost-center')
-      return  messageErro(204, `Usuário atualizado com sucesso!`);
+      return  messageErro(204, `Centro de custo atualizado com sucesso!`);
     } catch (error) {
       const err = error as any;
-      return messageErro( err.status, `Usuário ao atualizar usuário: ${err.message}`);
+      return messageErro( err.status, `Erro ao atualizar centro de custo: ${err.message}`);
     }
    
   }

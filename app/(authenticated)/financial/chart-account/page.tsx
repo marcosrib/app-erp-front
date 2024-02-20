@@ -1,5 +1,5 @@
 import { Tabs } from '../../components/Tabs';
-import ChartAccountsGroupList from '../group-chart-account/_components/ChartAccountsGroupList';
+import ChartAccountsGroup from '../group-chart-account/ChartAccountsGroup';
 
 type SearchParamsProps = {
   searchParams: { label: string; tabIndex: number };
@@ -23,11 +23,11 @@ export default function ChartAccount({ searchParams }: SearchParamsProps) {
         />
         <Tabs.TabHeaderContent
           searchParams={searchParams}
-          label="Planos de contas"
+          label="Plano de contas"
         />
       </Tabs.TabHeader>
       <Tabs.TabContent searchParams={searchParams}>
-        <ChartAccountsGroupList />
+        <ChartAccountsGroup />
         <Test />
       </Tabs.TabContent>
     </Tabs.Root>

@@ -3,14 +3,17 @@ import { useForm } from 'react-hook-form';
 import { Input } from '@/app/components/input';
 import Button from '../../../components/button/Button';
 import { Modal } from '../../../components/modal';
-import { CostCenterCreateProps, costCenterTypeSchema } from '../types';
+import {
+  ChartAccountsGroupCreateProps,
+  chartAccountsGroupTypeSchema,
+} from '../types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { toast } from 'react-toastify';
-import { costCenterSchema } from '../schemas/costCenterCreateSchema';
-import { createCostCenter } from '../actions/costCenterAction';
+import { createChartAccountsGroup } from '../actions/chartAccountsGroupAction';
+import { chartAccountsGroupSchema } from '../schemas/chartAccountsGroupSchema';
 
-export default function CostCenterCreateForm() {
+export default function ChartAccountsGroupCreateForm() {
   const { toggleModal } = useModalStore();
 
   const {
@@ -18,13 +21,13 @@ export default function CostCenterCreateForm() {
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<CostCenterCreateProps>({
+  } = useForm<ChartAccountsGroupCreateProps>({
     mode: 'onBlur',
-    resolver: zodResolver(costCenterSchema),
+    resolver: zodResolver(chartAccountsGroupSchema),
   });
 
-  async function submitUserForm(data: costCenterTypeSchema) {
-    const costCenterResult = await createCostCenter(data);
+  async function submitUserForm(data: chartAccountsGroupTypeSchema) {
+    const costCenterResult = await createChartAccountsGroup(data);
     if (costCenterResult.status !== 201) {
       toast.error(costCenterResult.message);
       return;
@@ -35,7 +38,7 @@ export default function CostCenterCreateForm() {
   }
   return (
     <>
-      <Modal.Root title={'Cadastrar Centro de custo'}>
+      <Modal.Root title={'Cadastrar Grupo Plano de Contas'}>
         <Modal.Form onSubmit={handleSubmit(submitUserForm)}>
           <Modal.FormInputs>
             <Input.Root>

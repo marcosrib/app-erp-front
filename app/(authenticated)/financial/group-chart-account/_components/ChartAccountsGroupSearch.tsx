@@ -4,7 +4,7 @@ import { Form } from '@/app/(authenticated)/components/form';
 import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { Input } from '@/app/components/input';
 import {
-  ChartAccountsGroupProps,
+  ChartAccountsGroupSearchProps,
   chartAccountsGroupTypeSchema,
 } from '../types';
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -27,7 +27,7 @@ export default function ChartAccountsGroupSearch() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ChartAccountsGroupProps>({
+  } = useForm<ChartAccountsGroupSearchProps>({
     mode: 'onBlur',
     resolver: zodResolver(chartAccountsGroupSchema),
   });

@@ -10,7 +10,11 @@ export type ChartAccountsGroupEditProps = {
   name: string;
 };
 
-export type ChartAccountsGroupProps = {
+export type ChartAccountsGroupCreateProps = {
+  name: string;
+};
+
+export type ChartAccountsGroupSearchProps = {
   name: string;
 };
 

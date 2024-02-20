@@ -1,3 +1,4 @@
+'use client';
 import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { TableCustom } from '@/app/(authenticated)/components/table';
 import { FiEdit } from 'react-icons/fi';

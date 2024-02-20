@@ -10,6 +10,10 @@ export type CostCenterEditProps = {
   name: string;
 };
 
+export type CostCenterCreateProps = {
+  name: string;
+};
+
 export type SearchParamProps = {
   searchParams?: { name: string };
 };
