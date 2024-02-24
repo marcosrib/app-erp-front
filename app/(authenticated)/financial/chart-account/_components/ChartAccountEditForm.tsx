@@ -1,14 +1,11 @@
 'use client';
 import { useForm } from 'react-hook-form';
-
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { Modal } from '@/app/(authenticated)/components/modal';
 import { Input } from '@/app/components/input';
 import Button from '@/app/(authenticated)/components/button/Button';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
   ChartAccountEditProps,
   SelectTypeOptionsProps,
@@ -17,18 +14,20 @@ import {
 import { chartAccountSchema } from '../schemas/chartAccountSchema';
 import { updateChartAccount } from '../actions/chartAccountAction';
 import CustomSelect from '@/app/(authenticated)/components/select/CustomSelect';
+import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
+import { SelectChartAccountsGroupProps } from '../../group-chart-account/types';
 
 type Props = {
   data: ChartAccountEditProps;
   resetChartAccountStore: () => void;
+  chartAccountsGroupData: SelectChartAccountsGroupProps[];
 };
 export default function ChartAccountEditForm({
   data,
+  chartAccountsGroupData,
   resetChartAccountStore,
 }: Props) {
-  const router = useRouter();
-  const searcheParams = useSearchParams();
-  const pathName = usePathname();
+  const { deleteParam, compareParam } = useURLParams();
 
   const {
     register,
@@ -42,23 +41,15 @@ export default function ChartAccountEditForm({
   });
 
   async function submitChartAccountForm(dataForm: chartAccountTypeSchema) {
-    console.log(dataForm);
-
-    /*const updateUserResult = await updateChartAccount(dataForm, data.id);
+    const updateUserResult = await updateChartAccount(dataForm, data.id);
     if (updateUserResult.status !== 204) {
       toast.error(updateUserResult.message);
       return;
     }
-    closeModal();
     resetChartAccountStore();
-    toast.success(updateUserResult.message);*/
+    toast.success(updateUserResult.message);
   }
 
-  function closeModal() {
-    const params = new URLSearchParams(searcheParams.toString());
-    params.delete('showModal');
-    router.push(`${pathName}/?${params.toString()}`);
-  }
   const types = [
     { value: 'EXPENSE', label: 'Despesa' },
     { value: 'REVENUE', label: 'Receita' },
@@ -71,13 +62,17 @@ export default function ChartAccountEditForm({
       value: data.type?.value,
       label: data.type?.label,
     });
+    setValue('chartAccountsGroup', {
+      value: data.chartAccountsGroup?.id,
+      label: data.chartAccountsGroup?.name,
+    });
   }, [data]);
 
   return (
     <>
       <Modal.Root
-        closeModal={closeModal}
-        isOpen={searcheParams.get('showModal') === 'chartaccountedit'}
+        closeModal={() => deleteParam('show-modal')}
+        isOpen={compareParam('show-modal', 'chart-account-edit')}
         title={'Editar Plano de Contas'}
       >
         <Modal.Form onSubmit={handleSubmit(submitChartAccountForm)}>
@@ -91,6 +86,17 @@ export default function ChartAccountEditForm({
               <Input.Label label="Tipo" />
               <CustomSelect name="type" options={types} control={control} />
               <Input.LabelError helperText={errors.type?.message} />
+            </Input.Root>
+            <Input.Root>
+              <Input.Label label="Grupo plano conta" />
+              <CustomSelect
+                name="chartAccountsGroup"
+                options={chartAccountsGroupData}
+                control={control}
+              />
+              <Input.LabelError
+                helperText={errors.chartAccountsGroup?.message}
+              />
             </Input.Root>
           </Modal.FormInputs>
           <Modal.FormFooter>

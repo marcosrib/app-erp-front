@@ -1,10 +1,13 @@
 'use client';
 
+import { SelectChartAccountsGroupProps } from '../../group-chart-account/types';
 import { useChartAccountStore } from '../store/useChartAccountStore';
 import ChartAccountCreateForm from './ChartAccountCreateForm';
 import ChartAccountEditForm from './ChartAccountEditForm';
-
-export default function ChartAccountForm() {
+type Props = {
+  chartAccountsGroupData: SelectChartAccountsGroupProps[];
+};
+export default function ChartAccountForm({ chartAccountsGroupData }: Props) {
   const { chartAccountEdit, resetDataForm } = useChartAccountStore();
   function resetChartAccountStore() {
     resetDataForm();
@@ -16,6 +19,7 @@ export default function ChartAccountForm() {
         <ChartAccountCreateForm />
       ) : (
         <ChartAccountEditForm
+          chartAccountsGroupData={chartAccountsGroupData}
           data={chartAccountEdit}
           resetChartAccountStore={resetChartAccountStore}
         />

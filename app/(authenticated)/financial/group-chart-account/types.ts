@@ -10,6 +10,16 @@ export type ChartAccountsGroupEditProps = {
   name: string;
 };
 
+export type GetChartAccountsGroupProps = {
+  id: number;
+  name: string;
+};
+
+export type SelectChartAccountsGroupProps = {
+  value: number;
+  label: string;
+};
+
 export type ChartAccountsGroupCreateProps = {
   name: string;
 };

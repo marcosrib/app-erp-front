@@ -22,11 +22,19 @@ export async function createChartAccount(data: chartAccountTypeSchema) {
 
   export async function updateChartAccount(data: chartAccountTypeSchema, id: number) {
     const headers = await getHeaders();    
-    try {
+    const { chartAccountsGroup, type, ...dataAll } = data;
+
+    const userWithProfilesArray = {
+      ...dataAll,
+      type: type?.value,
+      chartAccountsGroupId: chartAccountsGroup?.value,
+    };
+       
+   try {
       await fetchApi(`api/chart-account/${id}`, {
         method: 'PUT',
         headers: headers,
-        body: JSON.stringify(data)
+        body: JSON.stringify(userWithProfilesArray)
       })
       revalidatePath('financial/chart-account')
       return  messageErro(204, `Plano de contas atualizado com sucesso!`);

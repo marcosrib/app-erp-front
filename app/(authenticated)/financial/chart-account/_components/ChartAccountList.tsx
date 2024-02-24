@@ -2,13 +2,16 @@ import { TableCustom } from '@/app/(authenticated)/components/table';
 import { ChartAccountSearchParamProps } from '../types';
 import ChartAccountButtonEdit from './ChartAccountButtonEdit';
 import ChartAccountForm from './ChartAccountForm';
+import { getChartAccountsGroup } from '../../group-chart-account/actions/chartAccountsGroupAction';
 
-export default function ChartAccountList({
+export default async function ChartAccountList({
   searchParams,
 }: ChartAccountSearchParamProps) {
+  const chartAccountsGroupData = await getChartAccountsGroup();
+
   return (
     <>
-      <ChartAccountForm />
+      <ChartAccountForm chartAccountsGroupData={chartAccountsGroupData} />
       <TableCustom.Root>
         <TableCustom.Body
           params={searchParams}

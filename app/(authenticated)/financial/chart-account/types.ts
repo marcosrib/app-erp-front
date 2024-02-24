@@ -14,6 +14,7 @@ export type ChartAccountEditProps = {
     id: number;
     name: string;
     type: SelectTypeOptionsProps;
+    chartAccountsGroup: ChartAccountsGroupProps
 };
 
 export type ChartAccountSearchParamProps = {
