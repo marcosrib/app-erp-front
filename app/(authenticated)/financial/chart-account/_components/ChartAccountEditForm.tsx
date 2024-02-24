@@ -1,26 +1,30 @@
 'use client';
 import { useForm } from 'react-hook-form';
+
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  ChartAccountsGroupEditProps,
-  chartAccountsGroupTypeSchema,
-} from '../types';
-import { chartAccountsGroupSchema } from '../schemas/chartAccountsGroupSchema';
+
 import { Modal } from '@/app/(authenticated)/components/modal';
 import { Input } from '@/app/components/input';
 import Button from '@/app/(authenticated)/components/button/Button';
-import { updateChartAccountsGroup } from '../actions/chartAccountsGroupAction';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  ChartAccountEditProps,
+  SelectTypeOptionsProps,
+  chartAccountTypeSchema,
+} from '../types';
+import { chartAccountSchema } from '../schemas/chartAccountSchema';
+import { updateChartAccount } from '../actions/chartAccountAction';
+import CustomSelect from '@/app/(authenticated)/components/select/CustomSelect';
 
 type Props = {
-  data: ChartAccountsGroupEditProps;
-  resetChartAccountsGroupStore: () => void;
+  data: ChartAccountEditProps;
+  resetChartAccountStore: () => void;
 };
-export default function ChartAccountsGroupEditForm({
+export default function ChartAccountEditForm({
   data,
-  resetChartAccountsGroupStore,
+  resetChartAccountStore,
 }: Props) {
   const router = useRouter();
   const searcheParams = useSearchParams();
@@ -30,21 +34,24 @@ export default function ChartAccountsGroupEditForm({
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors },
-  } = useForm<ChartAccountsGroupEditProps>({
+  } = useForm<chartAccountTypeSchema>({
     mode: 'onBlur',
-    resolver: zodResolver(chartAccountsGroupSchema),
+    resolver: zodResolver(chartAccountSchema),
   });
 
-  async function submitCostCenterForm(dataForm: chartAccountsGroupTypeSchema) {
-    const updateUserResult = await updateChartAccountsGroup(dataForm, data.id);
+  async function submitChartAccountForm(dataForm: chartAccountTypeSchema) {
+    console.log(dataForm);
+
+    /*const updateUserResult = await updateChartAccount(dataForm, data.id);
     if (updateUserResult.status !== 204) {
       toast.error(updateUserResult.message);
       return;
     }
     closeModal();
-    resetChartAccountsGroupStore();
-    toast.success(updateUserResult.message);
+    resetChartAccountStore();
+    toast.success(updateUserResult.message);*/
   }
 
   function closeModal() {
@@ -52,24 +59,38 @@ export default function ChartAccountsGroupEditForm({
     params.delete('showModal');
     router.push(`${pathName}/?${params.toString()}`);
   }
+  const types = [
+    { value: 'EXPENSE', label: 'Despesa' },
+    { value: 'REVENUE', label: 'Receita' },
+  ] as SelectTypeOptionsProps[];
 
   useEffect(() => {
     setValue('name', data.name);
+
+    setValue('type', {
+      value: data.type?.value,
+      label: data.type?.label,
+    });
   }, [data]);
 
   return (
     <>
       <Modal.Root
         closeModal={closeModal}
-        isOpen={searcheParams.get('showModal') === 'acgedit'}
-        title={'Editar Grupo Plano de Contas'}
+        isOpen={searcheParams.get('showModal') === 'chartaccountedit'}
+        title={'Editar Plano de Contas'}
       >
-        <Modal.Form onSubmit={handleSubmit(submitCostCenterForm)}>
+        <Modal.Form onSubmit={handleSubmit(submitChartAccountForm)}>
           <Modal.FormInputs>
             <Input.Root>
               <Input.Label label="Nome" />
               <Input.Input {...register('name')} />
               <Input.LabelError helperText={errors.name?.message} />
+            </Input.Root>
+            <Input.Root>
+              <Input.Label label="Tipo" />
+              <CustomSelect name="type" options={types} control={control} />
+              <Input.LabelError helperText={errors.type?.message} />
             </Input.Root>
           </Modal.FormInputs>
           <Modal.FormFooter>

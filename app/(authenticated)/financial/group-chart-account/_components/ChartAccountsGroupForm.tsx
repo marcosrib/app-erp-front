@@ -1,5 +1,4 @@
 'use client';
-
 import { useChartAccountsGroupStore } from '../store/useChartAccountsGroupStore';
 import ChartAccountsGroupCreateForm from './ChartAccountsGroupCreateForm';
 import ChartAccountsGroupEditForm from './ChartAccountsGroupEditForm';
@@ -9,15 +8,16 @@ export default function ChartAccountsGroupForm() {
   function resetChartAccountsGroupStore() {
     resetDataForm();
   }
+
   return (
     <>
-      {groupChartAccountEdit.id != undefined ? (
+      {groupChartAccountEdit.id === undefined ? (
+        <ChartAccountsGroupCreateForm />
+      ) : (
         <ChartAccountsGroupEditForm
           data={groupChartAccountEdit}
           resetChartAccountsGroupStore={resetChartAccountsGroupStore}
         />
-      ) : (
-        <ChartAccountsGroupCreateForm />
       )}
     </>
   );

@@ -1,7 +1,6 @@
 'use client';
 import Button from '@/app/(authenticated)/components/button/Button';
 import { Form } from '@/app/(authenticated)/components/form';
-import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { Input } from '@/app/components/input';
 import {
   ChartAccountsGroupSearchProps,
@@ -16,7 +15,6 @@ import { useChartAccountsGroupStore } from '../store/useChartAccountsGroupStore'
 import { chartAccountsGroupSchema } from '../schemas/chartAccountsGroupSchema';
 
 export default function ChartAccountsGroupSearch() {
-  const { toggleModal } = useModalStore();
   const { resetDataForm } = useChartAccountsGroupStore();
   const router = useRouter();
   const searcheParams = useSearchParams();
@@ -34,7 +32,9 @@ export default function ChartAccountsGroupSearch() {
 
   function handleOpenModal() {
     resetDataForm();
-    toggleModal();
+    const params = new URLSearchParams(searcheParams.toString());
+    params.set('showModal', 'acgcreate');
+    router.push(`${pathName}/?${params.toString()}`);
   }
 
   function handleSearchSubmit(data: chartAccountsGroupTypeSchema) {

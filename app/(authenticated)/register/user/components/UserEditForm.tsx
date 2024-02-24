@@ -22,7 +22,6 @@ type Props = {
 };
 
 export default function UserEditForm({ profile }: Props) {
-  const { toggleModal } = useModalStore();
   const { userEdit: user } = useUserStore();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -45,7 +44,6 @@ export default function UserEditForm({ profile }: Props) {
       toast.error(updateUserResult.message);
       return;
     }
-    toggleModal();
     const params = new URLSearchParams(searchParams.toString());
 
     const pageParam = params.get('page') || '1';
@@ -70,9 +68,19 @@ export default function UserEditForm({ profile }: Props) {
     }
   }, [user]);
 
+  function closeModal() {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('showModal');
+    router.push(`${pathName}/?${params.toString()}`);
+  }
+
   return (
     <>
-      <Modal.Root title={'Editar Usuário'}>
+      <Modal.Root
+        closeModal={closeModal}
+        isOpen={searchParams.get('showModal') === 'useredit'}
+        title={'Editar Usuário'}
+      >
         <Modal.Form onSubmit={handleSubmit(submitUserForm)}>
           <Modal.FormInputs>
             <Input.Root>

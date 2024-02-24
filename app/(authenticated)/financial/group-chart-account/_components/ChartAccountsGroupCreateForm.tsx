@@ -8,13 +8,15 @@ import {
   chartAccountsGroupTypeSchema,
 } from '../types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { toast } from 'react-toastify';
 import { createChartAccountsGroup } from '../actions/chartAccountsGroupAction';
 import { chartAccountsGroupSchema } from '../schemas/chartAccountsGroupSchema';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export default function ChartAccountsGroupCreateForm() {
-  const { toggleModal } = useModalStore();
+  const router = useRouter();
+  const searcheParams = useSearchParams();
+  const pathName = usePathname();
 
   const {
     register,
@@ -32,13 +34,24 @@ export default function ChartAccountsGroupCreateForm() {
       toast.error(costCenterResult.message);
       return;
     }
-    toggleModal();
+    closeModal();
     toast.success(costCenterResult.message);
     reset();
   }
+
+  function closeModal() {
+    const params = new URLSearchParams(searcheParams.toString());
+    params.delete('showModal');
+    router.push(`${pathName}/?${params.toString()}`);
+  }
+
   return (
     <>
-      <Modal.Root title={'Cadastrar Grupo Plano de Contas'}>
+      <Modal.Root
+        closeModal={closeModal}
+        isOpen={searcheParams.get('showModal') === 'acgcreate'}
+        title={'Cadastrar Grupo Plano de Contas'}
+      >
         <Modal.Form onSubmit={handleSubmit(submitUserForm)}>
           <Modal.FormInputs>
             <Input.Root>

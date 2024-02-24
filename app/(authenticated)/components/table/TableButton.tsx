@@ -17,7 +17,7 @@ type Props = VariantProps<typeof button> & {
   label?: string;
   children: ReactNode;
   data: any;
-  onClick: (data: any) => Promise<void>;
+  onClick: (data: any) => void;
 };
 
 export function TableButton({

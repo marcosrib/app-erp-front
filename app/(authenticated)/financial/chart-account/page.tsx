@@ -1,16 +1,14 @@
 import { Tabs } from '../../components/Tabs';
 import ChartAccountsGroup from '../group-chart-account/ChartAccountsGroup';
+import ChartAccountList from './_components/ChartAccountList';
 
 type SearchParamsProps = {
-  searchParams: { label: string; tabIndex: number };
+  searchParams: {
+    label: string;
+    tabIndex: number;
+    name: string;
+  };
 };
-function Test() {
-  return (
-    <>
-      <div>test</div>
-    </>
-  );
-}
 
 export default function ChartAccount({ searchParams }: SearchParamsProps) {
   return (
@@ -27,8 +25,8 @@ export default function ChartAccount({ searchParams }: SearchParamsProps) {
         />
       </Tabs.TabHeader>
       <Tabs.TabContent searchParams={searchParams}>
-        <ChartAccountsGroup />
-        <Test />
+        <ChartAccountsGroup searchParams={searchParams} />
+        <ChartAccountList searchParams={searchParams} />
       </Tabs.TabContent>
     </Tabs.Root>
   );

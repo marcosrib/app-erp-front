@@ -1,16 +1,14 @@
-'use client';
 import { ReactNode } from 'react';
 import { MdClose } from 'react-icons/md';
-import { useModalStore } from './stores/useModalStore';
 
 type Props = {
   title: string;
   children: ReactNode;
+  isOpen: boolean;
+  closeModal: () => void;
 };
 
-export function ModalRoot({ title, children }: Props) {
-  const { isOpen, toggleModal } = useModalStore();
-
+export function ModalRoot({ isOpen, title, closeModal, children }: Props) {
   return (
     <>
       {isOpen && (
@@ -28,7 +26,7 @@ export function ModalRoot({ title, children }: Props) {
                    bg-transparent hover:bg-gray-200 
                    hover:text-gray-900 rounded-2xl text-sm
                    p-1.5 ml-auto inline-flex items-center"
-                  onClick={toggleModal}
+                  onClick={closeModal}
                 >
                   <MdClose size={20} />
                 </button>
