@@ -6,7 +6,7 @@ const chartAccountGroupSchema = z.object({
 
 const typeSchema = z.object({
   value: z.string().min(1, { message: 'O tipo é obrigatório' }),
-  label: z.string(),
+  label: z.string().min(1, { message: 'O tipo é obrigatório' }),
 });
 
 const chartAccountsGroupSchema = z.object({
@@ -20,4 +20,10 @@ export const chartAccountSchema = z.object({
     .min(5, { message: 'O nome precisa ter no minimo 5 caracteres' }),
   type: typeSchema,
   chartAccountsGroup: chartAccountsGroupSchema,
+});
+
+export const chartAccountFilterSchema = z.object({
+  name: z
+    .string()
+    .min(5, { message: 'O nome precisa ter no minimo 5 caracteres' }),
 });

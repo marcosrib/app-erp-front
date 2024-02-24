@@ -6,11 +6,18 @@ import { revalidatePath } from "next/cache";
 
 export async function createChartAccount(data: chartAccountTypeSchema) {
     const headers = await getHeaders();
+    const { chartAccountsGroup, type, ...dataAll } = data;
+
+    const userWithProfilesArray = {
+      ...dataAll,
+      type: type?.value,
+      chartAccountsGroupId: chartAccountsGroup?.value,
+    };
     try {
       await fetchApi('api/chart-account', {
         method: 'POST',
         headers: headers,
-        body: JSON.stringify(data)
+        body: JSON.stringify(userWithProfilesArray)
       })
       revalidatePath('financial/chart-account')
       return  messageErro(201, 'Plano de contas cadastrado com sucesso');

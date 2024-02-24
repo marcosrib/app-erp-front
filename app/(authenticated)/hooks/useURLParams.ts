@@ -1,4 +1,9 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+type ParamsProps = {
+    key: string;
+    value: string;
+}
+
 
 export default function useURLParams() {
     const router = useRouter();
@@ -14,15 +19,38 @@ export default function useURLParams() {
         params.set(key, value);
         router.push(`${pathName}/?${params.toString()}`);
     }
+    function setMultipleParam( params: ParamsProps[]) {
+        const paramsUrl = new URLSearchParams(searchParams.toString());
+        if(params.length > 0){
+            params.forEach(param => {
+                paramsUrl.set(param.key, param.value);
+            });
+            router.push(`${pathName}/?${paramsUrl.toString()}`);
+        }
+        
+    }
 
     function deleteParam(key: string) {
         const params = new URLSearchParams(searchParams.toString());
         params.delete(key);
         router.push(`${pathName}/?${params.toString()}`);
     }
+
+
+    function deleteMultipleParam(keys: string[]) {
+        const paramsUrl = new URLSearchParams(searchParams.toString());
+        if(keys.length > 0){
+            keys.forEach(key => {
+                paramsUrl.delete(key);
+            });
+            router.push(`${pathName}/?${paramsUrl.toString()}`);
+        }
+    }
     return {
         deleteParam,
         compareParam,
         setParam,
+        setMultipleParam,
+        deleteMultipleParam
     }
 }

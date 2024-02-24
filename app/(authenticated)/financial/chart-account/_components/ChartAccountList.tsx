@@ -21,6 +21,7 @@ export default async function ChartAccountList({
             <TableCustom.HeaderContent title="Id" />
             <TableCustom.HeaderContent title="Nome" />
             <TableCustom.HeaderContent title="Tipo" />
+            <TableCustom.HeaderContent title="Grupo" />
             <TableCustom.HeaderContent title="Ações" />
           </TableCustom.Header>
           <TableCustom.Column field="id">
@@ -36,6 +37,11 @@ export default async function ChartAccountList({
           <TableCustom.Column field="combinedData">
             {(field) => {
               return <p>{JSON.parse(field).type.label}</p>;
+            }}
+          </TableCustom.Column>
+          <TableCustom.Column field="combinedData">
+            {(field) => {
+              return <p>{JSON.parse(field).chartAccountsGroup.name}</p>;
             }}
           </TableCustom.Column>
           <TableCustom.Column field="actions">

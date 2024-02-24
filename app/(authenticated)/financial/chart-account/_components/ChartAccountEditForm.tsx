@@ -41,13 +41,17 @@ export default function ChartAccountEditForm({
   });
 
   async function submitChartAccountForm(dataForm: chartAccountTypeSchema) {
-    const updateUserResult = await updateChartAccount(dataForm, data.id);
-    if (updateUserResult.status !== 204) {
-      toast.error(updateUserResult.message);
+    const updateChartAccountResult = await updateChartAccount(
+      dataForm,
+      data.id
+    );
+    if (updateChartAccountResult.status !== 204) {
+      toast.error(updateChartAccountResult.message);
       return;
     }
+    deleteParam('show-modal');
     resetChartAccountStore();
-    toast.success(updateUserResult.message);
+    toast.success(updateChartAccountResult.message);
   }
 
   const types = [

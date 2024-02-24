@@ -15,6 +15,7 @@ const CustomSelect = ({ name, control, options }: CustomSelectProps) => {
     <Controller
       name={name}
       control={control}
+      defaultValue="treste"
       render={({ field }) => (
         <Select
           {...field}

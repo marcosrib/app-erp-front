@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { chartAccountSchema } from "./schemas/chartAccountSchema";
+import { chartAccountFilterSchema, chartAccountSchema } from "./schemas/chartAccountSchema";
 
 export type ChartAccountsGroupProps = {
     id: number;
@@ -23,4 +23,8 @@ export type ChartAccountSearchParamProps = {
 
 export type chartAccountTypeSchema = z.infer<
   typeof chartAccountSchema
+>;
+
+export type chartAccountFilterTypeSchema = z.infer<
+  typeof chartAccountFilterSchema
 >;

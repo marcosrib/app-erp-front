@@ -16,7 +16,9 @@ export default function ChartAccountForm({ chartAccountsGroupData }: Props) {
   return (
     <>
       {chartAccountEdit.id === undefined ? (
-        <ChartAccountCreateForm />
+        <ChartAccountCreateForm
+          chartAccountsGroupData={chartAccountsGroupData}
+        />
       ) : (
         <ChartAccountEditForm
           chartAccountsGroupData={chartAccountsGroupData}

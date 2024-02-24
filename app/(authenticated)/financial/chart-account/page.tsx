@@ -1,6 +1,7 @@
 import { Tabs } from '../../components/Tabs';
 import ChartAccountsGroup from '../group-chart-account/ChartAccountsGroup';
 import ChartAccountList from './_components/ChartAccountList';
+import ChartAccountSearch from './_components/ChartAccountSearch';
 
 type SearchParamsProps = {
   searchParams: {
@@ -26,7 +27,10 @@ export default function ChartAccount({ searchParams }: SearchParamsProps) {
       </Tabs.TabHeader>
       <Tabs.TabContent searchParams={searchParams}>
         <ChartAccountsGroup searchParams={searchParams} />
-        <ChartAccountList searchParams={searchParams} />
+        <>
+          <ChartAccountSearch />
+          <ChartAccountList searchParams={searchParams} />
+        </>
       </Tabs.TabContent>
     </Tabs.Root>
   );
