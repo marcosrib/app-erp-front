@@ -3,21 +3,18 @@ import Button from '@/app/(authenticated)/components/button/Button';
 import { Form } from '@/app/(authenticated)/components/form';
 import { Input } from '@/app/components/input';
 import { MdAdd } from 'react-icons/md';
-import { usePathname, useSearchParams, useRouter } from 'next/navigation';
-import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { useUserStore } from '../store/useUserStore';
 import { ParamsProps, UserSearchDataProps } from '../types';
 import { userSerachSchema } from '../hooks/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
+import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 
 export default function UserSearch({ searchParams }: ParamsProps) {
-  const { toggleModal } = useModalStore();
+  const { setMultipleParam, deleteParam, deleteMultipleParam, setParam } =
+    useURLParams();
   const { resetDataForm } = useUserStore();
-  const router = useRouter();
-  const searcheParams = useSearchParams();
-  const pathName = usePathname();
 
   const {
     register: registerSearch,
@@ -32,25 +29,31 @@ export default function UserSearch({ searchParams }: ParamsProps) {
 
   function handleOpenModal() {
     resetDataForm();
-    toggleModal();
+    setParam('show-modal', 'user-create');
   }
 
   useEffect(() => {
-    console.log('useEfect');
-
     if (searchParams?.email) {
       setValue('email', searchParams.email);
     }
   }, [searchParams]);
 
   function handleSearchSubmit(data: UserSearchDataProps) {
-    const params = new URLSearchParams(searcheParams.toString());
-    params.set('page', '1');
-    params.set('email', data.email);
-    router.push(`${pathName}/?${params.toString()}`);
+    const params = [
+      {
+        key: 'page',
+        value: '1',
+      },
+      {
+        key: 'email',
+        value: data.email,
+      },
+    ];
+    setMultipleParam(params);
   }
 
   function clearForm() {
+    deleteMultipleParam(['page', 'email']);
     reset();
   }
   return (

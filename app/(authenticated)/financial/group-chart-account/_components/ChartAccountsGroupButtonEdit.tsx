@@ -3,7 +3,7 @@ import { TableCustom } from '@/app/(authenticated)/components/table';
 import { FiEdit } from 'react-icons/fi';
 import { ChartAccountsGroupEditProps } from '../types';
 import { useChartAccountsGroupStore } from '../store/useChartAccountsGroupStore';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 interface Props {
   groupChartAccountData: ChartAccountsGroupEditProps;
 }
@@ -11,11 +11,8 @@ interface Props {
 export default function GroupChartAccountButtonEdit({
   groupChartAccountData,
 }: Props) {
-  const router = useRouter();
-  const searcheParams = useSearchParams();
-  const pathName = usePathname();
   const { addGroupChartAccountEdit } = useChartAccountsGroupStore();
-
+  const { setParam } = useURLParams();
   function handleEditChartAccountsGroup(
     costCenterData: ChartAccountsGroupEditProps
   ) {
@@ -24,9 +21,7 @@ export default function GroupChartAccountButtonEdit({
   }
 
   function openModal() {
-    const params = new URLSearchParams(searcheParams.toString());
-    params.set('showModal', 'acgedit');
-    router.push(`${pathName}/?${params.toString()}`);
+    setParam('show-modal', 'chart-account-group-edit');
   }
 
   return (

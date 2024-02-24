@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import { updateUser } from '../actions/userAction';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { generateIdRevalidate } from '@/app/utils/revalidate';
+import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 
 type Props = {
   profile: SelectProfileOptionsProps[];
@@ -23,9 +24,7 @@ type Props = {
 
 export default function UserEditForm({ profile }: Props) {
   const { userEdit: user } = useUserStore();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathName = usePathname();
+  const { deleteParam, compareParam } = useURLParams();
 
   const {
     control,
@@ -44,13 +43,7 @@ export default function UserEditForm({ profile }: Props) {
       toast.error(updateUserResult.message);
       return;
     }
-    const params = new URLSearchParams(searchParams.toString());
-
-    const pageParam = params.get('page') || '1';
-    const rev_id = generateIdRevalidate();
-    params.set('page', pageParam);
-    params.set('rev', `${rev_id}`),
-      router.push(`${pathName}/?${params.toString()}`);
+    closeModal();
     toast.success(updateUserResult.message);
   }
 
@@ -69,16 +62,14 @@ export default function UserEditForm({ profile }: Props) {
   }, [user]);
 
   function closeModal() {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete('showModal');
-    router.push(`${pathName}/?${params.toString()}`);
+    deleteParam('show-modal');
   }
 
   return (
     <>
       <Modal.Root
         closeModal={closeModal}
-        isOpen={searchParams.get('showModal') === 'useredit'}
+        isOpen={compareParam('show-modal', 'user-edit')}
         title={'Editar Usuário'}
       >
         <Modal.Form onSubmit={handleSubmit(submitUserForm)}>

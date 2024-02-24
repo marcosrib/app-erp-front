@@ -46,7 +46,7 @@ export default async function UserList({ searchParams }: ParamsProps) {
               return (
                 <TableCustom.Actions>
                   <ButtonEdit user={user} />
-                  <ButtonActive data={user} page={searchParams?.page} />
+                  <ButtonActive data={user} />
                 </TableCustom.Actions>
               );
             }}

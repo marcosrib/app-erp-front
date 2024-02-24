@@ -11,13 +11,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 import { createChartAccountsGroup } from '../actions/chartAccountsGroupAction';
 import { chartAccountsGroupSchema } from '../schemas/chartAccountsGroupSchema';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 
 export default function ChartAccountsGroupCreateForm() {
-  const router = useRouter();
-  const searcheParams = useSearchParams();
-  const pathName = usePathname();
-
+  const { deleteParam, compareParam } = useURLParams();
   const {
     register,
     reset,
@@ -29,27 +26,25 @@ export default function ChartAccountsGroupCreateForm() {
   });
 
   async function submitUserForm(data: chartAccountsGroupTypeSchema) {
-    const costCenterResult = await createChartAccountsGroup(data);
-    if (costCenterResult.status !== 201) {
-      toast.error(costCenterResult.message);
+    const charAccountGroupResult = await createChartAccountsGroup(data);
+    if (charAccountGroupResult.status !== 201) {
+      toast.error(charAccountGroupResult.message);
       return;
     }
     closeModal();
-    toast.success(costCenterResult.message);
+    toast.success(charAccountGroupResult.message);
     reset();
   }
 
   function closeModal() {
-    const params = new URLSearchParams(searcheParams.toString());
-    params.delete('showModal');
-    router.push(`${pathName}/?${params.toString()}`);
+    deleteParam('show-modal');
   }
 
   return (
     <>
       <Modal.Root
         closeModal={closeModal}
-        isOpen={searcheParams.get('showModal') === 'acgcreate'}
+        isOpen={compareParam('show-modal', 'chart-account-group-create')}
         title={'Cadastrar Grupo Plano de Contas'}
       >
         <Modal.Form onSubmit={handleSubmit(submitUserForm)}>

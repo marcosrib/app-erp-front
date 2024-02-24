@@ -6,19 +6,16 @@ import {
   ChartAccountsGroupSearchProps,
   chartAccountsGroupTypeSchema,
 } from '../types';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
 import { MdAdd } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useChartAccountsGroupStore } from '../store/useChartAccountsGroupStore';
 import { chartAccountsGroupSchema } from '../schemas/chartAccountsGroupSchema';
+import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 
 export default function ChartAccountsGroupSearch() {
   const { resetDataForm } = useChartAccountsGroupStore();
-  const router = useRouter();
-  const searcheParams = useSearchParams();
-  const pathName = usePathname();
+  const { deleteMultipleParam, setMultipleParam, setParam } = useURLParams();
 
   const {
     register: registerSearch,
@@ -32,23 +29,25 @@ export default function ChartAccountsGroupSearch() {
 
   function handleOpenModal() {
     resetDataForm();
-    const params = new URLSearchParams(searcheParams.toString());
-    params.set('showModal', 'acgcreate');
-    router.push(`${pathName}/?${params.toString()}`);
+    setParam('show-modal', 'chart-account-group-create');
   }
 
   function handleSearchSubmit(data: chartAccountsGroupTypeSchema) {
-    const params = new URLSearchParams(searcheParams.toString());
-    params.set('page', '1');
-    params.set('name', data.name);
-    router.push(`${pathName}/?${params.toString()}`);
+    const params = [
+      {
+        key: 'page',
+        value: '1',
+      },
+      {
+        key: 'name',
+        value: data.name,
+      },
+    ];
+    setMultipleParam(params);
   }
 
   function clearForm() {
-    const params = new URLSearchParams(searcheParams.toString());
-    params.delete('page');
-    params.delete('name');
-    router.push(`${pathName}/?${params.toString()}`);
+    deleteMultipleParam(['page', 'name']);
     reset();
   }
   return (

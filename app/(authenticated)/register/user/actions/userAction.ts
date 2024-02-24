@@ -3,6 +3,7 @@
 import { fetchApi } from "@/app/services/fetchApi";
 import { ProfileProps, SelectProfileOptionsProps, UserCreateTypeSchema, UserEditFormTypeSchema, UserEditProps } from "../types";
 import { getHeaders } from "@/app/(authenticated)/actions/headers";
+import { revalidatePath } from "next/cache";
 
 interface Profiles {
   id: string,
@@ -82,6 +83,7 @@ export async function createUser(user: UserCreateTypeSchema) {
       headers: headers,
       body: JSON.stringify(userWithProfilesArray)
     })
+    revalidatePath('/register/user')
     return { 
       status: 201,
       message : 'Usuário cadastrado com sucesso'
@@ -115,6 +117,7 @@ export async function updateUser(user: UserEditFormTypeSchema, id: number | unde
       headers: headers,
       body: JSON.stringify(userWithProfilesArray)
     })
+    revalidatePath('/register/user')
     return  messageErro(204, `Usuário atualizado com sucesso!`);
   } catch (error) {
     const err = error as any;
@@ -132,7 +135,7 @@ export async function updateStatusUser(status: boolean, id: number | undefined) 
       headers: headers,
       body: JSON.stringify({ status })
     })
- 
+    revalidatePath('/register/user')
     return  messageErro(201, `Usuário ${statuMessage} com sucesso!`);
   
   } catch (error) {

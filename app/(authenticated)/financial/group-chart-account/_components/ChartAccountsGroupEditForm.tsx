@@ -12,7 +12,7 @@ import { Modal } from '@/app/(authenticated)/components/modal';
 import { Input } from '@/app/components/input';
 import Button from '@/app/(authenticated)/components/button/Button';
 import { updateChartAccountsGroup } from '../actions/chartAccountsGroupAction';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 
 type Props = {
   data: ChartAccountsGroupEditProps;
@@ -22,10 +22,7 @@ export default function ChartAccountsGroupEditForm({
   data,
   resetChartAccountsGroupStore,
 }: Props) {
-  const router = useRouter();
-  const searcheParams = useSearchParams();
-  const pathName = usePathname();
-
+  const { deleteParam, compareParam } = useURLParams();
   const {
     register,
     handleSubmit,
@@ -37,20 +34,17 @@ export default function ChartAccountsGroupEditForm({
   });
 
   async function submitCostCenterForm(dataForm: chartAccountsGroupTypeSchema) {
-    const updateUserResult = await updateChartAccountsGroup(dataForm, data.id);
-    if (updateUserResult.status !== 204) {
-      toast.error(updateUserResult.message);
+    const charAccountGroupResult = await updateChartAccountsGroup(
+      dataForm,
+      data.id
+    );
+    if (charAccountGroupResult.status !== 204) {
+      toast.error(charAccountGroupResult.message);
       return;
     }
-    closeModal();
+    deleteParam('show-modal');
     resetChartAccountsGroupStore();
-    toast.success(updateUserResult.message);
-  }
-
-  function closeModal() {
-    const params = new URLSearchParams(searcheParams.toString());
-    params.delete('showModal');
-    router.push(`${pathName}/?${params.toString()}`);
+    toast.success(charAccountGroupResult.message);
   }
 
   useEffect(() => {
@@ -60,8 +54,8 @@ export default function ChartAccountsGroupEditForm({
   return (
     <>
       <Modal.Root
-        closeModal={closeModal}
-        isOpen={searcheParams.get('showModal') === 'acgedit'}
+        closeModal={() => deleteParam('show-modal')}
+        isOpen={compareParam('show-modal', 'chart-account-group-edit')}
         title={'Editar Grupo Plano de Contas'}
       >
         <Modal.Form onSubmit={handleSubmit(submitCostCenterForm)}>

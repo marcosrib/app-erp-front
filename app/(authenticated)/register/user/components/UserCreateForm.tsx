@@ -10,20 +10,15 @@ import { SelectProfileOptionsProps, UserCreateTypeSchema } from '../types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userCreateSchema } from '../schemas/userCreateSchema';
 import { createUser } from '../actions/userAction';
-import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { toast } from 'react-toastify';
-import { generateIdRevalidate } from '@/app/utils/revalidate';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 
 type Props = {
   profile: SelectProfileOptionsProps[] | undefined;
 };
 
 export default function UserCreateForm({ profile }: Props) {
-  const { toggleModal } = useModalStore();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathName = usePathname();
+  const { compareParam, deleteParam } = useURLParams();
 
   const {
     control,
@@ -42,20 +37,17 @@ export default function UserCreateForm({ profile }: Props) {
       toast.error(userResult.message);
       return;
     }
-    toggleModal();
+    deleteParam('show-modal');
     toast.success(userResult.message);
-    const params = new URLSearchParams(searchParams.toString());
-
-    const rev_id = generateIdRevalidate();
-    params.set('page', '1');
-    params.set('rev', `${rev_id}`);
-
-    router.push(`${pathName}/?${params.toString()}`);
     reset();
   }
   return (
     <>
-      <Modal.Root title={'Cadastrar Usuário'}>
+      <Modal.Root
+        closeModal={() => deleteParam('show-modal')}
+        isOpen={compareParam('show-modal', 'user-create')}
+        title={'Cadastrar Usuário'}
+      >
         <Modal.Form onSubmit={handleSubmit(submitUserForm)}>
           <Modal.FormInputs>
             <Input.Root>
