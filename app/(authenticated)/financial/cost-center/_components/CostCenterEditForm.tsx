@@ -5,11 +5,11 @@ import Button from '../../../components/button/Button';
 import { Modal } from '../../../components/modal';
 import { CostCenterEditProps, costCenterTypeSchema } from '../types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { toast } from 'react-toastify';
 import { costCenterSchema } from '../schemas/costCenterCreateSchema';
 import { useEffect } from 'react';
 import { updateCostCenter } from '../actions/costCenterAction';
+import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 
 type Props = {
   data: CostCenterEditProps;
@@ -19,8 +19,7 @@ export default function CostCenterEditForm({
   data,
   resetUseCostCenterStore,
 }: Props) {
-  const { toggleModal } = useModalStore();
-
+  const { deleteParam, compareParam } = useURLParams();
   const {
     register,
     handleSubmit,
@@ -37,7 +36,7 @@ export default function CostCenterEditForm({
       toast.error(updateUserResult.message);
       return;
     }
-    toggleModal();
+    deleteParam('show-modal');
     resetUseCostCenterStore();
     toast.success(updateUserResult.message);
   }
@@ -48,7 +47,11 @@ export default function CostCenterEditForm({
 
   return (
     <>
-      <Modal.Root title={'Editar Centro de custo'}>
+      <Modal.Root
+        closeModal={() => deleteParam('show-modal')}
+        isOpen={compareParam('show-modal', 'cost-center-edit')}
+        title={'Editar Centro de custo'}
+      >
         <Modal.Form onSubmit={handleSubmit(submitCostCenterForm)}>
           <Modal.FormInputs>
             <Input.Root>

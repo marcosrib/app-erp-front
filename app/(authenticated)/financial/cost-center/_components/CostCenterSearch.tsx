@@ -1,24 +1,18 @@
 'use client';
 import Button from '@/app/(authenticated)/components/button/Button';
 import { Form } from '@/app/(authenticated)/components/form';
-import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { Input } from '@/app/components/input';
 import { CostCenterSearchProps, costCenterTypeSchema } from '../types';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
 import { MdAdd } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
 import { costCenterSchema } from '../schemas/costCenterCreateSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCostCenterStore } from '../store/useCostCenterStore';
+import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 
 export default function CostCenterSearch() {
-  const { toggleModal } = useModalStore();
   const { resetDataForm } = useCostCenterStore();
-  const router = useRouter();
-  const searcheParams = useSearchParams();
-  const pathName = usePathname();
-
+  const { setMultipleParam, setParam, deleteMultipleParam } = useURLParams();
   const {
     register: registerSearch,
     handleSubmit,
@@ -31,21 +25,25 @@ export default function CostCenterSearch() {
 
   function handleOpenModal() {
     resetDataForm();
-    toggleModal();
+    setParam('show-modal', 'cost-center-create');
   }
 
   function handleSearchSubmit(data: costCenterTypeSchema) {
-    const params = new URLSearchParams(searcheParams.toString());
-    params.set('page', '1');
-    params.set('name', data.name);
-    router.push(`${pathName}/?${params.toString()}`);
+    const params = [
+      {
+        key: 'page',
+        value: '1',
+      },
+      {
+        key: 'name',
+        value: data.name,
+      },
+    ];
+    setMultipleParam(params);
   }
 
   function clearForm() {
-    const params = new URLSearchParams(searcheParams.toString());
-    params.delete('page');
-    params.delete('name');
-    router.push(`${pathName}/?${params.toString()}`);
+    deleteMultipleParam(['page', 'name']);
     reset();
   }
   return (

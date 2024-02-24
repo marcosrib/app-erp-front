@@ -3,19 +3,18 @@ import { TableCustom } from '@/app/(authenticated)/components/table';
 import { FiEdit } from 'react-icons/fi';
 import { useCostCenterStore } from '../store/useCostCenterStore';
 import { CostCenterEditProps } from '../types';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 interface Props {
   costCenterData: CostCenterEditProps;
 }
 
 export default function CostCenterButtonEdit({ costCenterData }: Props) {
   const { addCostCenterEdit } = useCostCenterStore();
-  const router = useRouter();
-  const searcheParams = useSearchParams();
-  const pathName = usePathname();
+  const { setParam } = useURLParams();
 
   async function handleEditCostCenter(costCenterData: any): Promise<void> {
     addCostCenterEdit(costCenterData);
+    setParam('show-modal', 'cost-center-edit');
   }
 
   return (

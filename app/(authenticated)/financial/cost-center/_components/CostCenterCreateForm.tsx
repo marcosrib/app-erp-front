@@ -5,14 +5,13 @@ import Button from '../../../components/button/Button';
 import { Modal } from '../../../components/modal';
 import { CostCenterCreateProps, costCenterTypeSchema } from '../types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useModalStore } from '@/app/(authenticated)/components/modal/stores/useModalStore';
 import { toast } from 'react-toastify';
 import { costCenterSchema } from '../schemas/costCenterCreateSchema';
 import { createCostCenter } from '../actions/costCenterAction';
+import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 
 export default function CostCenterCreateForm() {
-  const { toggleModal } = useModalStore();
-
+  const { deleteParam, compareParam } = useURLParams();
   const {
     register,
     reset,
@@ -29,13 +28,17 @@ export default function CostCenterCreateForm() {
       toast.error(costCenterResult.message);
       return;
     }
-    toggleModal();
+    deleteParam('show-modal');
     toast.success(costCenterResult.message);
     reset();
   }
   return (
     <>
-      <Modal.Root title={'Cadastrar Centro de custo'}>
+      <Modal.Root
+        closeModal={() => deleteParam('show-modal')}
+        isOpen={compareParam('show-modal', 'cost-center-create')}
+        title={'Cadastrar Centro de custo'}
+      >
         <Modal.Form onSubmit={handleSubmit(submitUserForm)}>
           <Modal.FormInputs>
             <Input.Root>
