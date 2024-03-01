@@ -52,6 +52,12 @@ export default function Sidbar() {
             >
               <Nav.IconLabel label="Plano de contas" />
             </Nav.Link>
+            <Nav.Link
+              route="/financial/releases"
+              active={path.includes('/financial/releases')}
+            >
+              <Nav.IconLabel label="Lancamentos" />
+            </Nav.Link>
           </Nav.AccordionMenu>
         </Nav.Root>
       </div>
