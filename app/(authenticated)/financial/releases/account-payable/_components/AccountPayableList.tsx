@@ -1,11 +1,14 @@
 import { TableCustom } from '@/app/(authenticated)/components/table';
 import { AccountPayableSearchParamProps } from '../types';
+import AccountPayableSearch from './AccountPayableSearch';
+import Badge from '@/app/(authenticated)/components/badges/Badge';
 
 export default async function AccountPayableList({
   searchParams,
 }: AccountPayableSearchParamProps) {
   return (
     <>
+      <AccountPayableSearch />
       <TableCustom.Root>
         <TableCustom.Body
           params={searchParams}
@@ -16,9 +19,9 @@ export default async function AccountPayableList({
             <TableCustom.HeaderContent title="Valor" />
             <TableCustom.HeaderContent title="Plano de contas" />
             <TableCustom.HeaderContent title="Centro de custo" />
-            <TableCustom.HeaderContent title="Status" />
             <TableCustom.HeaderContent title="Data pgto." />
             <TableCustom.HeaderContent title="Data venc." />
+            <TableCustom.HeaderContent title="Status" />
             <TableCustom.HeaderContent title="Ações" />
           </TableCustom.Header>
           <TableCustom.Column field="id">
@@ -33,12 +36,12 @@ export default async function AccountPayableList({
           </TableCustom.Column>
           <TableCustom.Column field="combinedData">
             {(field) => {
-              return <p>{JSON.parse(field).chartAccountResponse.name}</p>;
+              return <p>{JSON.parse(field).chartAccount.name}</p>;
             }}
           </TableCustom.Column>
           <TableCustom.Column field="combinedData">
             {(field) => {
-              return <p>{JSON.parse(field).costCenterResponse.name}</p>;
+              return <p>{JSON.parse(field).costCenter.name}</p>;
             }}
           </TableCustom.Column>
 
@@ -54,9 +57,17 @@ export default async function AccountPayableList({
               return <p>{field}</p>;
             }}
           </TableCustom.Column>
-          <TableCustom.Column field="status">
+          <TableCustom.Column field="combinedData">
             {(field) => {
-              return <p>{field}</p>;
+              const status = JSON.parse(field).status;
+              const dueDate = new Date(JSON.parse(field).dueDate);
+              const currentDate = new Date();
+              if (dueDate < currentDate && status.value === 'PENDING')
+                return <Badge bgColor="error" title="Vencido" />;
+              if (status.value === 'PAID')
+                return <Badge bgColor="success" title={status.label} />;
+              if (status.value === 'PENDING')
+                return <Badge bgColor="warn" title={status.label} />;
             }}
           </TableCustom.Column>
           <TableCustom.Column field="actions">

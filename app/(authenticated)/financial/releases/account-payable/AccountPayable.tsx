@@ -1,9 +1,12 @@
 import AccountPayableList from './_components/AccountPayableList';
+import { AccountPayableSearchParamProps } from './types';
 
-export default function AccountPayable() {
+export default function AccountPayable({
+  searchParams,
+}: AccountPayableSearchParamProps) {
   return (
     <>
-      <AccountPayableList />
+      <AccountPayableList searchParams={searchParams} />
     </>
   );
 }

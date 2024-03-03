@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { accountPayableSearchSchema } from "./schemas/accountPayableSchema";
 
 
 export type ChartAccountsGroupProps = {
@@ -18,5 +19,11 @@ export type AccountPayableEditProps = {
 };
 
 export type AccountPayableSearchParamProps = {
-    searchParams?: { status: string };
+    searchParams?: { status: string , page:string};
 }
+
+
+export type accountsPayableTypeSchema = z.infer<
+  typeof accountPayableSearchSchema
+>;
+

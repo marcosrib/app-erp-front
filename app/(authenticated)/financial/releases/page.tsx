@@ -6,10 +6,13 @@ type SearchParamsProps = {
     label: string;
     tabIndex: number;
     name: string;
+    page: string;
+    status: string;
   };
 };
 
 export default function Releases({ searchParams }: SearchParamsProps) {
+  console.log('params init', searchParams);
   return (
     <Tabs.Root>
       <Tabs.TabHeader>
@@ -20,7 +23,7 @@ export default function Releases({ searchParams }: SearchParamsProps) {
         />
       </Tabs.TabHeader>
       <Tabs.TabContent searchParams={searchParams}>
-        <AccountPayable />
+        <AccountPayable searchParams={searchParams} />
         <AccountPayable />
       </Tabs.TabContent>
     </Tabs.Root>
