@@ -1,4 +1,4 @@
-import AppProviders from './providers'
+import AppProviders from './providers';
 
 import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
@@ -11,27 +11,24 @@ export default async function PrivateLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(nextAuthOptions);
 
- const session = await getServerSession(nextAuthOptions);
-
- if(!session) {
+  if (!session) {
     redirect('/login');
- }
-return (
+  }
+  return (
     <>
-        <main className="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
-          <div className="flex items-start justify-between">
-            <Sidebar />
-            <div className="flex flex-col w-full md:space-y-4">
-              <Header />
-              <div className="h-screen pb-24 overflow-auto pr-5">
-                <AppProviders>
-                {children}
-                </AppProviders>
-              </div>
+      <main className="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
+        <div className="flex items-start justify-between">
+          <Sidebar />
+          <div className="flex flex-col w-full md:space-y-4">
+            <Header />
+            <div className="h-screen pb-24 xl:overflow-auto pr-5">
+              <AppProviders>{children}</AppProviders>
             </div>
           </div>
-        </main>
-      </> 
+        </div>
+      </main>
+    </>
   );
 }

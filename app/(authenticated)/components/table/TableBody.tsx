@@ -70,7 +70,7 @@ export async function TableBody({
                           return (
                             <td
                               key={columnIndex}
-                              className="p-4 text-gray-600 text-base font-medium  whitespace-nowrap"
+                              className="p-4 text-gray-600  text-sm font-normal  whitespace-nowrap"
                             >
                               {child.props.field === 'combinedData'
                                 ? child.props.children(JSON.stringify(row))
@@ -94,6 +94,7 @@ export async function TableBody({
           flex justify-center items-center 
           p-4 my-4 mx-4
           bg-white rounded-2xl 
+          text-xs
           shadow-xl shadow-gray-200 
           sm:flex sm:justify-between"
         >
