@@ -19,7 +19,7 @@ export type AccountPayableEditProps = {
 };
 
 export type AccountPayableSearchParamProps = {
-    searchParams?: { status: string , page:string};
+    searchParams?: { status: string , page:string, costCenterId: number};
 }
 
 

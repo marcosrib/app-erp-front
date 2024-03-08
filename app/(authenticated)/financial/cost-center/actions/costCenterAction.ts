@@ -2,7 +2,7 @@
 
 import { getHeaders } from "@/app/(authenticated)/actions/headers";
 import { fetchApi } from "@/app/services/fetchApi";
-import { costCenterTypeSchema } from "../types";
+import { GetCostCenterProps, SelectCostCenterProps, costCenterTypeSchema } from "../types";
 import { revalidatePath } from "next/cache";
 
 export async function createCostCenter(costCenter: costCenterTypeSchema) {
@@ -38,6 +38,27 @@ export async function createCostCenter(costCenter: costCenterTypeSchema) {
     }
    
   }
+
+  export async function getCostCenter(): Promise<SelectCostCenterProps[]> {
+    const headers = await getHeaders();
+    try {
+      const respose = await fetchApi<GetCostCenterProps[]>('api/cost-center', {
+        method: 'GET',
+        headers: headers
+      })
+      if(respose) {
+        return respose?.map((getCostCenter: GetCostCenterProps) => ({
+          value: getCostCenter.id,
+          label: getCostCenter.name
+        }));
+      }
+      return [{ value: 0, label: 'Nenhum centro de custo encontrado'}]
+    } catch (error) {
+      console.log(error);
+      return []
+    }
+  }
+ 
 
   function messageErro(status: number, message: string) {
     return { 

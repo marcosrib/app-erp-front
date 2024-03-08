@@ -5,19 +5,31 @@ import { Input } from '@/app/components/input';
 import { MdAdd } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
 import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
-import { accountsPayableTypeSchema } from '../types';
+import {
+  AccountPayableSearchParamProps,
+  accountsPayableTypeSchema,
+} from '../types';
 import { accountPayableSearchSchema } from '../schemas/accountPayableSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-export default function AccountPayableSearch() {
+import CustomSelect from '@/app/(authenticated)/components/select/CustomSelect';
+import { SelectCostCenterProps } from '../../../cost-center/types';
+import { useEffect } from 'react';
+type Props = AccountPayableSearchParamProps & {
+  costCenter: SelectCostCenterProps[];
+};
+export default function AccountPayableSearch({
+  costCenter,
+  searchParams,
+}: Props) {
   const { setMultipleParam, setParam, deleteMultipleParam } = useURLParams();
   const {
     register: registerSearch,
     handleSubmit,
     reset,
+    setValue,
+    control,
     formState: { errors },
   } = useForm<accountsPayableTypeSchema>({
-    mode: 'onBlur',
     resolver: zodResolver(accountPayableSearchSchema),
   });
 
@@ -26,18 +38,34 @@ export default function AccountPayableSearch() {
   }
 
   function handleSearchSubmit(data: accountsPayableTypeSchema) {
+    console.log('search', data);
+    const costCenterId =
+      data.costCenter.value !== 0 ? data.costCenter.value : '';
+
     const params = [
       { key: 'page', value: '1' },
-      { key: 'status', value: data?.status },
-      { key: 'costCenter', value: data?.costCenter },
+      { key: 'status', value: '' },
+      { key: 'costCenterId', value: costCenterId },
     ];
+
     setMultipleParam(params);
   }
 
   function clearForm() {
-    deleteMultipleParam(['page', 'status', 'costCenter']);
+    deleteMultipleParam(['page', 'status', 'costCenterId']);
     reset();
   }
+
+  useEffect(() => {
+    console.log(
+      costCenter.filter(
+        (costCenter) => costCenter.value === searchParams?.costCenterId
+      )
+    );
+    if (searchParams?.costCenterId) {
+      // setValue('costCenterId', searchParams.costCenterId);
+    }
+  }, [searchParams]);
   return (
     <Form.Root
       title="Contas a pagar"
@@ -51,7 +79,14 @@ export default function AccountPayableSearch() {
         </Input.Root>
         <Input.Root>
           <Input.Label label="Centro de custo" />
-          <Input.Input {...registerSearch('costCenter')} />
+          <CustomSelect
+            defaultValue={0}
+            defaultLabel="Selecione centro de custo"
+            name="costCenter"
+            isSearchable={true}
+            control={control}
+            options={costCenter}
+          />
           <Input.LabelError helperText={errors.costCenter?.message} />
         </Input.Root>
       </Form.InputContainer>

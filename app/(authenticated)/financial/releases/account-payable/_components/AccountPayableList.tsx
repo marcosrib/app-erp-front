@@ -1,6 +1,5 @@
 import { TableCustom } from '@/app/(authenticated)/components/table';
 import { AccountPayableSearchParamProps } from '../types';
-import AccountPayableSearch from './AccountPayableSearch';
 import Badge from '@/app/(authenticated)/components/badges/Badge';
 
 export default async function AccountPayableList({
@@ -8,7 +7,6 @@ export default async function AccountPayableList({
 }: AccountPayableSearchParamProps) {
   return (
     <>
-      <AccountPayableSearch />
       <TableCustom.Root>
         <TableCustom.Body
           params={searchParams}

@@ -11,14 +11,13 @@ type SearchParamsProps = {
   };
 };
 
-export default function Releases({ searchParams }: SearchParamsProps) {
-  console.log('params init', searchParams);
+export default async function Releases({ searchParams }: SearchParamsProps) {
   return (
     <Tabs.Root>
       <Tabs.TabHeader>
         <Tabs.TabHeaderContent
           searchParams={searchParams}
-          label="Contas a receber"
+          label="Contas a pagar"
           initialPage
         />
       </Tabs.TabHeader>

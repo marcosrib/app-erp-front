@@ -1,7 +1,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 type ParamsProps = {
     key: string;
-    value: string;
+    value: string | number | undefined;
 }
 
 
@@ -19,11 +19,11 @@ export default function useURLParams() {
         params.set(key, value);
         router.push(`${pathName}/?${params.toString()}`);
     }
-    function setMultipleParam( params: ParamsProps[]) {
+    function setMultipleParam(params: ParamsProps[]) {
         const paramsUrl = new URLSearchParams(searchParams.toString());
         if(params.length > 0){
             params.forEach(param => {
-                paramsUrl.set(param.key, param.value);
+                paramsUrl.set(param.key, param.value.toString());
             });
             router.push(`${pathName}/?${paramsUrl.toString()}`);
         }

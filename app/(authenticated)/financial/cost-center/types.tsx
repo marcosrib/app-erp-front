@@ -14,6 +14,16 @@ export type CostCenterCreateProps = {
   name: string;
 };
 
+export type GetCostCenterProps = {
+  id: number;
+  name: string;
+};
+
+export type SelectCostCenterProps = {
+  value: number;
+  label: string;
+};
+
 export type SearchParamProps = {
   searchParams?: { name: string };
 };
