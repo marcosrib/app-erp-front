@@ -11,7 +11,10 @@ export default async function AccountPayable({
 
   return (
     <>
-      <AccountPayableSearch costCenter={costCenter} />
+      <AccountPayableSearch
+        costCenter={costCenter}
+        searchParams={searchParams}
+      />
       <AccountPayableList searchParams={searchParams} />
     </>
   );

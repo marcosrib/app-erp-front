@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 import {
   AccountPayableSearchParamProps,
+  SelectStatusProps,
   accountsPayableTypeSchema,
 } from '../types';
 import { accountPayableSearchSchema } from '../schemas/accountPayableSchema';
@@ -14,9 +15,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import CustomSelect from '@/app/(authenticated)/components/select/CustomSelect';
 import { SelectCostCenterProps } from '../../../cost-center/types';
 import { useEffect } from 'react';
+
 type Props = AccountPayableSearchParamProps & {
   costCenter: SelectCostCenterProps[];
 };
+
+const statusArray = [
+  { value: 'PENDING', label: 'Pendente' },
+  { value: 'PAID', label: 'Pago' },
+];
+
 export default function AccountPayableSearch({
   costCenter,
   searchParams,
@@ -38,13 +46,12 @@ export default function AccountPayableSearch({
   }
 
   function handleSearchSubmit(data: accountsPayableTypeSchema) {
-    console.log('search', data);
     const costCenterId =
       data.costCenter.value !== 0 ? data.costCenter.value : '';
 
     const params = [
       { key: 'page', value: '1' },
-      { key: 'status', value: '' },
+      { key: 'status', value: data.status.value },
       { key: 'costCenterId', value: costCenterId },
     ];
 
@@ -57,15 +64,27 @@ export default function AccountPayableSearch({
   }
 
   useEffect(() => {
-    console.log(
-      costCenter.filter(
-        (costCenter) => costCenter.value === searchParams?.costCenterId
-      )
-    );
-    if (searchParams?.costCenterId) {
-      // setValue('costCenterId', searchParams.costCenterId);
-    }
+    setDefaultCostcenter();
+    setDefaultStatus();
   }, [searchParams]);
+
+  function setDefaultCostcenter() {
+    if (searchParams?.costCenterId) {
+      const costCenterFiltered = costCenter.find(
+        (costCenter) => costCenter.value == searchParams?.costCenterId
+      ) as SelectCostCenterProps;
+      setValue('costCenter', costCenterFiltered);
+    }
+  }
+  function setDefaultStatus() {
+    if (searchParams?.costCenterId) {
+      const statusFiltered = statusArray.find(
+        (status) => status.value === searchParams?.status
+      ) as SelectStatusProps;
+      setValue('status', statusFiltered);
+    }
+  }
+
   return (
     <Form.Root
       title="Contas a pagar"
@@ -74,8 +93,14 @@ export default function AccountPayableSearch({
       <Form.InputContainer>
         <Input.Root>
           <Input.Label label="Status" />
-          <Input.Input {...registerSearch('status')} />
-          <Input.LabelError helperText={errors.status?.message} />
+          <CustomSelect
+            defaultValue={'NONE'}
+            defaultLabel="Selecione status"
+            name="status"
+            control={control}
+            options={statusArray}
+          />
+          <Input.LabelError helperText={errors.costCenter?.message} />
         </Input.Root>
         <Input.Root>
           <Input.Label label="Centro de custo" />

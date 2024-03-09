@@ -18,6 +18,11 @@ export type AccountPayableEditProps = {
     chartAccountsGroup: ChartAccountsGroupProps
 };
 
+export type SelectStatusProps = {
+    value: string;
+    label: string;
+};
+
 export type AccountPayableSearchParamProps = {
     searchParams?: { status: string , page:string, costCenterId: number};
 }
