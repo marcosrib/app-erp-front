@@ -14,7 +14,8 @@ import { accountPayableSearchSchema } from '../schemas/accountPayableSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CustomSelect from '@/app/(authenticated)/components/select/CustomSelect';
 import { SelectCostCenterProps } from '../../../cost-center/types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useHookFormMask } from 'use-mask-input';
 
 type Props = AccountPayableSearchParamProps & {
   costCenter: SelectCostCenterProps[];
@@ -31,7 +32,7 @@ export default function AccountPayableSearch({
 }: Props) {
   const { setMultipleParam, setParam, deleteMultipleParam } = useURLParams();
   const {
-    register: registerSearch,
+    register,
     handleSubmit,
     reset,
     setValue,
@@ -41,11 +42,20 @@ export default function AccountPayableSearch({
     resolver: zodResolver(accountPayableSearchSchema),
   });
 
+  const registerWithMask = useHookFormMask(register);
+
+  const [value, setValued] = useState({
+    startDate: new Date(),
+    endDate: new Date().setMonth(11),
+  });
+
   function handleOpenModal() {
     setParam('show-modal', 'account-payable-create');
   }
 
   function handleSearchSubmit(data: accountsPayableTypeSchema) {
+    console.log('form data', data);
+
     const costCenterId =
       data.costCenter.value !== 0 ? data.costCenter.value : '';
 
@@ -113,6 +123,30 @@ export default function AccountPayableSearch({
             options={costCenter}
           />
           <Input.LabelError helperText={errors.costCenter?.message} />
+        </Input.Root>
+        <Input.Root>
+          <Input.Label label="Data venc inicial" />
+          <Input.Input
+            type="text"
+            placeholder="dd/mm/yyyy"
+            {...registerWithMask('dateVencInitial', 'datetime', {
+              inputFormat: 'dd/mm/yyyy',
+              required: true,
+            })}
+          />
+          <Input.LabelError helperText={errors.dateVencInitial?.message} />
+        </Input.Root>
+        <Input.Root>
+          <Input.Label label="Data venc final" />
+          <Input.Input
+            type="text"
+            placeholder="dd/mm/yyyy"
+            {...registerWithMask('dateVencFinal', 'datetime', {
+              inputFormat: 'dd/mm/yyyy',
+              required: true,
+            })}
+          />
+          <Input.LabelError helperText={errors.dateVencInitial?.message} />
         </Input.Root>
       </Form.InputContainer>
       <Form.Buttons>
