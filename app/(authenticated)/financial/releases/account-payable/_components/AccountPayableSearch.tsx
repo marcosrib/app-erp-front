@@ -16,6 +16,7 @@ import CustomSelect from '@/app/(authenticated)/components/select/CustomSelect';
 import { SelectCostCenterProps } from '../../../cost-center/types';
 import { useEffect, useState } from 'react';
 import { useHookFormMask } from 'use-mask-input';
+import { formatDate } from '@/app/(authenticated)/utils/formatDate';
 
 type Props = AccountPayableSearchParamProps & {
   costCenter: SelectCostCenterProps[];
@@ -44,11 +45,6 @@ export default function AccountPayableSearch({
 
   const registerWithMask = useHookFormMask(register);
 
-  const [value, setValued] = useState({
-    startDate: new Date(),
-    endDate: new Date().setMonth(11),
-  });
-
   function handleOpenModal() {
     setParam('show-modal', 'account-payable-create');
   }
@@ -59,10 +55,22 @@ export default function AccountPayableSearch({
     const costCenterId =
       data.costCenter.value !== 0 ? data.costCenter.value : '';
 
+    const dateVencInitial =
+      data.dateVencInitial !== undefined
+        ? formatDate(data.dateVencInitial, 'YYYY-MM-DD')
+        : '';
+
+    const dateVencFinal =
+      data.dateVencFinal !== undefined
+        ? formatDate(data.dateVencFinal, 'YYYY-MM-DD')
+        : '';
+
     const params = [
       { key: 'page', value: '1' },
       { key: 'status', value: data.status.value },
       { key: 'costCenterId', value: costCenterId },
+      { key: 'dateVencInitial', value: dateVencInitial },
+      { key: 'dateVencFinal', value: dateVencFinal },
     ];
 
     setMultipleParam(params);
