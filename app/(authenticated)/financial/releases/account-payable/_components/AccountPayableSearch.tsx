@@ -94,7 +94,6 @@ export default function AccountPayableSearch({
       setValue('status', statusFiltered);
     }
   }
-
   return (
     <Form.Root
       title="Contas a pagar"
@@ -146,7 +145,7 @@ export default function AccountPayableSearch({
               required: true,
             })}
           />
-          <Input.LabelError helperText={errors.dateVencInitial?.message} />
+          <Input.LabelError helperText={errors.dateVencFinal?.message} />
         </Input.Root>
       </Form.InputContainer>
       <Form.Buttons>

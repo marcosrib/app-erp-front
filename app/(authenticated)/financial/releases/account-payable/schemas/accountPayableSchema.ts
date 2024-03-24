@@ -11,18 +11,24 @@ const statusSchema = z.object({
 
 export const accountPayableSearchSchema = z.object({
   status: statusSchema,
-  dateVencInitial: z.string().transform((str) => new Date(str)),
+  dateVencInitial: z.string().transform((str) => { 
+    return str ? new Date(str) : undefined }),
   dateVencFinal: z.string().transform((str) => { 
     return str ? new Date(str) : undefined }),
   costCenter: costCenterSchema
-}).partial().refine((partialInput) => {
-  console.log('aqui', partialInput.dateVencFinal);
-  if (partialInput.dateVencInitial && partialInput.dateVencFinal === undefined) {
-    console.log('aqui');
-    
-    return false;
+}).refine((data) => {
+  console.log(data.dateVencInitial);
+  
+  return !(data.dateVencInitial && !data.dateVencFinal)
+}, {
+  message: "Data vencimento final é obrigatário",
+  path: ["dateVencFinal"],
+}).refine((data) => {
+  if(data.dateVencFinal && data.dateVencInitial ) {
+    return !(data.dateVencInitial > data.dateVencFinal)
   }
-  if (partialInput.dateVencInitial && partialInput.dateVencFinal) return true;
-
-  return partialInput.dateVencInitial < partialInput.dateVencFinal;
-});
+   return true;
+}, {
+  message: "Data vencimento final não pode ser menor que a data vencimento incial",
+  path: ["dateVencFinal"],
+});;
