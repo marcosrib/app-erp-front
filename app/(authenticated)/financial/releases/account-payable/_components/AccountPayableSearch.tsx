@@ -14,9 +14,9 @@ import { accountPayableSearchSchema } from '../schemas/accountPayableSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CustomSelect from '@/app/(authenticated)/components/select/CustomSelect';
 import { SelectCostCenterProps } from '../../../cost-center/types';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useHookFormMask } from 'use-mask-input';
-import { formatDate } from '@/app/(authenticated)/utils/formatDate';
+import { formatDateToString } from '@/app/(authenticated)/utils/formatDate';
 
 type Props = AccountPayableSearchParamProps & {
   costCenter: SelectCostCenterProps[];
@@ -55,29 +55,36 @@ export default function AccountPayableSearch({
     const costCenterId =
       data.costCenter.value !== 0 ? data.costCenter.value : '';
 
-    const dateVencInitial =
-      data.dateVencInitial !== undefined
-        ? formatDate(data.dateVencInitial, 'YYYY-MM-DD')
+    const dateDueInitial =
+      data.dateDueInitial !== undefined
+        ? formatDateToString(data.dateDueInitial, 'YYYY-MM-DD')
         : '';
+    console.log(dateDueInitial);
 
-    const dateVencFinal =
-      data.dateVencFinal !== undefined
-        ? formatDate(data.dateVencFinal, 'YYYY-MM-DD')
+    const dateDueFinal =
+      data.dateDueFinal !== undefined
+        ? formatDateToString(data.dateDueFinal, 'YYYY-MM-DD')
         : '';
 
     const params = [
       { key: 'page', value: '1' },
       { key: 'status', value: data.status.value },
       { key: 'costCenterId', value: costCenterId },
-      { key: 'dateVencInitial', value: dateVencInitial },
-      { key: 'dateVencFinal', value: dateVencFinal },
+      { key: 'dateDueInitial', value: dateDueInitial },
+      { key: 'dateDueFinal', value: dateDueFinal },
     ];
 
     setMultipleParam(params);
   }
 
   function clearForm() {
-    deleteMultipleParam(['page', 'status', 'costCenterId']);
+    deleteMultipleParam([
+      'page',
+      'status',
+      'costCenterId',
+      'dateDueInitial',
+      'dateDueFinal',
+    ]);
     reset();
   }
 
@@ -136,24 +143,24 @@ export default function AccountPayableSearch({
           <Input.Input
             type="text"
             placeholder="dd/mm/yyyy"
-            {...registerWithMask('dateVencInitial', 'datetime', {
+            {...registerWithMask('dateDueInitial', 'datetime', {
               inputFormat: 'dd/mm/yyyy',
               required: true,
             })}
           />
-          <Input.LabelError helperText={errors.dateVencInitial?.message} />
+          <Input.LabelError helperText={errors.dateDueInitial?.message} />
         </Input.Root>
         <Input.Root>
           <Input.Label label="Data venc final" />
           <Input.Input
             type="text"
             placeholder="dd/mm/yyyy"
-            {...registerWithMask('dateVencFinal', 'datetime', {
+            {...registerWithMask('dateDueFinal', 'datetime', {
               inputFormat: 'dd/mm/yyyy',
               required: true,
             })}
           />
-          <Input.LabelError helperText={errors.dateVencFinal?.message} />
+          <Input.LabelError helperText={errors.dateDueFinal?.message} />
         </Input.Root>
       </Form.InputContainer>
       <Form.Buttons>
