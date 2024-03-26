@@ -12,7 +12,9 @@ const statusSchema = z.object({
 
 export const accountPayableSearchSchema = z.object({
   status: statusSchema,
-  dateDueInitial: z.string().transform((str) => {     
+  dateDueInitial: z.string().transform((str) => {  
+    console.log(str);
+       
     return str ? formatStringToDate(str): undefined }),
     dateDueFinal: z.string().transform((str) => { 
     return str ? formatStringToDate(str) : undefined }),

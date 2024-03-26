@@ -3,29 +3,24 @@ import Button from '@/app/(authenticated)/components/button/Button';
 import { Form } from '@/app/(authenticated)/components/form';
 import { Input } from '@/app/components/input';
 import { MdAdd } from 'react-icons/md';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 import {
   AccountPayableSearchParamProps,
   SelectStatusProps,
   accountsPayableTypeSchema,
 } from '../types';
-import { accountPayableSearchSchema } from '../schemas/accountPayableSchema';
+import { accountPayableSearchSchema } from '../schemas/accountPayableSearchSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CustomSelect from '@/app/(authenticated)/components/select/CustomSelect';
 import { SelectCostCenterProps } from '../../../cost-center/types';
 import { useEffect } from 'react';
-import { useHookFormMask } from 'use-mask-input';
 import { formatDateToString } from '@/app/(authenticated)/utils/formatDate';
+import { statusData } from '../data/AccountPayamentStatus';
 
 type Props = AccountPayableSearchParamProps & {
   costCenter: SelectCostCenterProps[];
 };
-
-const statusArray = [
-  { value: 'PENDING', label: 'Pendente' },
-  { value: 'PAID', label: 'Pago' },
-];
 
 export default function AccountPayableSearch({
   costCenter,
@@ -42,8 +37,6 @@ export default function AccountPayableSearch({
   } = useForm<accountsPayableTypeSchema>({
     resolver: zodResolver(accountPayableSearchSchema),
   });
-
-  const registerWithMask = useHookFormMask(register);
 
   function handleOpenModal() {
     setParam('show-modal', 'account-payable-create');
@@ -103,7 +96,7 @@ export default function AccountPayableSearch({
   }
   function setDefaultStatus() {
     if (searchParams?.costCenterId) {
-      const statusFiltered = statusArray.find(
+      const statusFiltered = statusData.find(
         (status) => status.value === searchParams?.status
       ) as SelectStatusProps;
       setValue('status', statusFiltered);
@@ -122,7 +115,7 @@ export default function AccountPayableSearch({
             defaultLabel="Selecione status"
             name="status"
             control={control}
-            options={statusArray}
+            options={statusData}
           />
           <Input.LabelError helperText={errors.costCenter?.message} />
         </Input.Root>
@@ -140,26 +133,12 @@ export default function AccountPayableSearch({
         </Input.Root>
         <Input.Root>
           <Input.Label label="Data venc inicial" />
-          <Input.Input
-            type="text"
-            placeholder="dd/mm/yyyy"
-            {...registerWithMask('dateDueInitial', 'datetime', {
-              inputFormat: 'dd/mm/yyyy',
-              required: true,
-            })}
-          />
+          <Input.InputMask {...register('dateDueInitial')} />
           <Input.LabelError helperText={errors.dateDueInitial?.message} />
         </Input.Root>
         <Input.Root>
           <Input.Label label="Data venc final" />
-          <Input.Input
-            type="text"
-            placeholder="dd/mm/yyyy"
-            {...registerWithMask('dateDueFinal', 'datetime', {
-              inputFormat: 'dd/mm/yyyy',
-              required: true,
-            })}
-          />
+          <Input.InputMask {...register('dateDueFinal')} />
           <Input.LabelError helperText={errors.dateDueFinal?.message} />
         </Input.Root>
       </Form.InputContainer>
