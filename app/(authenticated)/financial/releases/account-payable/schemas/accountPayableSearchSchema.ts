@@ -12,18 +12,26 @@ const statusSchema = z.object({
 
 export const accountPayableSearchSchema = z.object({
   status: statusSchema,
-  dateDueInitial: z.string().transform((str) => {  
-    console.log(str);
-       
+  dateDueInitial: z.string().transform((str) => {         
     return str ? formatStringToDate(str): undefined }),
     dateDueFinal: z.string().transform((str) => { 
     return str ? formatStringToDate(str) : undefined }),
   costCenter: costCenterSchema
 }).refine((data) => {  
+  return !(data.dateDueInitial === undefined)
+}, {
+  message: "Data inválida",
+  path: ["dateDueInitial"],
+}).refine((data) => {  
+  return !(data.dateDueFinal === undefined)
+}, {
+  message: "Data inválida",
+  path: ["dateDueFinal"],
+}).refine((data) => {  
   return !(data.dateDueInitial && !data.dateDueFinal)
 }, {
   message: "Data vencimento final é obrigatário",
-  path: ["dateVencFinal"],
+  path: ["dateDueInitial"],
 }).refine((data) => {
   if(data.dateDueFinal && data.dateDueInitial ) {
     return !(data.dateDueInitial > data.dateDueFinal)
@@ -31,5 +39,5 @@ export const accountPayableSearchSchema = z.object({
    return true;
 }, {
   message: "Data vencimento final não pode ser menor que a data vencimento incial",
-  path: ["dateVencFinal"],
+  path: ["dateDueFinal"],
 });;

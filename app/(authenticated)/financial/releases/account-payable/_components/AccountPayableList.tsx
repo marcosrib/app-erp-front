@@ -50,8 +50,6 @@ export default async function AccountPayableList({
           </TableCustom.Column>
           <TableCustom.Column field="dueDate">
             {(field) => {
-              console.log(field);
-
               return <p>{field}</p>;
             }}
           </TableCustom.Column>

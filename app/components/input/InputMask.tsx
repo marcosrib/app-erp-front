@@ -1,18 +1,21 @@
-import { InputMask } from '@react-input/mask';
+import { InputMask, Replacement } from '@react-input/mask';
 import { InputHTMLAttributes, forwardRef } from 'react';
 
-type InputProps = InputHTMLAttributes<HTMLInputElement>;
+type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+  mask: string;
+  replacement: Replacement | string;
+};
 
 export const InputMaskTag = forwardRef<HTMLInputElement, InputProps>(
-  ({ type = 'text', name = '', ...props }, ref) => {
+  ({ mask, replacement, type = 'text', name = '', ...props }, ref) => {
     return (
       <InputMask
         type={type}
         ref={ref}
         name={name}
         {...props}
-        mask="__/__/____"
-        replacement={{ _: /\d/ }}
+        mask={mask}
+        replacement={replacement}
         showMask
         separate
         className="border

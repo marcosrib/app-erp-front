@@ -23,7 +23,7 @@ export default async function PrivateLayout({
           <Sidebar />
           <div className="flex flex-col w-full md:space-y-4">
             <Header />
-            <div className="h-screen pb-24 xl:overflow-auto pr-5">
+            <div className="h-screen pb-24 xl:overflow-auto overflow-auto pr-5">
               <AppProviders>{children}</AppProviders>
             </div>
           </div>

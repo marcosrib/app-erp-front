@@ -43,21 +43,20 @@ export default function AccountPayableSearch({
   }
 
   function handleSearchSubmit(data: accountsPayableTypeSchema) {
-    console.log('form data', data);
+    console.log('data', data);
 
     const costCenterId =
       data.costCenter.value !== 0 ? data.costCenter.value : '';
 
     const dateDueInitial =
-      data.dateDueInitial !== undefined
-        ? formatDateToString(data.dateDueInitial, 'YYYY-MM-DD')
-        : '';
-    console.log(dateDueInitial);
+      data.dateDueInitial === null || data.dateDueInitial === undefined
+        ? ''
+        : formatDateToString(data.dateDueInitial, 'YYYY-MM-DD');
 
     const dateDueFinal =
-      data.dateDueFinal !== undefined
-        ? formatDateToString(data.dateDueFinal, 'YYYY-MM-DD')
-        : '';
+      data.dateDueFinal === null || data.dateDueFinal === undefined
+        ? ''
+        : formatDateToString(data.dateDueFinal, 'YYYY-MM-DD');
 
     const params = [
       { key: 'page', value: '1' },
@@ -133,12 +132,20 @@ export default function AccountPayableSearch({
         </Input.Root>
         <Input.Root>
           <Input.Label label="Data venc inicial" />
-          <Input.InputMask {...register('dateDueInitial')} />
+          <Input.InputMask
+            replacement={{ _: /\d/ }}
+            mask={'__/__/____'}
+            {...register('dateDueInitial')}
+          />
           <Input.LabelError helperText={errors.dateDueInitial?.message} />
         </Input.Root>
         <Input.Root>
           <Input.Label label="Data venc final" />
-          <Input.InputMask {...register('dateDueFinal')} />
+          <Input.InputMask
+            replacement={{ _: /\d/ }}
+            mask={'__/__/____'}
+            {...register('dateDueFinal')}
+          />
           <Input.LabelError helperText={errors.dateDueFinal?.message} />
         </Input.Root>
       </Form.InputContainer>

@@ -9,10 +9,11 @@ import { toast } from 'react-toastify';
 
 import { SelectChartAccountsGroupProps } from '../../group-chart-account/types';
 import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
-import { SelectTypeOptionsProps, chartAccountTypeSchema } from '../types';
+import { chartAccountTypeSchema } from '../types';
 import { chartAccountSchema } from '../schemas/chartAccountSchema';
 import { createChartAccount } from '../actions/chartAccountAction';
 import CustomSelect from '@/app/(authenticated)/components/select/CustomSelect';
+import { types } from '../data/ChartAccountType';
 type Props = {
   chartAccountsGroupData: SelectChartAccountsGroupProps[];
 };
@@ -41,10 +42,6 @@ export default function ChartAccountCreateForm({
     toast.success(createChartAccountResult.message);
   }
 
-  const types = [
-    { value: 'EXPENSE', label: 'Despesa' },
-    { value: 'REVENUE', label: 'Receita' },
-  ] as SelectTypeOptionsProps[];
   return (
     <>
       <Modal.Root
@@ -61,18 +58,39 @@ export default function ChartAccountCreateForm({
             </Input.Root>
             <Input.Root>
               <Input.Label label="Tipo" />
-              <CustomSelect name="type" options={types} control={control} />
-              <Input.LabelError helperText={errors.type?.message} />
+              <CustomSelect
+                defaultValue={''}
+                defaultLabel="Selecione o tipo"
+                name="type"
+                options={types}
+                control={control}
+              />
+              <Input.LabelError helperText={errors.type?.value?.message} />
             </Input.Root>
             <Input.Root>
               <Input.Label label="Grupo plano conta" />
               <CustomSelect
+                defaultValue={0}
+                defaultLabel="Selecione o grupo plano conta"
                 name="chartAccountsGroup"
                 options={chartAccountsGroupData}
                 control={control}
               />
               <Input.LabelError
-                helperText={errors.chartAccountsGroup?.message}
+                helperText={errors.chartAccountsGroup?.value?.message}
+              />
+            </Input.Root>
+            <Input.Root>
+              <Input.Label label="Grupo plano conta" />
+              <CustomSelect
+                defaultValue={0}
+                defaultLabel="Selecione o grupo plano conta"
+                name="chartAccountsGroup"
+                options={chartAccountsGroupData}
+                control={control}
+              />
+              <Input.LabelError
+                helperText={errors.chartAccountsGroup?.value?.message}
               />
             </Input.Root>
           </Modal.FormInputs>

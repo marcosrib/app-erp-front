@@ -20,7 +20,6 @@ type Props = {
 };
 
 export default function PermissionCreate({ permissions }: Props) {
-
   const router = useRouter();
 
   const {
@@ -33,22 +32,20 @@ export default function PermissionCreate({ permissions }: Props) {
     resolver: zodResolver(permissionSchema),
   });
 
+  async function handleCreatePerrmissionSubmit(
+    formData: PermissionsTypeSchema
+  ) {
+    const profile = await createPermissions(`api/profile`, formData);
 
-  async function handleCreatePerrmissionSubmit(formData: PermissionsTypeSchema) {
-    
-   const profile = await createPermissions(`api/profile`, formData);
-    
     if (profile.status !== 201) {
       toast.error(profile.message);
       return;
     }
 
-    router.push('/register/permission', { shallow: true } );
+    router.push('/register/permission', { shallow: true });
     toast.success(profile.message);
-
   }
- console.log('eroes',errors);
- 
+
   return (
     <>
       <Form.Root
@@ -58,15 +55,14 @@ export default function PermissionCreate({ permissions }: Props) {
         <Form.InputContainer>
           <Input.Root>
             <Input.Label label="Nome" />
-            <Input.Input
-             {...registerSearch('name')}
-            />
+            <Input.Input {...registerSearch('name')} />
             <Input.LabelError helperText={errors.name?.message} />
           </Input.Root>
-          <TextArea 
+          <TextArea
             {...registerSearch('description')}
-            label="Descrição" 
-            errors={errors.description?.message} />
+            label="Descrição"
+            errors={errors.description?.message}
+          />
         </Form.InputContainer>
         <Form.Buttons>
           <Button

@@ -21,7 +21,7 @@ export function ModalRoot({
     <>
       {isOpen && (
         <div
-          className="bg-gray-500 bg-opacity-30 overflow-y-auto overflow-x-hidden fixed right-0 left-0 top-4 z-50 justify-center items-center md:inset-0 h-modal sm:h-full flex"
+          className="bg-gray-500  bg-opacity-30 overflow-x-hidden overflow-y-auto xl:overflow-y-auto xl:overflow-x-hidden xl:fixed fixed right-0 left-0 top-4 z-50 justify-center items-center md:inset-0 h-modal sm:h-full flex"
           role="dialog"
         >
           <div
@@ -30,7 +30,6 @@ export function ModalRoot({
               'px-4',
               'w-full',
               sizeScreen,
-              'max-w-2xl',
               'h-full md:h-auto'
             )}
           >

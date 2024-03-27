@@ -6,16 +6,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Modal } from '@/app/(authenticated)/components/modal';
 import { Input } from '@/app/components/input';
 import Button from '@/app/(authenticated)/components/button/Button';
-import {
-  ChartAccountEditProps,
-  SelectTypeOptionsProps,
-  chartAccountTypeSchema,
-} from '../types';
+import { ChartAccountEditProps, chartAccountTypeSchema } from '../types';
 import { chartAccountSchema } from '../schemas/chartAccountSchema';
 import { updateChartAccount } from '../actions/chartAccountAction';
 import CustomSelect from '@/app/(authenticated)/components/select/CustomSelect';
 import useURLParams from '@/app/(authenticated)/hooks/useURLParams';
 import { SelectChartAccountsGroupProps } from '../../group-chart-account/types';
+import { types } from '../data/ChartAccountType';
 
 type Props = {
   data: ChartAccountEditProps;
@@ -54,11 +51,6 @@ export default function ChartAccountEditForm({
     toast.success(updateChartAccountResult.message);
   }
 
-  const types = [
-    { value: 'EXPENSE', label: 'Despesa' },
-    { value: 'REVENUE', label: 'Receita' },
-  ] as SelectTypeOptionsProps[];
-
   useEffect(() => {
     setValue('name', data.name);
 
@@ -88,12 +80,20 @@ export default function ChartAccountEditForm({
             </Input.Root>
             <Input.Root>
               <Input.Label label="Tipo" />
-              <CustomSelect name="type" options={types} control={control} />
+              <CustomSelect
+                defaultValue={''}
+                defaultLabel="Selecione o tipo"
+                name="type"
+                options={types}
+                control={control}
+              />
               <Input.LabelError helperText={errors.type?.message} />
             </Input.Root>
             <Input.Root>
               <Input.Label label="Grupo plano conta" />
               <CustomSelect
+                defaultValue={0}
+                defaultLabel="Selecione o grupo plano conta"
                 name="chartAccountsGroup"
                 options={chartAccountsGroupData}
                 control={control}

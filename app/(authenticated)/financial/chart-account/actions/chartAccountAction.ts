@@ -1,6 +1,6 @@
 'use server'
 import { getHeaders } from "@/app/(authenticated)/actions/headers";
-import { chartAccountTypeSchema } from "../types";
+import { ChartAccountsGroupProps, SelectChartAccountOptionsProps, chartAccountTypeSchema } from "../types";
 import { fetchApi } from "@/app/services/fetchApi";
 import { revalidatePath } from "next/cache";
 
@@ -52,6 +52,25 @@ export async function createChartAccount(data: chartAccountTypeSchema) {
    
   }
 
+  export async function getChartAccounts(): Promise<SelectChartAccountOptionsProps[]> {
+    const headers = await getHeaders();
+    try {
+      const respose = await fetchApi<ChartAccountsGroupProps[]>('api/chart-account', {
+        method: 'GET',
+        headers: headers
+      })
+      if(respose) {
+        return respose?.map((getChartAccount: ChartAccountsGroupProps) => ({
+          value: getChartAccount.id,
+          label: getChartAccount.name
+        }));
+      }
+      return [{ value: 0, label: 'Nenhum plano de contas encontrado'}]
+    } catch (error) {
+      console.log(error);
+      return []
+    }
+  }
   function messageErro(status: number, message: string) {
     return { 
       status,

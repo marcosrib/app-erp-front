@@ -1,8 +1,4 @@
 import { z } from 'zod';
-const chartAccountGroupSchema = z.object({
-  value: z.number().positive('O perfil é obrigatório'),
-  label: z.string(),
-});
 
 const typeSchema = z.object({
   value: z.string().min(1, { message: 'O tipo é obrigatório' }),

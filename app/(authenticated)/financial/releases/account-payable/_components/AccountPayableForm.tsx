@@ -4,10 +4,15 @@ import AccountPayableEditForm from './AccountPayableEditForm';
 import AccountPayableCreateForm from './AccountPayableCreateForm';
 import { useAccountPayableStore } from '../store/useAccountPayableStore';
 import { SelectCostCenterProps } from '../../../cost-center/types';
+import { SelectChartAccountOptionsProps } from '../../../chart-account/types';
 type Props = {
   costCenter: SelectCostCenterProps[];
+  charAccounts: SelectChartAccountOptionsProps[];
 };
-export default function AccountPayableForm({ costCenter }: Props) {
+export default function AccountPayableForm({
+  costCenter,
+  charAccounts,
+}: Props) {
   const { accountPayableEdit, resetDataForm } = useAccountPayableStore();
   function resetUseCostCenterStore() {
     resetDataForm();
@@ -21,7 +26,10 @@ export default function AccountPayableForm({ costCenter }: Props) {
           resetAccountPayableStore={resetUseCostCenterStore}
         />
       ) : (
-        <AccountPayableCreateForm costCenter={costCenter} />
+        <AccountPayableCreateForm
+          costCenter={costCenter}
+          charAccounts={charAccounts}
+        />
       )}
     </>
   );
