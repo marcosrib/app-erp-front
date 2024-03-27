@@ -21,34 +21,29 @@ export function ModalRoot({
     <>
       {isOpen && (
         <div
-          className="bg-gray-500  bg-opacity-30 overflow-x-hidden overflow-y-auto xl:overflow-y-auto xl:overflow-x-hidden xl:fixed fixed right-0 left-0 top-4 z-50 justify-center items-center md:inset-0 h-modal sm:h-full flex"
-          role="dialog"
+          className={`fixed  top-0 right-0 bottom-0 left-0  z-40  overflow-y-auto bg-gray-500 bg-opacity-30 flex justify-center items-center `}
         >
           <div
             className={clsx(
-              'relative',
-              'px-4',
+              'bg-white',
+              'mt-20',
+              'rounded-2xl',
               'w-full',
-              sizeScreen,
-              'h-full md:h-auto'
+              'shadow-lg',
+              sizeScreen
             )}
           >
-            <div className="relative bg-white rounded-2xl shadow-lg">
-              <div className="flex justify-between items-start p-5 rounded-t border-b">
-                <h3 className="text-xl font-semibold">{title}</h3>
-                <button
-                  type="button"
-                  className="text-gray-400 
-                   bg-transparent hover:bg-gray-200 
-                   hover:text-gray-900 rounded-2xl text-sm
-                   p-1.5 ml-auto inline-flex items-center"
-                  onClick={closeModal}
-                >
-                  <MdClose size={20} />
-                </button>
-              </div>
-              {children}
+            <div className="flex justify-between items-start p-5 rounded-t border-b">
+              <h3 className="text-xl font-semibold">{title}</h3>
+              <button
+                type="button"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-full p-2"
+                onClick={closeModal}
+              >
+                <MdClose size={20} />
+              </button>
             </div>
+            <div className="p-4">{children}</div>
           </div>
         </div>
       )}

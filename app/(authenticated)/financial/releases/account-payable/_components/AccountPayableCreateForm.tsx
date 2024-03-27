@@ -109,24 +109,6 @@ export default function AccountPayableCreateForm({
               />
               <Input.LabelError helperText={errors.dateDue?.message} />
             </Input.Root>
-            <Input.Root>
-              <Input.Label label="Data vencimento" />
-              <Input.InputMask
-                replacement={{ _: /\d/ }}
-                mask={'__/__/____'}
-                {...register('dateDue')}
-              />
-              <Input.LabelError helperText={errors.dateDue?.message} />
-            </Input.Root>
-            <Input.Root>
-              <Input.Label label="Data vencimento" />
-              <Input.InputMask
-                replacement={{ _: /\d/ }}
-                mask={'__/__/____'}
-                {...register('dateDue')}
-              />
-              <Input.LabelError helperText={errors.dateDue?.message} />
-            </Input.Root>
           </Modal.FormInputs>
           <Modal.FormFooter>
             <Button label={'Cadastrar'} color="search" type="submit" />
