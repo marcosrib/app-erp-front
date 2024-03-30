@@ -47,6 +47,7 @@ export default function AccountPayableSearch({
 
     const costCenterId =
       data.costCenter.value !== 0 ? data.costCenter.value : '';
+    console.log(data.dateDueIniti);
 
     const dateDueInitial =
       data.dateDueInitial === null || data.dateDueInitial === undefined
@@ -133,8 +134,8 @@ export default function AccountPayableSearch({
         <Input.Root>
           <Input.Label label="Data venc inicial" />
           <Input.InputMask
-            replacement={{ _: /\d/ }}
-            mask={'__/__/____'}
+            replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
+            mask={'dd/mm/aaaa'}
             {...register('dateDueInitial')}
           />
           <Input.LabelError helperText={errors.dateDueInitial?.message} />
@@ -142,8 +143,8 @@ export default function AccountPayableSearch({
         <Input.Root>
           <Input.Label label="Data venc final" />
           <Input.InputMask
-            replacement={{ _: /\d/ }}
-            mask={'__/__/____'}
+            replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
+            mask={'dd/mm/aaaa'}
             {...register('dateDueFinal')}
           />
           <Input.LabelError helperText={errors.dateDueFinal?.message} />

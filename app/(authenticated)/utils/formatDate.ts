@@ -14,9 +14,9 @@ export const formatDateToString = (date: Date, format: string) => {
 
 export const formatStringToDate = (date: string) => {
   const [day, month, year] = date.split('/');
-  let dayLength = day.replace('__', '').length;
-  let monthLength = month.replace('__', '').length;
-  let yearLength = year.replace('____', '').replace('__', '').replace('_', '').length;
+  let dayLength = day.replace('dd', '').length;
+  let monthLength = month.replace('mm', '').length;
+  let yearLength = year.replace('aaaa', '').replace('aa', '').replace('a', '').length;
   let dateLength = dayLength + monthLength + yearLength;
 
   if (dateLength === 0) {
