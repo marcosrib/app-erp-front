@@ -1,0 +1,11 @@
+version: "3.8"
+services: 
+  frontend:
+    container_name: frontend
+    build: .
+    restart: always #change if you don't want your container restarting
+    environment:
+      - NODE_ENV=production
+      - NEXTAUTH_SECRET=testsdsgfklnkl 
+    ports:
+      - 3000:3000
