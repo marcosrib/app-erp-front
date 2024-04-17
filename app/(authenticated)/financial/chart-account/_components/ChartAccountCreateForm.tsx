@@ -47,7 +47,7 @@ export default function ChartAccountCreateForm({
       <Modal.Root
         closeModal={() => deleteParam('show-modal')}
         isOpen={compareParam('show-modal', 'chart-account-create')}
-        title={'Editar Plano de Contas'}
+        title={'Cadastrar Plano de Contas'}
       >
         <Modal.Form onSubmit={handleSubmit(submitChartAccountForm)}>
           <Modal.FormInputs>

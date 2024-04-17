@@ -2,11 +2,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
   Children,
-  JSXElementConstructor,
-  PromiseLikeOfReactNode,
-  ReactElement,
   ReactNode,
-  ReactPortal,
   cloneElement,
 } from 'react';
 

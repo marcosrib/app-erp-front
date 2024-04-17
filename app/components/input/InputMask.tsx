@@ -22,11 +22,18 @@ export const InputMaskTag = forwardRef<HTMLInputElement, InputProps>(
          text-gray-500
          sm:text-sm 
          rounded-lg 
-         focus:border-2
+         dark:border-opacity-25 
+         dark:border 
+         dark:border-white 
+         dark:shadow-none 
+         dark:bg-gray-700
+         dark:focus:bg-gray-700
+         dark:hover:bg-gray-700
+         dark:text-gray-100
          focus:outline-none
-         focus:ring-gray-300
-         focus:border-gray-300
-         block w-full p-2"
+         focus:ring-indigo-600
+         focus:border-indigo-600
+         block w-full p-2.5"
       />
     );
   }

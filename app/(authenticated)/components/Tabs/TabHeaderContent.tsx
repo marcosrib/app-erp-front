@@ -26,8 +26,8 @@ export function TabHeaderContent({
         'font-semibold',
         'border-transparent',
         searchParams.label === label || initPage
-          ? 'bg-cyan-700 text-white'
-          : 'bg-gray-200 text-gray-800'
+          ? 'bg-cyan-700 text-white dark:bg-gray-700 '
+          : 'bg-gray-200 text-gray-800 dark:text-white dark:bg-gray-500'
       )}
     >
       {label}

@@ -26,6 +26,7 @@ export function ModalRoot({
           <div
             className={clsx(
               'bg-white',
+              'dark:bg-gray-800',
               'mt-20',
               'rounded-2xl',
               'w-full',
@@ -34,7 +35,7 @@ export function ModalRoot({
             )}
           >
             <div className="flex justify-between items-start p-5 rounded-t border-b">
-              <h3 className="text-xl font-semibold">{title}</h3>
+              <h3 className="text-xl dark:text-gray-400 font-semibold">{title}</h3>
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-full p-2"
