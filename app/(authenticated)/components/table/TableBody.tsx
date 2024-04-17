@@ -51,15 +51,27 @@ export async function TableBody({
 
   return (
     <>
-      <div className="flex flex-col my-6 mx-4 rounded-2xl shadow-xl shadow-gray-200">
+      <div
+        className="
+          flex 
+          flex-col 
+          my-6 
+          mx-4 
+          rounded-2xl 
+          shadow-xl 
+          shadow-gray-200
+          dark:shadow-none
+          dark:border-opacity-20 
+          dark:border 
+          dark:border-white">
         <div className="overflow-x-auto rounded-2xl">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden">
-              <table className="min-w-full divide-y divide-gray-200 table-fixed">
+              <table className="min-w-full table-fixed">
                 {header}
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white divide-y divide-gray-200/25 dark:bg-gray-800">
                   {data.map((row: any, rowIndex: number) => (
-                    <tr key={rowIndex} className="hover:bg-gray-100">
+                    <tr key={rowIndex} className="hover:bg-gray-100 dark:hover:bg-gray-700">
                       {React.Children.map(children, (child, columnIndex) => {
                         if (React.isValidElement(child)) {
                           if (columnIndex === 0) return;
@@ -70,7 +82,7 @@ export async function TableBody({
                           return (
                             <td
                               key={columnIndex}
-                              className="p-4 text-gray-600  text-sm font-normal  whitespace-nowrap"
+                              className="p-4 text-gray-600 dark:text-gray-300 text-sm font-normal  whitespace-nowrap"
                             >
                               {child.props.field === 'combinedData'
                                 ? child.props.children(JSON.stringify(row))
@@ -96,7 +108,12 @@ export async function TableBody({
           bg-white rounded-2xl 
           text-xs
           shadow-xl shadow-gray-200 
-          sm:flex sm:justify-between"
+          sm:flex sm:justify-between
+          dark:shadow-none
+          dark:border-opacity-20 
+          dark:border 
+          dark:bg-gray-800
+          dark:border-white"
         >
           <Pagination totalPages={totalPages} />
         </div>

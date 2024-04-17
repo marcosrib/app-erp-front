@@ -10,7 +10,7 @@ export default function Sidbar() {
 
   return (
     <div className="relative hidden h-screen lg:block w-80">
-      <div className="h-full bg-gray-100 px-5 dark:bg-gray-700">
+      <div className="h-full bg-gray-100 px-5 dark:bg-gray-800">
         <div className="flex items-center justify-start pt-6 ml-8">
           <p className="text-xl font-bold dark:text-white">ERP</p>
         </div>

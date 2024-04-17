@@ -5,5 +5,5 @@ type Props = {
 };
 
 export function NavIcon({ icon }: Props) {
-  return <span className="text-left">{icon}</span>;
+  return <span className="text-left dark:text-white">{icon}</span>;
 }

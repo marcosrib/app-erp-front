@@ -9,7 +9,7 @@ type Props = {
 }
 
 
-export function NavLink({children, route, active }:Props) {
+export function NavLink({ children, route, active }: Props) {
   return (
     <>
       <Link
@@ -27,10 +27,12 @@ export function NavLink({children, route, active }:Props) {
         transition-colors duration-200
         border-transparent 
         hover:bg-gray-200
+        dark:hover:bg-gray-600
+        data-[active=true]:dark:bg-gray-700
         data-[active=true]:bg-gray-200'
       >
         {children}
       </Link>
     </>
-  )  
+  )
 } 

@@ -55,9 +55,9 @@ export default function Signin() {
   }
 
   return (
-    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex min-h-screen flex-col justify-center px-6 py-12 dark:bg-gray-800 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight dark:text-white text-gray-900">
           Login
         </h2>
       </div>
@@ -66,12 +66,12 @@ export default function Signin() {
           <Input.Root>
             <Input.Label label="E-mail" />
             <Input.Input type="email" {...register('email')} />
-            <Input.LabelError helperText={errors.email ?.message} />
+            <Input.LabelError helperText={errors.email?.message} />
           </Input.Root>
           <Input.Root>
             <Input.Label label="Senha" />
             <Input.Input type="password" {...register('password')} />
-            <Input.LabelError helperText={errors.password ?.message} />
+            <Input.LabelError helperText={errors.password?.message} />
           </Input.Root>
           <div>
             <button

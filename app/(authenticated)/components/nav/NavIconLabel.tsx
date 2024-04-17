@@ -5,7 +5,7 @@ type Props = {
 export function NavIconLabel({ label }: Props) {
   return (
     <>
-      <span className="mx-2 text-sm font-normal">{label}</span>
+      <span className="mx-2 text-sm dark:text-white font-normal">{label}</span>
     </>
   );
 }

@@ -4,7 +4,6 @@ export async function fetchApi<T = unknown>(input: RequestInfo | URL, init?: Req
     'Content-Type': 'application/json'
   };
 
-  console.log('aqui', process.env.ERP_API_BASE_URL);
   const headers = {
     ...defaultHeaders,
     ...(init?.headers || {})
@@ -16,17 +15,12 @@ export async function fetchApi<T = unknown>(input: RequestInfo | URL, init?: Req
   };
 
   try {
-    console.log('aqui');
     const response = await fetch(`${process.env.ERP_API_BASE_URL}/${input}`, modifiedInit);
-
     if (!response.ok) {
-
       const errorData = await response.json();
-
-
       throw errorData;
     }
-    console.log('aqui');
+
     if (response.status === 204 || response.status === 201) return;
 
     const result = await response.json();

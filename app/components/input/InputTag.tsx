@@ -1,4 +1,3 @@
-import { useMask } from '@react-input/mask';
 import { InputHTMLAttributes, forwardRef } from 'react';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>;
@@ -21,6 +20,8 @@ export const InputTag = forwardRef<HTMLInputElement, InputProps>(
          dark:border-white 
          dark:shadow-none 
          dark:bg-gray-700
+         dark:focus:bg-gray-700
+         dark:hover:bg-gray-700
          dark:text-gray-100
          focus:outline-none
          focus:ring-indigo-600

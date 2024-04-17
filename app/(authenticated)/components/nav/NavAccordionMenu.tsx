@@ -30,9 +30,13 @@ export function NavAccordionMenu({ children, label, active, icon }: Props) {
            font-normal 
            rounded-lg
            text-dark-500 
+           dark:text-white 
            data-[active=true]:bg-white
+           data-[active=true]:dark:bg-gray-700
            data-[active=true]:shadow-lg 
+           data-[active=true]:dark:shadow-none 
            data-[active=true]:shadow-gray-200 
+           dark:hover:bg-gray-500
            hover:bg-gray-200 group  transition-all duration-200"
       >
         <span className="pr-2">{icon}</span>
