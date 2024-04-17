@@ -66,12 +66,12 @@ export default function Signin() {
           <Input.Root>
             <Input.Label label="E-mail" />
             <Input.Input type="email" {...register('email')} />
-            <Input.LabelError helperText={errors.email?.message} />
+            <Input.LabelError helperText={errors.email ?.message} />
           </Input.Root>
           <Input.Root>
             <Input.Label label="Senha" />
             <Input.Input type="password" {...register('password')} />
-            <Input.LabelError helperText={errors.password?.message} />
+            <Input.LabelError helperText={errors.password ?.message} />
           </Input.Root>
           <div>
             <button

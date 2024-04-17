@@ -8,7 +8,7 @@ COPY . .
 
 # Instale o Next.js
 RUN npm install -g next@14.0.3
-
+ENV NEXT_TELEMETRY_DISABLED 1
 # Instale as dependências do projeto
 RUN npm install
 
