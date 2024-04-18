@@ -58,7 +58,9 @@ export default function AccountPayableCreateForm({
           <Modal.FormInputs>
             <Input.Root>
               <Input.Label label="Valor" />
-              <Input.Input {...register('value')} />
+              <Input.InputMask
+                typeFormat='currency'
+                {...register('value')} />
               <Input.LabelError helperText={errors.value?.message} />
             </Input.Root>
             <Input.Root>
@@ -103,6 +105,7 @@ export default function AccountPayableCreateForm({
             <Input.Root>
               <Input.Label label="Data vencimento" />
               <Input.InputMask
+                typeFormat='date-or-phone'
                 replacement={{ _: /\d/ }}
                 mask={'__/__/____'}
                 {...register('dateDue')}

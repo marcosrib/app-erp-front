@@ -134,6 +134,7 @@ export default function AccountPayableSearch({
         <Input.Root>
           <Input.Label label="Data venc inicial" />
           <Input.InputMask
+            typeFormat='date-or-phone'
             replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
             mask={'dd/mm/aaaa'}
             {...register('dateDueInitial')}
@@ -143,6 +144,7 @@ export default function AccountPayableSearch({
         <Input.Root>
           <Input.Label label="Data venc final" />
           <Input.InputMask
+            typeFormat='date-or-phone'
             replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
             mask={'dd/mm/aaaa'}
             {...register('dateDueFinal')}

@@ -8,19 +8,19 @@ export default async function Permission({
 }: {
   params: { permissionid: string };
 }) {
-  
-  const isPermission = await hasPermission('PERMISSION', 'UPDATE');
+
+  /*const isPermission = await hasPermission('PERMISSION', 'UPDATE');
   if(!isPermission) {
     redirect('/unauthorized');
-  }
+  }*/
 
-  const  permissions = await getPermissions(
+  const permissions = await getPermissions(
     `api/ability/${params.permissionid}/profile`
   );
-  
+
   const perfil = await getPerfil(`api/profile/${params.permissionid}`);
-  
-  if(!permissions) {
+
+  if (!permissions) {
     return <h1>Perfis não carregado</h1>
   }
 

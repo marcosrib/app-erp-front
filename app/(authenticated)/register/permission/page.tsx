@@ -10,64 +10,64 @@ import { redirect } from 'next/navigation';
 
 export default async function Permission({ searchParams }: ParamsProps) {
 
-  const isPermission = await hasPermission('PERMISSION', 'READ');
+  /*const isPermission = await hasPermission('PERMISSION', 'READ');
   if(!isPermission) {
     redirect('/unauthorized');
-  }
+  }*/
 
   return (
     <>
-    <SlashActions title='Permissões'>
-      <ButtonLink 
-       label='Adicionar'
-        href="/register/permission/create" 
-        color="add"
-      >
-        <MdAdd color={'white'} size={16} />
-      </ButtonLink>
-    </SlashActions>
-    <TableCustom.Root>
-      <TableCustom.Body isSize={false} url="api/profile/" params={searchParams}>
-        <TableCustom.Header>
-          <TableCustom.HeaderContent title="Id" />
-          <TableCustom.HeaderContent title="Nome" />
-          <TableCustom.HeaderContent title="Descrição" />
-          <TableCustom.HeaderContent title="Ações" />
-        </TableCustom.Header>
-        <TableCustom.Column field="id">
-          {(field) => {
-            return <p>{field}</p>;
-          }}
-        </TableCustom.Column>
-        <TableCustom.Column field="name">
-          {(field) => {
-            return <p>{field}</p>;
-          }}
-        </TableCustom.Column>
-        <TableCustom.Column field="description">
-          {(field) => {
-            return <p>{field}</p>;
-          }}
-        </TableCustom.Column>
-        <TableCustom.Column field="actions">
-          {(row) => {
-            let permission = JSON.parse(row);
-            return (
-              <TableCustom.Actions>
-                <TableButtonLink
-                  color="edit"
-                  href={`/register/permission/${permission.id}`}
-                >
-                  <TableCustom.Icon
-                    icon={<FiEdit color={'white'} size={16} />}
-                  />
-                </TableButtonLink>
-              </TableCustom.Actions>
-            );
-          }}
-        </TableCustom.Column>
-      </TableCustom.Body>
-    </TableCustom.Root>
+      <SlashActions title='Permissões'>
+        <ButtonLink
+          label='Adicionar'
+          href="/register/permission/create"
+          color="add"
+        >
+          <MdAdd color={'white'} size={16} />
+        </ButtonLink>
+      </SlashActions>
+      <TableCustom.Root>
+        <TableCustom.Body isSize={false} url="api/profile/" params={searchParams}>
+          <TableCustom.Header>
+            <TableCustom.HeaderContent title="Id" />
+            <TableCustom.HeaderContent title="Nome" />
+            <TableCustom.HeaderContent title="Descrição" />
+            <TableCustom.HeaderContent title="Ações" />
+          </TableCustom.Header>
+          <TableCustom.Column field="id">
+            {(field) => {
+              return <p>{field}</p>;
+            }}
+          </TableCustom.Column>
+          <TableCustom.Column field="name">
+            {(field) => {
+              return <p>{field}</p>;
+            }}
+          </TableCustom.Column>
+          <TableCustom.Column field="description">
+            {(field) => {
+              return <p>{field}</p>;
+            }}
+          </TableCustom.Column>
+          <TableCustom.Column field="actions">
+            {(row) => {
+              let permission = JSON.parse(row);
+              return (
+                <TableCustom.Actions>
+                  <TableButtonLink
+                    color="edit"
+                    href={`/register/permission/${permission.id}`}
+                  >
+                    <TableCustom.Icon
+                      icon={<FiEdit color={'white'} size={16} />}
+                    />
+                  </TableButtonLink>
+                </TableCustom.Actions>
+              );
+            }}
+          </TableCustom.Column>
+        </TableCustom.Body>
+      </TableCustom.Root>
     </>
   );
 }
