@@ -4,13 +4,14 @@ import { getHeaders } from "@/app/(authenticated)/actions/headers";
 import { fetchApi } from "@/app/services/fetchApi";
 import { accountsPayableCreateTypeSchema } from "../types";
 import { revalidatePath } from "next/cache";
+import { formatCurrency } from "@/app/(authenticated)/utils/formatCurrency";
 
 export async function createAccountPayable(data: accountsPayableCreateTypeSchema) {
     const headers = await getHeaders();
     const accountPayable = {
       status: data.status.value,
       chartAccountId: data.chartAccount.value,
-      value: data.value,
+      value: formatCurrency(data.value),
       costCenterId: data.costCenter.value,
       dueDate: data.dateDue,
     };

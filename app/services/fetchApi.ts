@@ -14,8 +14,10 @@ export async function fetchApi<T = unknown>(input: RequestInfo | URL, init?: Req
     headers: headers
   };
 
+
   try {
     const response = await fetch(`${process.env.ERP_API_BASE_URL}/${input}`, modifiedInit);
+    
     if (!response.ok) {
       const errorData = await response.json();
       throw errorData;
@@ -27,6 +29,7 @@ export async function fetchApi<T = unknown>(input: RequestInfo | URL, init?: Req
 
     return result as T;
   } catch (error) {
+    console.log(error );
     throw error;
   }
 

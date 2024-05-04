@@ -5,7 +5,7 @@ services:
       context: . 
       dockerfile: ./Dockerfile.dev
     container_name: erp-web
-    network_mode: "bridge"
+    network_mode: "host"
     ports:
      - 3000:3000
     volumes:

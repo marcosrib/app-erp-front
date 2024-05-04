@@ -1,7 +1,5 @@
 
-export const formatDateToString = (date: Date, format: string) => {
-  console.log(date);
-  
+export const formatDateToString = (date: Date, format: string) => {  
   if(!date) return undefined
   const tokens = {
       'YYYY': date.getFullYear().toString(),

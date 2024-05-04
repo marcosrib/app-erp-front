@@ -3,15 +3,17 @@ import { InputNumberFormat } from '@react-input/number-format';
 
 import { InputHTMLAttributes, forwardRef } from 'react';
 
-type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-  mask: string;
-  typeFormat: 'date-or-phone';
-  replacement: Replacement | string;
-} | ({
-  mask?: string;
-  typeFormat: 'currency';
-  replacement?: Replacement | string;
-} & Omit<InputHTMLAttributes<HTMLInputElement>, 'mask' | 'typeFormat'>);
+type InputProps =
+  | (InputHTMLAttributes<HTMLInputElement> & {
+      mask: string;
+      typeFormat: 'date-or-phone';
+      replacement: Replacement | string;
+    })
+  | ({
+      mask?: string;
+      typeFormat: 'currency';
+      replacement?: Replacement | string;
+    } & Omit<InputHTMLAttributes<HTMLInputElement>, 'mask' | 'typeFormat'>);
 
 const styles = `
   border
@@ -33,7 +35,6 @@ const styles = `
   block w-full p-2.5
 `;
 
-
 export const InputMaskTag = forwardRef<HTMLInputElement, InputProps>(
   ({ type = 'text', name = '', typeFormat, ...props }, ref) => {
     return typeFormat === 'date-or-phone' ? (
@@ -46,18 +47,22 @@ export const InputMaskTag = forwardRef<HTMLInputElement, InputProps>(
         separate
         className={styles}
       />
-    ) :
-      <InputNumberFormat
-
-        type={type}
-        ref={ref}
-        name={name}
-        locales={['ban', 'id']}
-        maximumFractionDigits={2}
-        {...props}
-        className={styles}
-      />;
-
+    ) : (
+      <div className="relative mb-4">
+        <span className="absolute inset-y-0 left-0 flex items-center pl-2 text-gray-500">
+          R$
+        </span>
+        <InputNumberFormat
+          type={type}
+          ref={ref}
+          name={name}
+          locales={['ban', 'id']}
+          maximumFractionDigits={2}
+          {...props}
+          className={`${styles} pl-8`}
+        />
+      </div>
+    );
   }
 );
 

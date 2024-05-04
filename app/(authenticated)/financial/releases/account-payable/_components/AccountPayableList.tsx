@@ -1,6 +1,8 @@
 import { TableCustom } from '@/app/(authenticated)/components/table';
 import { AccountPayableSearchParamProps } from '../types';
 import Badge from '@/app/(authenticated)/components/badges/Badge';
+import { format } from 'path';
+import { formatCurrencyValue } from '@/app/(authenticated)/utils/formatCurrency';
 
 export default async function AccountPayableList({
   searchParams,
@@ -29,7 +31,7 @@ export default async function AccountPayableList({
           </TableCustom.Column>
           <TableCustom.Column field="value">
             {(field) => {
-              return <p>R$ {field}</p>;
+              return <p>R$ {formatCurrencyValue(field)}</p>;
             }}
           </TableCustom.Column>
           <TableCustom.Column field="combinedData">
